@@ -65,7 +65,7 @@ export default {
   },
   methods: {
         goToAppareil() {
-            this.$router.push("/ajoutAp");
+            this.$router.push("/addDevice");
           }
         },
 };
