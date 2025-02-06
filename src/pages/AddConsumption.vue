@@ -50,24 +50,27 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Input from "@/components/Input.vue";
-import ComboBox from "@/components/ComboBox.vue";
+import Header from "@/components/commun/Header.vue";
+import Footer from "@/components/commun/Footer.vue";
+import Input from "@/components/input or select/Input.vue";
+import ComboBox from "@/components/input or select/ComboBox.vue";
 
 export default {
-  name: "AjoutCon",
   components: {
-    Header,
+    ComboBox,
+    // eslint-disable-next-line vue/no-reserved-component-names
     Footer,
-    Input,
-    ComboBox
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Header,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Input
   },
   methods: {
-        goToAppareil() {
-            this.$router.push("/addDevice");
-          }
-        },
+    goToAppareil() {
+      this.$router.push("/addDevice");
+    }
+  },
+  name: "AddConsumption",
 };
 </script>
 
@@ -82,7 +85,6 @@ export default {
   font-weight: bold;
   border-radius: 10px;
   padding: 20px;
-  text-justify: center;
   text-align: center;
 }
 

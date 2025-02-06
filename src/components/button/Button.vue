@@ -9,9 +9,10 @@
       <slot></slot>
     </v-btn>
   </template>
-  
+
   <script>
   export default {
+    // eslint-disable-next-line vue/no-reserved-component-names
     name: "Button",
     props: {
       disabled: {
@@ -26,7 +27,7 @@
     },
   };
   </script>
-  
+
   <style scoped>
   .custom-button {
     background: #2596be;
@@ -34,7 +35,6 @@
     border-radius: 30px;
     font-weight: bold;
     text-transform: none;
-    box-shadow: none; 
+    box-shadow: none;
   }
   </style>
-  

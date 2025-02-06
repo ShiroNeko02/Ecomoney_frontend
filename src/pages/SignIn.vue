@@ -7,48 +7,50 @@
               <v-img src="@/assets/logo.png" alt="EcoMoney Logo" />
             </v-avatar>
           </v-row>
-  
-          
+
+
           <h2 class="text-center font-weight-bold mt-6 title-color">EcoMoney</h2>
-  
+
           <v-form ref="loginForm" v-model="valid" class="d-flex flex-column form-container">
             <Input
               v-model="username"
               placeholder="Login"
               :rules="[rules.required]"
-              class="mb-6" 
+              class="mb-6"
             />
-  
+
             <Input
               v-model="password"
               placeholder="Mot de passe"
               type="password"
               :rules="[rules.required]"
-              class="mb-6" 
+              class="mb-6"
             />
-  
-            
-            <Button @click="login" class="mt-6">Se connecter</Button> 
-  
+
+
+            <Button @click="login" class="mt-6">Se connecter</Button>
+
           </v-form>
-  
+
           <div class="separator mb-6">
             <span>Ou</span>
           </div>
-  
-          <Button  @click="goToInscription">S'inscrire</Button> 
+
+          <Button  @click="goToInscription">S'inscrire</Button>
         </v-container>
       </v-sheet>
     </v-container>
   </template>
-  
+
   <script>
-  import Input from "@/components/Input.vue";
-  import Button from "@/components/Button.vue";
-  
+  import Input from "@/components/input or select/Input.vue";
+  import Button from "@/components/button/Button.vue";
+
   export default {
     components: {
+      // eslint-disable-next-line vue/no-reserved-component-names
       Input,
+      // eslint-disable-next-line vue/no-reserved-component-names
       Button,
     },
     data() {
@@ -71,9 +73,10 @@
         this.$router.push("/inscription");
       },
     },
+    name: "SignIn",
   };
   </script>
-  
+
   <style scoped>
   .fill-height {
     min-height: 100vh;
@@ -82,7 +85,7 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .login-card {
     width: 87%;
     min-height: 70vh;
@@ -98,17 +101,17 @@
     justify-content: center;
     z-index: 10;
   }
-  
+
   .title-color {
     color: #003a6a;
   }
-  
+
   .form-container {
     width: 100%;
     max-width: 400px;
     margin-top: 20px;
   }
-  
+
   .separator {
     display: flex;
     align-items: center;
@@ -117,7 +120,7 @@
     margin-top: 20px;
     width: 100%;
   }
-  
+
   .separator::before,
   .separator::after {
     content: "";
@@ -126,19 +129,18 @@
     background: #003a6a;
     margin: 0 10px;
   }
-  
+
 
   .mb-6 {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
-  
+
   .mt-6 {
-    margin-top: 20px; 
+    margin-top: 20px;
   }
 
   span {
-    color: #003a6a; 
+    color: #003a6a;
   }
-  
+
   </style>
-  

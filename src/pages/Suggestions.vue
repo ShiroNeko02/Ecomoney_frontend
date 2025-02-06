@@ -1,7 +1,7 @@
 <template>
     <v-app class="bg-light">
       <Header title="Conseils" />
-  
+
       <!-- Contenu pricipal -->
       <v-main>
         <v-container class="pa-4">
@@ -14,32 +14,40 @@
           <ConseilItem text="dnsaujfdsjfbedfseufbnejfnbejnsdigvnsrdjgvnsdrjgvnrsdignvrsujgnsrjgndrujngrujNGUJrngujrngujsengs"  />
         </v-container>
       </v-main>
-  
+
       <Footer />
     </v-app>
   </template>
-  
-  
-  <script>
-    import Header from "@/components/Header.vue";
-    import Footer from "@/components/Footer.vue";
-    import ConseilItem from"@/components/ConseilItem.vue";
 
-    // Creer le lien avec autres pages 
+
+  <script>
+    import Header from "@/components/commun/Header.vue";
+    import Footer from "@/components/commun/Footer.vue";
+    import Suggestion from "/src/components/item/Suggestion.vue";
+
+    // Creer le lien avec autres pages
     export default {
-        name: 'Conseil'
+      components: {
+        // eslint-disable-next-line vue/no-reserved-component-names
+        Footer,
+        // eslint-disable-next-line vue/no-reserved-component-names
+        Header,
+        // eslint-disable-next-line vue/no-unused-components
+        Suggestion
+      },
+      name: 'Suggestions'
     };
   </script>
-  
 
-  
+
+
   <style scoped>
   .fill-height {
-    min-height: calc(100vh - 80px); 
+    min-height: calc(100vh - 80px);
   }
-  
+
   .bg-light {
-    background-color: #fff !important; 
+    background-color: #fff !important;
     border-radius: 15px;
   }
 
@@ -50,8 +58,6 @@
   border-radius: 10px;
 
   margin: 30px 0;
-  text-justify: center;
   text-align: center;
 }
   </style>
-  

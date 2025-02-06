@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import BarChart from "@/components/BarChart.vue";
+import BarChart from "@/components/chart/BarChart.vue";
 
 export default {
   name: "Home",
@@ -61,7 +61,6 @@ export default {
   font-size: 1.2rem;
   border-radius: 10px;
   margin-bottom: 22px;
-  text-justify: center;
   text-align: center;
 }
 </style>

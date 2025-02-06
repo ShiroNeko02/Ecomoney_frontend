@@ -7,9 +7,9 @@
               <v-img src="@/assets/logo.png" alt="EcoMoney Logo" />
             </v-avatar>
           </v-row>
-  
+
           <h2 class="text-center font-weight-bold mt-8 title-color">EcoMoney</h2>
-  
+
           <v-form ref="signupForm" v-model="valid" class="d-flex flex-column form-container">
             <!-- Champ Login -->
             <Input
@@ -18,7 +18,7 @@
               :rules="[rules.required]"
               class="mb-6"
             />
-  
+
             <!-- Champ Mot de passe -->
             <Input
               v-model="password"
@@ -27,7 +27,7 @@
               :rules="[rules.required]"
               class="mb-6"
             />
-  
+
             <!-- Champ Nom -->
             <Input
               v-model="nom"
@@ -35,7 +35,7 @@
               :rules="[rules.required]"
               class="mb-6"
             />
-  
+
             <!-- Champ Prénom -->
             <Input
               v-model="prenom"
@@ -43,7 +43,7 @@
               :rules="[rules.required]"
               class="mb-6"
             />
-  
+
             <!-- Champ Email -->
             <Input
               v-model="email"
@@ -51,7 +51,7 @@
               :rules="[rules.required, rules.email]"
               class="mb-6"
             />
-  
+
             <!-- Bouton S'inscrire -->
             <Button :disabled="!valid" @click="signUp" class="mt-8">S'inscrire</Button>
           </v-form>
@@ -59,15 +59,17 @@
       </v-sheet>
     </v-container>
   </template>
-  
+
   <script>
-  import Input from "@/components/Input.vue";
-  import Button from "@/components/Button.vue";
-  
+  import Input from "@/components/input or select/Input.vue";
+  import Button from "@/components/button/Button.vue";
+
   export default {
-    name: "Inscription",
+    name: "SignUp",
     components: {
+      // eslint-disable-next-line vue/no-reserved-component-names
       Input,
+      // eslint-disable-next-line vue/no-reserved-component-names
       Button,
     },
     data() {
@@ -96,7 +98,7 @@
     },
   };
   </script>
-  
+
   <style scoped>
   .fill-height {
     min-height: 100vh;
@@ -105,7 +107,7 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .login-card {
     width: 87%;
     min-height: 70vh;
@@ -120,17 +122,17 @@
     flex-direction: column;
     justify-content: center;
   }
-  
+
   .title-color {
     color: #003a6a;
   }
-  
+
   .form-container {
     width: 100%;
     max-width: 400px;
     margin-top: 20px;
   }
-  
+
   .separator {
     display: flex;
     align-items: center;
@@ -139,7 +141,7 @@
     margin-top: 20px;
     width: 100%;
   }
-  
+
   .separator::before,
   .separator::after {
     content: "";
@@ -148,18 +150,17 @@
     background: black;
     margin: 0 10px;
   }
-  
+
   /* Augmentation de l'espacement */
   .mb-6 {
     margin-bottom: 24px; /* Espacement plus grand entre les champs */
   }
-  
+
   .mt-6 {
     margin-top: 24px; /* Espacement plus grand pour les boutons */
   }
-  
+
   .mt-8 {
     margin-top: 32px; /* Espacement encore plus grand pour séparer les éléments */
   }
   </style>
-  

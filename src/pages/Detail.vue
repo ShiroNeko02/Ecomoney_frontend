@@ -1,20 +1,32 @@
 <template>
     <v-app class="bg-light">
         <Header title="Home" />
-            
+
         <v-main>
         </v-main>
 
         <Footer />
     </v-app>
 </template>
-  
+
   <script>
-  import Input from "@/components/Input.vue";
-  import Button from "@/components/Button.vue";
-  
+  import Header from "@/components/commun/Header.vue";
+  import Footer from "@/components/commun/Footer.vue";
+  import Input from "@/components/input or select/Input.vue";
+  import Button from "@/components/button/Button.vue";
+
   export default {
       name:"Detail",
+      components: {
+        // eslint-disable-next-line vue/no-reserved-component-names
+        Header,
+        // eslint-disable-next-line vue/no-reserved-component-names
+        Footer,
+        // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
+        Input,
+        // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
+        Button
+      },
       data() {
         return {
           tab: 'Par appareil',
@@ -38,6 +50,5 @@
     margin-top: 20px;
   }
   </style>
-  
 
-  
+

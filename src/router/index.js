@@ -12,8 +12,8 @@ import { routes } from 'vue-router/auto-routes'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes :[
-    { path: '/', redirect: '/login' },  
-    ...routes,             
+    { path: '/', redirect: '/signIn' },
+    ...routes,
   ],
 })
 

@@ -11,9 +11,10 @@
       :rules="rules"
     />
   </template>
-  
+
   <script>
   export default {
+    // eslint-disable-next-line vue/no-reserved-component-names
     name: "Input",
     props: {
       modelValue: {
@@ -35,14 +36,13 @@
     },
   };
   </script>
-  
+
   <style scoped>
   .custom-input {
     border-radius: 10px;
     margin-bottom: 20px;
     color: #003a63;
     height: 6vh;
-    box-shadow: none; 
+    box-shadow: none;
   }
   </style>
-  

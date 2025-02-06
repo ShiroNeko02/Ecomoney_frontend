@@ -38,19 +38,23 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Input from "@/components/Input.vue";
-import ComboBox from "@/components/ComboBox.vue";
+import Header from "@/components/commun/Header.vue";
+import Footer from "@/components/commun/Footer.vue";
+import Input from "@/components/input or select/Input.vue";
+import ComboBox from "@/components/input or select/ComboBox.vue";
 import { deviceService } from "@/services/api.js";  // Import your API service
 
 export default {
   name: "AddDevice",
   components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
     Header,
+    // eslint-disable-next-line vue/no-reserved-component-names
     Footer,
+    // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
     Input,
-    ComboBox,
+    // eslint-disable-next-line vue/no-unused-components
+    ComboBox
   },
   data() {
     return {
@@ -65,7 +69,7 @@ export default {
   },
   methods: {
     goToActivity() {
-      this.$router.push("/ajoutCon"); // TODO MODIFIER LA ROUTE
+      this.$router.push("/addConsumption"); // TODO MODIFIER LA ROUTE
     },
 
     async submit() {
@@ -81,7 +85,7 @@ export default {
       try {
         const response = await deviceService.createDevice(deviceData);
         console.log("Device added:", response);
-        this.$router.push("/home");  // TODO (update route?) Redirect after successful submission
+        this.$router.push("/chart");  // TODO (update route?) Redirect after successful submission
       } catch (error) {
         console.error("Error adding device", error);
       }
