@@ -24,10 +24,10 @@
       <v-container>
         <v-row>
           <v-col cols="6">
-            <div class="cont-2"><Button class="mt-6" color="grey"  @click="goToActivity">Activity</Button></div>
+            <div class="cont-2"><Button class="mt-6" color="grey"  @click="goToActivity">Add Consumption</Button></div>
           </v-col>
           <v-col cols="6">
-            <div class="cont-2"><Button class="mt-6" >Device</Button></div>
+            <div class="cont-2"><Button class="mt-6" >Add Device</Button></div>
           </v-col>
         </v-row>
       </v-container>
