@@ -30,3 +30,16 @@ export const deviceService = {
     handleRequest(() => api.put(`/devices/${id}`, updateData)),
   deleteDevice: (id) => handleRequest(() => api.delete(`/devices/${id}`)),
 };
+
+export const userService = {
+  getCurrentUser: () => handleRequest(() => api.get("/users")),
+  signIn: (userData) => handleRequest(() => api.post(`/users/login`,userData)),
+  signUp: (userData) => handleRequest(() => api.post(`/users/signup`,userData)),
+  signOut: (userData) =>
+    handleRequest(() => api.post(`/users/logout`,userData)),
+  updateUser: (id, updateData) =>
+    handleRequest(() => api.put(`/users/${id}`, updateData)),
+  deleteUser: (id) => handleRequest(() => api.delete(`/devices/${id}`)),
+};
+
+

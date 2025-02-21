@@ -1,166 +1,142 @@
 <template>
-    <v-container class="fill-height d-flex justify-center align-center">
-      <v-sheet class="login-card pa-6" elevation="10">
-        <v-container class="d-flex flex-column align-center" style="height: 100%">
-          <v-row justify="center">
-            <v-avatar size="90">
-              <v-img src="@/assets/logo.png" alt="EcoMoney Logo" />
-            </v-avatar>
-          </v-row>
+  <v-container class="fill-height d-flex justify-center align-center">
+    <v-sheet class="login-card pa-6" elevation="10">
+      <v-container class="d-flex flex-column align-center" style="height: 100%">
+        <v-row justify="center">
+          <v-avatar size="90">
+            <v-img src="@/assets/logo.png" alt="EcoMoney Logo" />
+          </v-avatar>
+        </v-row>
 
-          <h2 class="text-center font-weight-bold mt-8 title-color">EcoMoney</h2>
+        <h2 class="text-center font-weight-bold mt-8 title-color">EcoMoney</h2>
+      </v-container>
+      <v-form>
+        <!-- Email -->
+        <Input v-model="user.email" label="Email" placeholder="Email" required/>
 
-          <v-form ref="signupForm" v-model="valid" class="d-flex flex-column form-container">
-            <!-- Champ Login -->
-            <Input
-              v-model="username"
-              placeholder="Login"
-              :rules="[rules.required]"
-              class="mb-6"
-            />
+        <!-- Password -->
+        <Input v-model="user.password" label="Password" placeholder="Password" type="password" class="mb-6" required />
 
-            <!-- Champ Mot de passe -->
-            <Input
-              v-model="password"
-              placeholder="Mot de passe"
-              type="password"
-              :rules="[rules.required]"
-              class="mb-6"
-            />
+        <!-- First Name -->
+        <Input v-model="user.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
 
-            <!-- Champ Nom -->
-            <Input
-              v-model="nom"
-              placeholder="Nom"
-              :rules="[rules.required]"
-              class="mb-6"
-            />
+        <!-- Last Name -->
+        <Input v-model="user.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
 
-            <!-- Champ Prénom -->
-            <Input
-              v-model="prenom"
-              placeholder="Prénom"
-              :rules="[rules.required]"
-              class="mb-6"
-            />
+        <!-- Button Sign Up -->
+        <Button @click="signUp" class="mt-8">Sign Up</Button>
+      </v-form>
 
-            <!-- Champ Email -->
-            <Input
-              v-model="email"
-              placeholder="Email"
-              :rules="[rules.required, rules.email]"
-              class="mb-6"
-            />
+      <!-- Notification -->
+      <v-dialog v-model="dialog" max-width="450px">
+        <v-card class="bg-light dialog-card">
+          <v-card-title>{{ dialogTitle }}</v-card-title>
+          <v-card-text>{{ responseMessage }}</v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="dialog = false">OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-            <!-- Bouton S'inscrire -->
-            <Button :disabled="!valid" @click="signUp" class="mt-8">S'inscrire</Button>
-          </v-form>
-        </v-container>
-      </v-sheet>
-    </v-container>
-  </template>
+    </v-sheet>
+  </v-container>
+</template>
 
-  <script>
-  import Input from "@/components/input or select/Input.vue";
-  import Button from "@/components/button/Button.vue";
+<script>
+import Input from "@/components/input or select/Input.vue";
+import Button from "@/components/button/Button.vue";
+import { userService } from "@/services/api.js";
 
-  export default {
-    name: "SignUp",
-    components: {
-      // eslint-disable-next-line vue/no-reserved-component-names
-      Input,
-      // eslint-disable-next-line vue/no-reserved-component-names
-      Button,
-    },
-    data() {
-      return {
-        username: "",
-        password: "",
-        lastName: "",
-        firstName: "",
+export default {
+  name: "SignUp",
+  components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Input,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Button,
+  },
+  data() {
+    return {
+      user: {
         email: "",
-        valid: false,
-        rules: {
-          required: (value) => !!value || "Ce champ est requis",
-          email: (value) => {
-            const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-            return pattern.test(value) || "Veuillez entrer un email valide";
-          },
-        },
-      };
-    },
-    methods: {
-      signUp() {
-        if (this.valid) {
-          alert(`Inscription réussie pour ${this.username}`);
-        }
+        password: "",
+        first_name: "",
+        last_name: "",
       },
+      dialog: false,
+      dialogTitle: "",
+      responseMessage: "",
+    };
+  },
+  methods: {
+    async signUp() {
+      event.preventDefault();
+
+      const userData = {
+        email: this.user.email,
+        password: this.user.password,
+        first_name: this.user.first_name,
+        last_name: this.user.last_name,
+      };
+
+      try {
+        await userService.signUp(userData);
+        this.dialogTitle = "Success";
+        this.responseMessage = "Account created successfully";
+        this.dialog = true;
+
+        setTimeout(() => {
+          this.$router.push("/home");
+        }, 2000);
+      } catch (error) {
+        console.error("Error:", error);
+        this.dialogTitle = "Error";
+        this.responseMessage = "Inscription failed";
+        this.dialog = true;
+      }
     },
-  };
-  </script>
+  },
+};
+</script>
 
-  <style scoped>
-  .fill-height {
-    min-height: 100vh;
-    background: #003a63;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+<style scoped>
+.fill-height {
+  min-height: 100vh;
+  background: #003a63;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .login-card {
-    width: 87%;
-    min-height: 70vh;
-    max-width: 400px;
-    border-radius: 20px;
-    background: linear-gradient(to bottom, rgba(219, 232, 243, 0.5), rgba(162, 187, 201, 0.5));
-    backdrop-filter: blur(10px);
-    padding: 30px;
-    text-align: center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+.login-card {
+  width: 87%;
+  min-height: 70vh;
+  max-width: 400px;
+  border-radius: 20px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9));
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  .title-color {
-    color: #003a6a;
-  }
+.title-color {
+  color: #003a6a;
+}
 
-  .form-container {
-    width: 100%;
-    max-width: 400px;
-    margin-top: 20px;
-  }
+v-form {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+}
 
-  .separator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-top: 20px;
-    width: 100%;
-  }
+.mb-6 {
+  margin-bottom: 20px;
+}
 
-  .separator::before,
-  .separator::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: black;
-    margin: 0 10px;
-  }
-
-  /* Augmentation de l'espacement */
-  .mb-6 {
-    margin-bottom: 24px; /* Espacement plus grand entre les champs */
-  }
-
-  .mt-6 {
-    margin-top: 24px; /* Espacement plus grand pour les boutons */
-  }
-
-  .mt-8 {
-    margin-top: 32px; /* Espacement encore plus grand pour séparer les éléments */
-  }
-  </style>
+.mt-8 {
+  margin-top: 30px;
+}
+</style>

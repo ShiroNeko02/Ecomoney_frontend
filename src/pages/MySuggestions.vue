@@ -1,13 +1,21 @@
 <template>
     <v-app class="bg-light">
-      <Header title="Conseils" />
+      <Header title="My Suggestions" />
 
       <!-- Contenu pricipal -->
       <v-main>
         <v-container class="pa-4">
-          <v-card class="mt-2 pa-4 form elevation-4">
-            <div class="text-center text-white">Conseils reçus</div>
-          </v-card>
+          <!-- Change Form -->
+          <v-container>
+            <v-row>
+              <v-col cols="6">
+                <div class="cont-2"><RectangleButton class="mt-4" >Suggestions Received</RectangleButton></div>
+              </v-col>
+              <v-col cols="6">
+                <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToMyDevice">My Devices</RectangleButton></div>
+              </v-col>
+            </v-row>
+          </v-container>
 
           <ConseilItem text="dnsaujfdsjfbedfseufbnejfnbej"  />
 
@@ -24,10 +32,12 @@
     import Header from "@/components/commun/Header.vue";
     import Footer from "@/components/commun/Footer.vue";
     import Suggestion from "/src/components/item/Suggestion.vue";
+    import RectangleButton from "@/components/button/RectangleButton.vue";
 
     // Creer le lien avec autres pages
     export default {
       components: {
+        RectangleButton,
         // eslint-disable-next-line vue/no-reserved-component-names
         Footer,
         // eslint-disable-next-line vue/no-reserved-component-names
@@ -35,7 +45,12 @@
         // eslint-disable-next-line vue/no-unused-components
         Suggestion
       },
-      name: 'Suggestions'
+      name: 'MySuggestions',
+      methods: {
+        goToMyDevice() {
+          this.$router.push("/myDevices");
+        }
+      }
     };
   </script>
 

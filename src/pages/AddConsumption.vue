@@ -1,48 +1,45 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Ajout" />
+    <Header title="Add New Consumption" />
 
     <v-main>
       <v-container>
-        <v-card class="mt-5 pa-4 form elevation-4">
-          <div class="text-center text-white">Ajout d'une activité</div>
-        </v-card>
+        <!-- Change Form -->
+        <v-container>
+          <v-row>
+            <v-col cols="6">
+              <div class="cont-2"><RectangleButton class="mt-4" >Add a consumption</RectangleButton></div>
+            </v-col>
+            <v-col cols="6">
+              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToDevice" >Add a device</RectangleButton></div>
+            </v-col>
+          </v-row>
+        </v-container>
 
         <!-- Formulaire -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form>
-            <!-- Select Appareil -->
+            <!-- Select Device -->
             <div style="margin-top:20px; margin-bottom:17px;"><ComboBox
-              label="Appareil"
-              :items="['A1', 'A2', 'A3', 'A4', 'A5', 'A6']"
+              label="Device"
+              :items="['Telephone', 'Heater', 'Lamp', 'PC', 'Laptop', 'Washing Machine']['A1', 'A2', 'A3', 'A4', 'A5', 'A6']"
             /></div>
 
-            <!-- Select Consommation -->
+            <!-- Select Objective -->
             <ComboBox
-              label="Consommation"
-              :items="['C1', 'C2', 'C3', 'C4', 'C5', 'C6']"
+              label="Objective"
+              :items="['reheat', 'defrost', 'entertainment', 'laundry', 'drying']"
             />
 
             <!-- Champ Input -->
-            <div class="cont-1"><Input label="Durée" class="custom-field" /></div>
+            <div class="cont-1"><Input label="Duration" class="custom-field" /></div>
 
             <!-- Bouton de soumission -->
-            <div class="cont"><Button @click="submit" class="mt-12">Soumettre</Button></div>
+            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button @click="submit" class="mt-6">Submit</Button></div></div>
           </v-form>
         </v-card>
       </v-container>
 
-      <!----- Changer formulaire ------>
-      <v-container>
-          <v-row>
-          <v-col cols="6">
-              <div class="cont-2"><Button class="mt-6">Activite</Button></div>
-          </v-col>
-          <v-col cols="6">
-              <div class="cont-2"><Button class="mt-6" color="grey"  @click="goToAppareil">Appareil</Button></div>
-          </v-col>
-          </v-row>
-      </v-container>
     </v-main>
 
     <Footer />
@@ -54,9 +51,14 @@ import Header from "@/components/commun/Header.vue";
 import Footer from "@/components/commun/Footer.vue";
 import Input from "@/components/input or select/Input.vue";
 import ComboBox from "@/components/input or select/ComboBox.vue";
+import RectangleButton from "@/components/button/RectangleButton.vue";
+import Button from "@/components/button/Button.vue";
 
 export default {
   components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Button,
+    RectangleButton,
     ComboBox,
     // eslint-disable-next-line vue/no-reserved-component-names
     Footer,
@@ -66,9 +68,9 @@ export default {
     Input
   },
   methods: {
-    goToAppareil() {
+    goToDevice() {
       this.$router.push("/addDevice");
-    }
+    },
   },
   name: "AddConsumption",
 };
@@ -115,12 +117,10 @@ export default {
 }
 
 .cont-1{
-  padding: 0 16px;
   padding-top: 15px;
-  }
+}
 
 .cont{
-  padding: 0 16px;
   padding-bottom : 20px;
 }
 

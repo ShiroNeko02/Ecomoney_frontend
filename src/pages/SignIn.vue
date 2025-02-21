@@ -8,7 +8,6 @@
             </v-avatar>
           </v-row>
 
-
           <h2 class="text-center font-weight-bold mt-6 title-color">EcoMoney</h2>
 
           <v-form ref="loginForm" v-model="valid" class="d-flex flex-column form-container">
@@ -27,16 +26,15 @@
               class="mb-6"
             />
 
-
-            <Button @click="login" class="mt-6">Se connecter</Button>
+            <Button @click="login" class="mt-6">Sign In</Button>
 
           </v-form>
 
           <div class="separator mb-6">
-            <span>Ou</span>
+            <span>Or</span>
           </div>
 
-          <Button  @click="goToInscription">S'inscrire</Button>
+          <Button @click="signUp">Sign Up</Button>
         </v-container>
       </v-sheet>
     </v-container>
@@ -69,8 +67,8 @@
           alert(`Connexion avec ${this.username}`);
         }
       },
-      gotoInscription() {
-        this.$router.push("/inscription");
+      signUp() {
+        this.$router.push("/SignUp");
       },
     },
     name: "SignIn",
@@ -130,6 +128,9 @@
     margin: 0 10px;
   }
 
+  .custom-input[data-v-a0faad51]{
+    padding: 0 !important;
+  }
 
   .mb-6 {
     margin-bottom: 20px;

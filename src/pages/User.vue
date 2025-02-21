@@ -1,25 +1,36 @@
 <template>
     <v-app class="bg-light">
-      <Header title="Utilisateur" />
+      <Header title="User's space" />
 
-      <!-- Contenu pricipal -->
       <v-main>
         <v-container class="mt-12 d-flex justify-center align-center">
             <v-row align="center" justify="center">
             <v-col cols="auto" class="text-center">
                 <div class="circle-icon"><v-icon size="50" color="white">mdi-account</v-icon></div>
-                <span class="text-h6 d-block mt-2">Utilisateur</span>
+                <span class="text-h6 d-block mt-2">User</span>
             </v-col>
             </v-row>
         </v-container>
 
-        <OptionButton title="Changer le mot de passe" />
+        <OptionButton title="Change my password" @click="goToChangePassword" />
 
-        <OptionButton title="Changer mes informations" />
+        <OptionButton title="Change my informations"  />
 
-        <OptionButton title="Supprimer mon compte" />
+        <OptionButton title="Delete my account" @click="confirmDeleteAccount" />
 
-        <OptionButton title="Se déconnecter" @click="goToLogin" />
+        <OptionButton title="Log Out" @click="signOut" />
+
+        <!-- Notification delete -->
+        <v-dialog v-model="dialog" max-width="450px">
+          <v-card class="bg-light">
+            <v-card-title style="color:red;">Alert</v-card-title>
+            <v-card-text style="color: black;">Are you sure you want to delete your account? The data will not be recoverable</v-card-text>
+            <v-card-actions class="justify-center">
+              <v-btn color="green">No</v-btn>
+              <v-btn color="red">Yes</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-main>
 
       <Footer />
@@ -41,11 +52,22 @@
           Footer,
           OptionButton
         },
+        data() {
+          return {
+            dialog: false,
+          };
+        },
         methods: {
           goToLogin() {
-              this.$router.push("/signIn");
-            }
+            this.$router.push("/signIn");
           },
+          goToChangePassword() {
+            this.$router.push("/changePassword");
+          },
+          confirmDeleteAccount() {
+            this.dialog = true;
+          },
+        }
     };
   </script>
 
