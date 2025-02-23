@@ -10,7 +10,7 @@
 
         <h2 class="text-center font-weight-bold mt-8 title-color">EcoMoney</h2>
       </v-container>
-      <v-form>
+      <v-form @submit.prevent="signUp">
         <!-- Email -->
         <Input v-model="user.email" label="Email" placeholder="Email" required/>
 
@@ -18,13 +18,16 @@
         <Input v-model="user.password" label="Password" placeholder="Password" type="password" class="mb-6" required />
 
         <!-- First Name -->
-        <Input v-model="user.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
+        <Input v-model="user.data.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
 
         <!-- Last Name -->
-        <Input v-model="user.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
+        <Input v-model="user.data.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
 
         <!-- Button Sign Up -->
-        <Button @click="signUp" class="mt-8">Sign Up</Button>
+        <Button @click="signUp" class="mt-8" :disabled="loading || !formValid">
+          <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
+          <span v-else>Sign Up</span>
+        </Button>
       </v-form>
 
       <!-- Notification -->
@@ -37,7 +40,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-
     </v-sheet>
   </v-container>
 </template>
@@ -49,50 +51,53 @@ import { userService } from "@/services/api.js";
 
 export default {
   name: "SignUp",
-  components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Input,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Button,
-  },
+  components: { Input, Button },
   data() {
     return {
       user: {
         email: "",
         password: "",
-        first_name: "",
-        last_name: "",
+        data: {
+          first_name: "",
+          last_name: "",
+        }
       },
+      loading: false,
       dialog: false,
       dialogTitle: "",
       responseMessage: "",
     };
   },
+  computed: {
+    formValid() {
+      return this.user.email && this.user.password && this.user.data.first_name && this.user.data.last_name;
+    }
+  },
   methods: {
     async signUp() {
-      event.preventDefault();
+      if (!this.formValid) {
+        this.dialogTitle = "Error";
+        this.responseMessage = "All fields are required";
+        this.dialog = true;
+        return;
+      }
 
-      const userData = {
-        email: this.user.email,
-        password: this.user.password,
-        first_name: this.user.first_name,
-        last_name: this.user.last_name,
-      };
-
+      this.loading = true;
       try {
-        await userService.signUp(userData);
+        await userService.signUp(this.user);
         this.dialogTitle = "Success";
         this.responseMessage = "Account created successfully";
         this.dialog = true;
-
         setTimeout(() => {
           this.$router.push("/home");
         }, 2000);
       } catch (error) {
         console.error("Error:", error);
         this.dialogTitle = "Error";
-        this.responseMessage = "Inscription failed";
+        this.responseMessage = error.response?.data?.message || "Inscription failed";
         this.dialog = true;
+      } finally {
+        this.loading = false;
       }
     },
   },
