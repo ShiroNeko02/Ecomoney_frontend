@@ -1,0 +1,109 @@
+<template>
+  <v-app class="bg-light">
+    <Header title="Change Password" />
+
+    <v-main>
+      <v-container>
+        <!-- Form -->
+        <v-card class="mt-8 pa-4 form-card elevation-4">
+          <v-form>
+            <div class="cont-1"><Input v-model="user" label="Current Password" class="custom-field" /></div>
+            <div class="cont-1"><Input v-model="user.password" label="New Password" class="custom-field" /></div>
+            <div class="cont-1"><Input v-model="confirmNewPassword" label="Confirm New Password " class="custom-field" /></div>
+
+            <!-- Button Submit -->
+            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button @click="submit" class="mt-6">Submit</Button></div></div>
+          </v-form>
+        </v-card>
+      </v-container>
+
+      <!-- Notification -->
+      <v-dialog v-model="dialog" max-width="450px">
+        <v-card class="bg-light dialog-card">
+          <v-card-title>{{ dialogTitle }}</v-card-title>
+          <v-card-text>{{ responseMessage }}</v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="dialog = false">OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+    </v-main>
+
+    <Footer />
+  </v-app>
+</template>
+
+<script>
+import Header from "@/components/commun/Header.vue";
+import Footer from "@/components/commun/Footer.vue";
+import Input from "@/components/input or select/Input.vue";
+import Button from "@/components/button/Button.vue";
+import { userService } from "@/services/api.js";
+
+export default {
+  components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Button,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Footer,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Header,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Input
+  },
+  methods: {
+  },
+  name: "ChangePassword",
+};
+</script>
+
+<style scoped>
+.bg-light {
+  background-color: #fff !important;
+  border-radius: 15px;
+}
+
+.form {
+  background-color: #2596be!important;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.form-card {
+  background-color: #f9f9f9 !important;
+  border: 1px solid #000 !important;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.v-select .v-label {
+  color: #000 !important; /* Label noir */
+  font-weight: bold;
+}
+
+.custom-field .v-input__control {
+  border: 1px solid #000 !important; /* Bordure noire */
+  border-radius: 8px;
+}
+
+.custom-field .v-select__selections,
+.custom-field input {
+  color: #000 !important; /* Texte noir */
+}
+
+.v-card--variant-elevated {
+  color: #003a63; /* changer la couleur (bordure et text) ici */
+}
+
+.cont-1{
+  padding-top: 15px;
+}
+
+.cont{
+  padding-bottom : 20px;
+}
+
+</style>

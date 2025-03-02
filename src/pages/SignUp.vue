@@ -10,36 +10,46 @@
 
         <h2 class="text-center font-weight-bold mt-8 title-color">EcoMoney</h2>
       </v-container>
-      <v-form @submit.prevent="signUp">
-        <!-- Email -->
-        <Input v-model="user.email" label="Email" placeholder="Email" required/>
 
-        <!-- Password -->
-        <Input v-model="user.password" label="Password" placeholder="Password" type="password" class="mb-6" required />
+        <v-form @submit.prevent="signUp" style="width: 100%;">
+          <!-- Email -->
+          <Input v-model="user.email" label="Email" placeholder="Email" required/>
 
-        <!-- First Name -->
-        <Input v-model="user.data.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
+          <!-- Password -->
+          <Input v-model="user.password" label="Password" placeholder="Password (6 characters at least)" type="password" class="mb-6" required />
 
-        <!-- Last Name -->
-        <Input v-model="user.data.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
+          <!-- First Name -->
+          <Input v-model="user.data.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
 
-        <!-- Button Sign Up -->
-        <Button @click="signUp" class="mt-8" :disabled="loading || !formValid">
-          <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
-          <span v-else>Sign Up</span>
-        </Button>
-      </v-form>
+          <!-- Last Name -->
+          <Input v-model="user.data.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
 
-      <!-- Notification -->
-      <v-dialog v-model="dialog" max-width="450px">
-        <v-card class="bg-light dialog-card">
-          <v-card-title>{{ dialogTitle }}</v-card-title>
-          <v-card-text>{{ responseMessage }}</v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" @click="dialog = false">OK</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+          <!-- Budget -->
+          <Input v-model="user.data.consumption_goal_euros" label="Spending Goal" placeholder="Spending Goal per year (optional)" class="mb-6"/>
+
+          <!-- Button Sign Up -->
+          <Button @click="signUp" class="mt-8" :disabled="loading || !formValid">
+            <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
+            <span v-else style="color:white;">Sign Up</span>
+          </Button>
+        </v-form>
+
+        <!-- Notification -->
+        <v-dialog v-model="dialog" max-width="450px">
+          <v-card class="bg-light dialog-card">
+            <v-card-title>{{ dialogTitle }}</v-card-title>
+            <v-card-text>{{ responseMessage }}</v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="dialog = false">OK</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <div class="separator mb-6">
+          <span style="color:#003a6a;">Or</span>
+        </div>
+
+        <Button @click="signIn">Sign In</Button>
     </v-sheet>
   </v-container>
 </template>
@@ -51,6 +61,7 @@ import { userService } from "@/services/api.js";
 
 export default {
   name: "SignUp",
+  // eslint-disable-next-line vue/no-reserved-component-names
   components: { Input, Button },
   data() {
     return {
@@ -100,6 +111,9 @@ export default {
         this.loading = false;
       }
     },
+    signIn() {
+      this.$router.push("/signIn");
+    },
   },
 };
 </script>
@@ -122,26 +136,56 @@ export default {
   backdrop-filter: blur(10px);
   padding: 30px;
   text-align: center;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  z-index: 10;
 }
 
 .title-color {
   color: #003a6a;
 }
 
-v-form {
+.form-container {
   width: 100%;
   max-width: 400px;
   margin-top: 20px;
 }
 
+.custom-input[data-v-a0faad51]{
+  padding: 0 !important;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #003a6a;
+  margin: 0 10px;
+}
+
+
 .mb-6 {
   margin-bottom: 20px;
 }
 
-.mt-8 {
-  margin-top: 30px;
+.mt-6 {
+  margin-top: 20px;
 }
+
+span {
+  color: #003a6a;
+}
+
 </style>

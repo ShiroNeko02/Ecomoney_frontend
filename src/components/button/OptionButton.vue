@@ -2,12 +2,12 @@
     <v-card
       class="mt-8 option-button"
       @click="handleClick"
-      v-bind="props" 
+      v-bind="props"
     >
       <v-card-subtitle class="text-center">{{ title }}</v-card-subtitle>
     </v-card>
   </template>
-  
+
   <script>
   export default {
     name: 'OptionButton',
@@ -36,7 +36,7 @@
     }
   }
   </script>
-  
+
   <style scoped>
   .option-button {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -44,13 +44,13 @@
     border-radius: 15px;
     padding: 20px;
     margin: 10px 25px;
+    color : white;
   }
-  
+
   .option-button .v-card-subtitle {
     font-size: 1.15rem;
     color : #fff;
     font-weight : bold;
   }
-  
+
   </style>
-  
