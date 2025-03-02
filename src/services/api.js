@@ -55,5 +55,14 @@ export const userService = {
   deleteUser: (id) => handleRequest(() => api.delete(`/users/${id}`)),
 };
 
+export const suggestionService = {
+  getSuggestions: () => handleRequest(() => api.get("/suggestions")),
+  getSuggestionsById: (id) => handleRequest(() => api.get(`/suggestions/${id}`)),
+  createSuggestion: (suggestionData) =>
+    handleRequest(() => api.post("/suggestions", suggestionData)),
+  updateSuggestion: (id, updateData) =>
+    handleRequest(() => api.put(`/suggestions/${id}`, updateData)),
+  deleteSuggestion: (id) => handleRequest(() => api.delete(`/suggestions/${id}`)),
+};
 
 

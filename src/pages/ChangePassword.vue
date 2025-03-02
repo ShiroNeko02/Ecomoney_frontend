@@ -7,9 +7,9 @@
         <!-- Form -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form>
-            <div class="cont-1"><Input v-model="user" label="Current Password" class="custom-field" /></div>
-            <div class="cont-1"><Input v-model="user.password" label="New Password" class="custom-field" /></div>
-            <div class="cont-1"><Input v-model="confirmNewPassword" label="Confirm New Password " class="custom-field" /></div>
+            <div class="cont-1"><Input v-model="current_password" label="Current Password" class="custom-field" /></div>
+            <div class="cont-1"><Input v-model="new_password" label="New Password" class="custom-field" /></div>
+            <div class="cont-1"><Input v-model="confirm_new_password" label="Confirm New Password " class="custom-field" /></div>
 
             <!-- Button Submit -->
             <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button @click="submit" class="mt-6">Submit</Button></div></div>
@@ -52,7 +52,66 @@ export default {
     // eslint-disable-next-line vue/no-reserved-component-names
     Input
   },
+  data() {
+    return {
+      current_user: null,
+      current_password: "",
+      new_password: "",
+      confirm_new_password: "",
+      dialog: false,
+      dialogTitle: "",
+      responseMessage: ""
+    };
+  },
+  async mounted() {
+    await this.getCurrentUser();
+  },
   methods: {
+    async getCurrentUser() {
+      try {
+        const response = await userService.getCurrentUser();
+        this.current_user = response.data;
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    },
+
+    async submit() {
+      if (!this.current_password || !this.new_password || !this.confirm_new_password) {
+        this.showNotification("Error", "All fields are required.");
+        return;
+      }
+
+      if (this.new_password !== this.confirm_new_password) {
+        this.showNotification("Error", "New passwords do not match.");
+        return;
+      }
+
+      try {
+        const response = await userService.updateUser({
+          email: this.current_user.email,
+          password: this.new_password,
+          data:{
+            first_name : this.current_user.first_name,
+            last_name : this.current_user.last_name,
+          }
+        });
+
+        this.showNotification("Success", response.message || "Password changed successfully.");
+
+        this.current_password = "";
+        this.new_password = "";
+        this.confirm_new_password = "";
+      } catch (error) {
+        this.showNotification("Error", error.response?.data?.message || "An error occurred.");
+      }
+    },
+
+    showNotification(title, message) {
+      this.dialogTitle = title;
+      this.responseMessage = message;
+      this.dialog = true;
+    }
   },
   name: "ChangePassword",
 };

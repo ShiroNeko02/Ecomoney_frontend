@@ -82,7 +82,6 @@
         this.loading = true;
         try {
           await userService.signIn(this.user);
-          localStorage.setItem("user", JSON.stringify(this.user)); // Sauvegarde les infos utilisateur
           setTimeout(() => {
             this.$router.push("/home");
           }, 2000);
@@ -98,12 +97,6 @@
       signUp() {
         this.$router.push("/signUp");
       },
-    },
-    mounted() {
-      const savedUser = localStorage.getItem("user");
-      if (savedUser) {
-        this.user = JSON.parse(savedUser);
-      }
     },
     name: "SignIn",
   };

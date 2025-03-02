@@ -53,7 +53,7 @@
               {{ responseMessage }}
             </v-card-text>
             <v-card-actions class="justify-center">
-              <v-btn color="green" @click="stockSuggestion">Stock</v-btn>
+              <v-btn color="green" @click="create">Stock</v-btn>
               <v-btn color="red" @click="dialog = false">Don't Stock</v-btn>
             </v-card-actions>
           </v-card>
@@ -74,6 +74,7 @@ import Input from "@/components/input or select/Input.vue";
 import ComboBox from "@/components/input or select/ComboBox.vue";
 import RectangleButton from "@/components/button/RectangleButton.vue";
 import Button from "@/components/button/Button.vue";
+import {suggestionService} from "@/services/api.js";
 
 export default {
   components: {
@@ -95,7 +96,13 @@ export default {
       loading: false, // Variable pour indiquer si la requête est en cours
       device: "",
       objective: "",
-      duration: ""
+      duration: "",
+      suggestionData:{
+        condition : "",
+        message_type : null,
+        creation_date : "",
+        content : "",
+      },
     };
   },
   methods: {
@@ -120,7 +127,7 @@ export default {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -131,10 +138,42 @@ export default {
 
         const data = await response.json();
         this.responseMessage = data.choices?.[0]?.message?.content || "No response received";
+
       } catch (error) {
         this.responseMessage = ` Error: ${error}`;
       } finally {
         this.loading = false; //  Désactiver le chargement une fois la réponse reçue
+      }
+    },
+    async create(){
+      // erreur structure data ?
+      const suggestionData = {
+        condition : `${this.device} ${this.objective} ${this.duration}`,
+        message_type : null,
+        creation_date : new Date(),
+        content : this.responseMessage,
+      }
+      try {
+        console.log(suggestionData);
+        await suggestionService.createSuggestion(suggestionData);
+
+        // Success
+        this.responseMessage = "Suggestion successfully stocked!";
+        this.dialog = true;
+
+        this.suggestion = {
+          condition : `${this.device} ${this.objective} ${this.duration}`,
+          message_type : null,
+          creation_date : new Date(),
+          content : this.responseMessage,
+        };
+
+      } catch (error) {
+        console.error("Error adding device:", error);
+
+        // Failed
+        this.responseMessage = error.response?.data?.error || "Failed to add device.";
+        this.dialog = true;
       }
     },
     goToDevice() {
