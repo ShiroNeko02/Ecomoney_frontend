@@ -71,7 +71,7 @@ export default {
         data: {
           first_name: "",
           last_name: "",
-        }
+        },
       },
       loading: false,
       dialog: false,
