@@ -71,9 +71,7 @@
         methods: {
           async signOut() {
             try {
-              const { email, password } = this.user;
-              const userData = { email, password }
-              await userService.signOut(userData);
+              await userService.signOut();
               localStorage.removeItem("user");
               this.$router.push("/signIn");
             } catch (error) {

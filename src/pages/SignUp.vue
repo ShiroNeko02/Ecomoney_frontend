@@ -34,16 +34,22 @@
           </Button>
         </v-form>
 
-        <!-- Notification -->
-        <v-dialog v-model="dialog" max-width="450px">
-          <v-card class="bg-light dialog-card">
-            <v-card-title>{{ dialogTitle }}</v-card-title>
-            <v-card-text>{{ responseMessage }}</v-card-text>
-            <v-card-actions>
-              <v-btn color="primary" @click="dialog = false">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+      <!-- ALERT BOX -->
+      <v-dialog v-model="dialog" max-width="500px">
+        <v-card class="bg-light">
+          <v-card-title class="headline" >{{dialogTitle}}</v-card-title>
+          <v-card-text v-if="loading">
+            <v-progress-circular indeterminate color="blue"></v-progress-circular>
+            Loading...
+          </v-card-text>
+          <v-card-text v-else>
+            {{ responseMessage }}
+          </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn color="primary" @click="dialog = false">OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
         <div class="separator mb-6">
           <span style="color:#003a6a;">Or</span>

@@ -25,12 +25,18 @@
         </Button>
       </v-form>
 
-      <!-- Notification -->
-      <v-dialog v-model="dialog" max-width="450px">
-        <v-card class="bg-light dialog-card">
-          <v-card-title>{{ dialogTitle }}</v-card-title>
-          <v-card-text>{{ responseMessage }}</v-card-text>
-          <v-card-actions>
+      <!-- ALERT BOX -->
+      <v-dialog v-model="dialog" max-width="500px">
+        <v-card class="bg-light">
+          <v-card-title class="headline" >{{dialogTitle}}</v-card-title>
+          <v-card-text v-if="loading">
+            <v-progress-circular indeterminate color="blue"></v-progress-circular>
+            Loading...
+          </v-card-text>
+          <v-card-text v-else>
+            {{ responseMessage }}
+          </v-card-text>
+          <v-card-actions class="justify-center">
             <v-btn color="primary" @click="dialog = false">OK</v-btn>
           </v-card-actions>
         </v-card>
@@ -62,7 +68,11 @@
         user:{
           email: "",
           password: ""
-        }
+        },
+        loading: false,
+        dialog: false,
+        dialogTitle: "",
+        responseMessage: ""
       };
     },
     computed: {
@@ -82,14 +92,18 @@
         this.loading = true;
         try {
           await userService.signIn(this.user);
+
           setTimeout(() => {
             this.$router.push("/home");
-          }, 2000);
+          }, 1000);
+
         } catch (error) {
-          console.error("Error:", error);
-          this.dialogTitle = "Error";
-          this.responseMessage = error.response?.data?.message || "Email or password incorrect";
-          this.dialog = true;
+          setTimeout(() => {
+            console.error("Error:", error);
+            this.dialogTitle = "Error";
+            this.responseMessage = error.response?.data?.message || "Email or password incorrect";
+            this.dialog = true;
+          }, 1000);
         } finally {
           this.loading = false;
         }

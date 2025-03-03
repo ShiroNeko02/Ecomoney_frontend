@@ -17,12 +17,18 @@
         </v-card>
       </v-container>
 
-      <!-- Notification -->
-      <v-dialog v-model="dialog" max-width="450px">
-        <v-card class="bg-light dialog-card">
-          <v-card-title>{{ dialogTitle }}</v-card-title>
-          <v-card-text>{{ responseMessage }}</v-card-text>
-          <v-card-actions>
+      <!-- ALERT BOX -->
+      <v-dialog v-model="dialog" max-width="500px">
+        <v-card class="bg-light">
+          <v-card-title class="headline" >{{dialogTitle}}</v-card-title>
+          <v-card-text v-if="loading">
+            <v-progress-circular indeterminate color="blue"></v-progress-circular>
+            Loading...
+          </v-card-text>
+          <v-card-text v-else>
+            {{ responseMessage }}
+          </v-card-text>
+          <v-card-actions class="justify-center">
             <v-btn color="primary" @click="dialog = false">OK</v-btn>
           </v-card-actions>
         </v-card>
@@ -63,19 +69,13 @@ export default {
       responseMessage: ""
     };
   },
-  async mounted() {
-    await this.getCurrentUser();
+  mounted() {
+    const userData = localStorage.getItem('savedUser');
+    if (userData) {
+      this.current_user = JSON.parse(userData);
+    }
   },
   methods: {
-    async getCurrentUser() {
-      try {
-        const response = await userService.getCurrentUser();
-        this.current_user = response.data;
-      } catch (error) {
-        console.error("Error fetching current user:", error);
-      }
-    },
-
     async submit() {
       if (!this.current_password || !this.new_password || !this.confirm_new_password) {
         this.showNotification("Error", "All fields are required.");
@@ -87,7 +87,13 @@ export default {
         return;
       }
 
+      if (this.current_password !== this.current_user.password) {
+        this.showNotification("Error", "Wrong passwords");
+        return;
+      }
+
       try {
+        await userService.signIn({ email: this.current_user.email, password: this.current_user.password });
         const response = await userService.updateUser({
           email: this.current_user.email,
           password: this.new_password,

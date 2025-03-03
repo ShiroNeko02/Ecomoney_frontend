@@ -47,7 +47,7 @@
             <v-card-title class="headline" >Suggestion</v-card-title>
             <v-card-text v-if="loading">
               <v-progress-circular indeterminate color="blue"></v-progress-circular>
-              Generating response...
+              Loading...
             </v-card-text>
             <v-card-text v-else>
               {{ responseMessage }}
@@ -99,7 +99,7 @@ export default {
       duration: "",
       suggestionData:{
         condition : "",
-        message_type : null,
+        message_type : "",
         creation_date : "",
         content : "",
       },

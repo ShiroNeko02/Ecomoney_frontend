@@ -5,6 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -31,6 +32,7 @@ export const deviceService = {
   deleteDevice: (id) => handleRequest(() => api.delete(`/devices/${id}`)),
 };
 
+
 export const userService = {
   // Get current user data
   getCurrentUser: () => handleRequest(() => api.get("/users")),
@@ -42,7 +44,7 @@ export const userService = {
   signUp: (userData) => handleRequest(() => api.post(`/users/signup`, userData)),
 
   // Sign out (logout) a user
-  signOut: (userData) => handleRequest(() => api.post(`/users/logout`, userData)),
+  signOut: () => handleRequest(() => api.post(`/users/logout`)),
 
   // Update user data (other than consumption goal)
   updateUser: (id, updateData) => handleRequest(() => api.put(`/users/${id}`, updateData)),
