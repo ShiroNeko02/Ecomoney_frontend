@@ -18,12 +18,12 @@
         <!-- Form -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form>
-            <div class="cont-1"><Input v-model="device.name_device" label="Device Name" required></Input></div>
-            <div class="cont-1"><Input v-model="device.power_watts" label="Power Watts" type="number" required></Input></div>
+            <div class="cont-1"><Input v-model="device.name_device_ref" label="Device Name" required></Input></div>
+            <div class="cont-1"><Input v-model="device.power_watts_ref" label="Power Watts" type="number" required></Input></div>
             <div class="mt-9"><ComboBox v-model="device.type_device" :items="['Telephone', 'Heater', 'Lamp', 'PC', 'Laptop', 'Washing Machine']" label="Device Type" required></ComboBox></div>
             <div class="mt-9"><ComboBox v-model="device.status_list" :items="['active', 'inactive']" label="Status" required></ComboBox></div>
-            <div class="cont"><Input v-model="device.avg_consumption_duration" label="Average Consumption Duration" type="number" required></Input></div>
-            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button class="pa-2" @click.prevent="submit">Submit</Button></div></div>
+            <div class="cont"><Input v-model="device.avg_consumption_hours_per_week_ref" label="Average Consumption Duration" type="number" required></Input></div>
+            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button class="pa-2" @click="submit">Submit</Button></div></div>
           </v-form>
         </v-card>
       </v-container>
@@ -71,11 +71,11 @@ export default {
   data() {
     return {
       device: {
-        name_device: "",
-        power_watts: null,
+        name_device_ref: "",
+        power_watts_ref: null,
         type_device: "",
         status_list: "active", // Default status
-        avg_consumption_duration: 2, // Default consumption duration
+        avg_consumption_hours_per_week_ref: 2, // Default consumption duration
       },
       dialog: false,
       responseMessage: "",
@@ -88,11 +88,11 @@ export default {
 
     async submit() {
       const deviceData = {
-        name_device: this.device.name_device,
-        power_watts: parseInt(this.device.power_watts),
+        name_device_ref: this.device.name_device_ref,
+        power_watts_ref: parseInt(this.device.power_watts_ref),
         type_device: this.device.type_device,
         status_list: this.device.status_list,
-        avg_consumption_duration: this.device.avg_consumption_duration,
+        avg_consumption_hours_per_week_ref: this.device.avg_consumption_hours_per_week_ref,
       };
 
       try {
@@ -103,11 +103,11 @@ export default {
         this.dialog = true;
 
         this.device = {
-          name_device: "",
-          power_watts: null,
+          name_device_ref: "",
+          power_watts_ref: null,
           type_device: "",
           status_list: "active",
-          avg_consumption_duration: 2,
+          avg_consumption_hours_per_week_ref: 2,
         };
 
       } catch (error) {

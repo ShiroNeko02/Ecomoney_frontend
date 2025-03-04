@@ -17,9 +17,8 @@
           </v-row>
         </v-container>
 
-        <ConseilItem text="dnsaujfdsjfbedfseufbnejfnbej"  />
+        <DeviceList />
 
-        <ConseilItem text="dnsaujfdsjfbedfseufbnejfnbejnsdigvnsrdjgvnsdrjgvnrsdignvrsujgnsrjgndrujngrujNGUJrngujrngujsengs"  />
       </v-container>
     </v-main>
 
@@ -31,7 +30,7 @@
 <script>
 import Header from "@/components/commun/Header.vue";
 import Footer from "@/components/commun/Footer.vue";
-import Suggestion from "/src/components/item/Suggestion.vue";
+import DeviceList from "/src/components/item/DeviceList.vue";
 import RectangleButton from "@/components/button/RectangleButton.vue";
 
 // Creer le lien avec autres pages
@@ -43,7 +42,7 @@ export default {
     // eslint-disable-next-line vue/no-reserved-component-names
     Header,
     // eslint-disable-next-line vue/no-unused-components
-    Suggestion
+    DeviceList,
   },
   name: 'MyDevices',
   methods: {

@@ -31,7 +31,7 @@
   <script>
     import Header from "@/components/commun/Header.vue";
     import Footer from "@/components/commun/Footer.vue";
-    import Suggestion from "/src/components/item/Suggestion.vue";
+    import SuggestionList from "/src/components/item/SuggestionList.vue";
     import RectangleButton from "@/components/button/RectangleButton.vue";
 
     // Creer le lien avec autres pages
@@ -43,7 +43,7 @@
         // eslint-disable-next-line vue/no-reserved-component-names
         Header,
         // eslint-disable-next-line vue/no-unused-components
-        Suggestion
+        Suggestion: SuggestionList
       },
       name: 'MySuggestions',
       methods: {

@@ -127,7 +127,7 @@ export default {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -158,7 +158,7 @@ export default {
         await suggestionService.createSuggestion(suggestionData);
 
         // Success
-        this.responseMessage = "Suggestion successfully stocked!";
+        this.responseMessage = "SuggestionList successfully stocked!";
         this.dialog = true;
 
         this.suggestion = {

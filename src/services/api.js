@@ -32,6 +32,15 @@ export const deviceService = {
   deleteDevice: (id) => handleRequest(() => api.delete(`/devices/${id}`)),
 };
 
+export const deviceUserService = {
+  getDevicesUsers: () => handleRequest(() => api.get("/device_users")),
+  getDeviceUserById: (id) => handleRequest(() => api.get(`/device_users/${id}`)),
+  createDeviceUser: (deviceData) =>
+    handleRequest(() => api.post("/device_users", deviceData)),
+  updateDeviceUser: (id, updateData) =>
+    handleRequest(() => api.put(`/devices_users/${id}`, updateData)),
+  deleteDeviceUser: (id) => handleRequest(() => api.delete(`/device_users/${id}`)),
+};
 
 export const userService = {
   // Get current user data
@@ -67,4 +76,13 @@ export const suggestionService = {
   deleteSuggestion: (id) => handleRequest(() => api.delete(`/suggestions/${id}`)),
 };
 
+export const trackSuggestionService = {
+  getSuggestions: () => handleRequest(() => api.get("/track_suggestions")),
+  getSuggestionsById: (id) => handleRequest(() => api.get(`/track_suggestions/${id}`)),
+  createSuggestion: (suggestionData) =>
+    handleRequest(() => api.post("/track_suggestions", suggestionData)),
+  updateSuggestion: (id, updateData) =>
+    handleRequest(() => api.put(`/track_suggestions/${id}`, updateData)),
+  deleteSuggestion: (id) => handleRequest(() => api.delete(`/suggestions/${id}`)),
+};
 
