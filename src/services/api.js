@@ -86,3 +86,12 @@ export const trackSuggestionService = {
   deleteSuggestion: (id) => handleRequest(() => api.delete(`/suggestions/${id}`)),
 };
 
+export const roomService = {
+  getRooms: () => handleRequest(() => api.get("/rooms")),
+  getRoomById: (id) => handleRequest(() => api.get(`/rooms/${id}`)),
+  createRoom: (roomData) =>
+    handleRequest(() => api.post(`/rooms/${roomData}`, roomData)),
+  updateRoom: (id) =>
+    handleRequest(() => api.post(`/rooms/${id}`)),
+  deleteRoom: (id) => handleRequest(() => api.delete(`/rooms/${id}`)),
+}

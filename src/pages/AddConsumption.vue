@@ -23,7 +23,7 @@
             <div style="margin-top:20px; margin-bottom:17px;"><ComboBox
               label="Device"
               v-model="device"
-              :items="['Telephone', 'Heater', 'Lamp', 'PC', 'Laptop', 'Washing Machine']"
+              :items="deviceNames"
             /></div>
 
             <!-- Select Objective -->
@@ -53,7 +53,7 @@
               {{ responseMessage }}
             </v-card-text>
             <v-card-actions class="justify-center">
-              <v-btn color="green" @click="create">Stock</v-btn>
+              <v-btn color="green" @click="stock">Stock</v-btn>
               <v-btn color="red" @click="dialog = false">Don't Stock</v-btn>
             </v-card-actions>
           </v-card>
@@ -74,7 +74,7 @@ import Input from "@/components/input or select/Input.vue";
 import ComboBox from "@/components/input or select/ComboBox.vue";
 import RectangleButton from "@/components/button/RectangleButton.vue";
 import Button from "@/components/button/Button.vue";
-import {suggestionService} from "@/services/api.js";
+import {deviceService, deviceUserService, suggestionService, userService} from "@/services/api.js";
 
 export default {
   components: {
@@ -91,19 +91,32 @@ export default {
   },
   data() {
     return {
-      dialog: false, // Variable pour afficher/masquer l'alert box
+      devices_user: [],
+      dialog: false,
       responseMessage: "",
-      loading: false, // Variable pour indiquer si la requête est en cours
+      loading: false,
       device: "",
+      deviceDetails: "",
       objective: "",
       duration: "",
       suggestionData:{
-        condition : "",
-        message_type : "",
-        creation_date : "",
         content : "",
+        id_user:""
       },
     };
+  },
+  computed: {
+    deviceNames() {
+      return this.devices_user.map(device => device.name_device_user);
+    },
+  },
+  async created() {
+    try {
+      const response = await deviceUserService.getDevicesUsers();
+      this.devices_user = response.data || response;
+    } catch (error) {
+      console.error("Error fetching devices", error);
+    }
   },
   methods: {
     async submit(event) {
@@ -116,8 +129,12 @@ export default {
         return;
       }
 
+      const deviceUser = this.devices_user.find(d => d.name_device_user === this.device);
+      const deviceDetailsResponse = await deviceService.getDeviceById(deviceUser.device_ref_id);
+      this.deviceDetails = deviceDetailsResponse.data || deviceDetailsResponse;
+
       // Générer dynamiquement la requête
-      const prompt = `Give me only one short advice (but still enough detailed, efficient, feasible, and realistic) to save energy consumption if I use a ${this.device} in order to ${this.objective} for ${this.duration} minutes. You can also propose other way to do but it must remain my objective and my pleasure (do not ban or reduce)`;
+      const prompt = `Give me only one short advice (but still enough detailed, efficient, feasible, and realistic) to save energy consumption if I use a ${this.deviceDetails.type_device} in order to ${this.objective} for ${this.duration} minutes. My device's model is ${this.deviceDetails.name_device_ref}.You can also propose other way to do but it must remain my objective and my pleasure. Do not ban or stop my activity`;
 
       this.dialog = true;  // Afficher immédiatement la boîte de dialogue
       this.loading = true; // Activer le chargement
@@ -127,7 +144,7 @@ export default {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -145,29 +162,22 @@ export default {
         this.loading = false; //  Désactiver le chargement une fois la réponse reçue
       }
     },
-    async create(){
-      // erreur structure data ?
+    async stock(){
+      const current_user = await userService.getCurrentUser();
+      const current_id_user = current_user.id_user;
       const suggestionData = {
-        condition : `${this.device} ${this.objective} ${this.duration}`,
-        message_type : null,
-        creation_date : new Date(),
         content : this.responseMessage,
+        id_user : current_id_user,
       }
       try {
         console.log(suggestionData);
         await suggestionService.createSuggestion(suggestionData);
-
-        // Success
-        this.responseMessage = "SuggestionList successfully stocked!";
-        this.dialog = true;
-
-        this.suggestion = {
-          condition : `${this.device} ${this.objective} ${this.duration}`,
-          message_type : null,
-          creation_date : new Date(),
-          content : this.responseMessage,
-        };
-
+        this.dialog = false;
+        this.responseMessage = "";
+        this.suggestionData ={
+          content : "",
+          id_user:""
+        }
       } catch (error) {
         console.error("Error adding device:", error);
 

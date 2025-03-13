@@ -2,7 +2,6 @@
   <v-app class="bg-light">
     <Header title="My Devices" />
 
-    <!-- Contenu pricipal -->
     <v-main>
       <v-container class="pa-4">
         <!-- Change Form -->
@@ -47,7 +46,7 @@ export default {
   name: 'MyDevices',
   methods: {
     goToMySuggestions() {
-      this.$router.push("/mySugestions");
+      this.$router.push("/mySuggestions");
     }
   }
 };

@@ -17,13 +17,12 @@
 
         <!-- Form -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
-          <v-form>
-            <div class="cont-1"><Input v-model="device.name_device_ref" label="Device Name" required></Input></div>
-            <div class="cont-1"><Input v-model="device.power_watts_ref" label="Power Watts" type="number" required></Input></div>
-            <div class="mt-9"><ComboBox v-model="device.type_device" :items="['Telephone', 'Heater', 'Lamp', 'PC', 'Laptop', 'Washing Machine']" label="Device Type" required></ComboBox></div>
-            <div class="mt-9"><ComboBox v-model="device.status_list" :items="['active', 'inactive']" label="Status" required></ComboBox></div>
-            <div class="cont"><Input v-model="device.avg_consumption_hours_per_week_ref" label="Average Consumption Duration" type="number" required></Input></div>
-            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button class="pa-2" @click="submit">Submit</Button></div></div>
+          <v-form @submit.prevent="submit">
+            <div class="cont-1"><Input v-model="device_user.name_device_user" label="Device's name" required></Input></div>
+            <div class="mt-9"><ComboBox v-model="device_user.device_ref" :items="deviceRefNames" label="Device Model (not required)"></ComboBox></div>
+            <div class="cont-1"><Input v-model="device_user.power_watts_user" label="Power watts (not required if device's reference chosen)" type="number"></Input></div>
+            <div class="cont"><Input v-model="device_user.avg_consumption_hours_per_week" label="Average Consumption Duration (hours per week)" type="number" required></Input></div>
+            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button class="pa-2" :disabled="isSubmitting" @click="submit">Submit</Button></div></div>
           </v-form>
         </v-card>
       </v-container>
@@ -51,7 +50,7 @@ import Input from "@/components/input or select/Input.vue";
 import ComboBox from "@/components/input or select/ComboBox.vue";
 import RectangleButton from "@/components/button/RectangleButton.vue";
 import Button from "@/components/button/Button.vue";
-import { deviceService } from "@/services/api.js";  // Import your API service
+import { deviceService, deviceUserService, userService } from "@/services/api.js";  // Import your API service
 
 export default {
   name: "AddDevice",
@@ -70,52 +69,80 @@ export default {
   },
   data() {
     return {
-      device: {
-        name_device_ref: "",
-        power_watts_ref: null,
-        type_device: "",
-        status_list: "active", // Default status
+      device_user: {
+        name_device_user: "",
+        power_watts_user: "",
+        device_ref_id: "",
         avg_consumption_hours_per_week_ref: 2, // Default consumption duration
+        id_user: ""
       },
+      list_devices_user :[],
+      list_devices_ref :[],
       dialog: false,
+      isSubmitting: false,
       responseMessage: "",
     };
+  },
+  computed: {
+    deviceRefNames() {
+      return this.list_devices_ref.map(device => device.name_device_ref);
+    },
+  },
+  async created() {
+    try {
+      const response = await deviceService.getDevices();
+      this.list_devices_ref = response.data || response;
+    } catch (error) {
+      console.error("Error fetching devices", error);
+    }
   },
   methods: {
     goToActivity() {
       this.$router.push("/addConsumption");
     },
 
+    getDeviceRefId(deviceName) {
+      const device = this.list_devices_ref.find(d => d.name_device_ref === deviceName);
+      return device ? device.id_device_ref : null;
+    },
+
     async submit() {
+      if (this.isSubmitting) return;
+      this.isSubmitting = true;
+
+      const current_user = await userService.getCurrentUser();
+      const current_id_user = current_user.id_user;
+
       const deviceData = {
-        name_device_ref: this.device.name_device_ref,
-        power_watts_ref: parseInt(this.device.power_watts_ref),
-        type_device: this.device.type_device,
-        status_list: this.device.status_list,
-        avg_consumption_hours_per_week_ref: this.device.avg_consumption_hours_per_week_ref,
+        name_device_user: this.device_user.name_device_user,
+        power_watts_user: parseInt(this.device_user.power_watts_user),
+        device_ref_id: this.getDeviceRefId(this.device_user.device_ref),
+        avg_consumption_hours_per_week: parseInt(this.device_user.avg_consumption_hours_per_week),
+        id_user: current_id_user,
       };
 
       try {
-        await deviceService.createDevice(deviceData);
+        await deviceUserService.createDeviceUser(deviceData);
 
         // Success
         this.responseMessage = "Device successfully added!";
         this.dialog = true;
 
-        this.device = {
-          name_device_ref: "",
-          power_watts_ref: null,
-          type_device: "",
-          status_list: "active",
-          avg_consumption_hours_per_week_ref: 2,
+        this.device_user = {
+          name_device_user: "",
+          power_watts_user: null,
+          device_ref_id: "",
+          avg_consumption_hours_per_week: 2,
+          id_user: "",
         };
 
       } catch (error) {
         console.error("Error adding device:", error);
-
         // Failed
         this.responseMessage = error.response?.data?.error || "Failed to add device.";
         this.dialog = true;
+      } finally {
+        this.isSubmitting = false;
       }
     }
   },
@@ -146,12 +173,9 @@ export default {
 
 .custom-field .v-select__selections,
 .custom-field input {
-  color: #000 !important; /* Texte noir */
+  color: #000 !important;
 }
 
-.v-card--variant-elevated {
-  color: #003a63; /* changer la couleur (bordure et text) ici */
-}
 
 .cont-1{
   padding-top: 15px;
@@ -168,6 +192,11 @@ export default {
 
 .v-row[data-v-8c47e836]{
   margin: -20px -25px;
+}
+
+.v-input--horizontal {
+  color : #003a63;
+  margin-bottom: 20px;
 }
 
 </style>
