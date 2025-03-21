@@ -1,7 +1,7 @@
 <template>
     <v-btn
       :disabled="disabled"
-      :color="color"
+      :color=white
       block
       class="custom-button"
       @click="clickHandler"
@@ -33,6 +33,7 @@
     background: #2596be;
     color: white !important;
     border-radius: 30px;
+    max-height: 38px;
     font-weight: bold;
     text-transform: none;
     box-shadow: none;

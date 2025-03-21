@@ -2,7 +2,7 @@
     <v-text-field
       v-bind="$attrs"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event)"
+      @input="$emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
       :type="type"
       variant="outlined"
@@ -41,6 +41,7 @@
   .custom-input {
     border-radius: 10px;
     margin-bottom: 20px;
+    padding: 0 16px !important;
     color: #003a63;
     height: 6vh;
     box-shadow: none;

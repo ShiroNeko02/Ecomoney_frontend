@@ -1,30 +1,42 @@
 <template>
-    <v-app class="bg-light">
-      <Header title="Utilisateur" />
+  <v-app class="bg-light">
+    <Header title="User's space" />
 
-      <!-- Contenu pricipal -->
-      <v-main>
-        <v-container class="mt-12 d-flex justify-center align-center">
-            <v-row align="center" justify="center">
-            <v-col cols="auto" class="text-center">
-                <div class="circle-icon"><v-icon size="50" color="white">mdi-account</v-icon></div>
-                <span class="text-h6 d-block mt-2">Utilisateur</span>
-            </v-col>
-            </v-row>
-        </v-container>
+    <v-main>
+      <v-container class="mt-12 d-flex justify-center align-center">
+        <v-row align="center" justify="center">
+          <v-col cols="auto" class="text-center">
+            <div class="circle-icon"><v-icon size="50" color="white">mdi-account</v-icon></div>
+            <span class="text-h6 d-block mt-2">{{user.first_name}}</span>
+          </v-col>
+        </v-row>
+      </v-container>
 
-        <OptionButton title="Changer le mot de passe" />
+      <OptionButton title="Change my password" @click="goToChangePassword" />
 
-        <OptionButton title="Changer mes informations" />
+      <OptionButton title="Change my informations"  />
 
-        <OptionButton title="Supprimer mon compte" />
+      <OptionButton title="Delete my account" @click="confirmDeleteAccount" />
 
-        <OptionButton title="Se déconnecter" @click="goToLogin" />
-      </v-main>
+      <OptionButton title="Log Out" @click="signOut" />
 
-      <Footer />
-    </v-app>
-  </template>
+      <!-- Notification delete -->
+      <v-dialog v-model="dialog" max-width="450px">
+        <v-card class="bg-light">
+          <v-card-title style="color:red;">Alert</v-card-title>
+          <v-card-text style="color: black;">Are you sure you want to delete your account? The data will not be recoverable</v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn color="green">No</v-btn>
+            <v-btn color="red" >Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+    </v-main>
+
+    <Footer />
+  </v-app>
+</template>
 
 
   <script>
@@ -32,20 +44,56 @@
     import Footer from "@/components/commun/Footer.vue";
     import OptionButton from "@/components/button/OptionButton.vue";
     import '@mdi/font/css/materialdesignicons.css';
+    import {userService} from "@/services/api.js";
 
     // Creer le lien avec autres pages
     export default {
         name: 'User',
-        component: {
-          Header,
-          Footer,
-          OptionButton
+        components: {
+          // eslint-disable-next-line vue/no-reserved-component-names
+          Header, Footer, OptionButton
+        },
+        data() {
+          return {
+            dialog: false,
+            user: {
+              email: "",
+              password: ""
+            }
+          };
+        },
+        mounted() {
+          const savedUser = localStorage.getItem("user");
+          if (savedUser) {
+            this.user = JSON.parse(savedUser);
+          }
         },
         methods: {
-          goToLogin() {
+          async signOut() {
+            try {
+              await userService.signOut();
+              localStorage.removeItem("user");
               this.$router.push("/signIn");
+            } catch (error) {
+              console.error("Error during sign out:", error);
             }
           },
+          goToChangePassword() {
+            this.$router.push("/changePassword");
+          },
+          confirmDeleteAccount() {
+            this.dialog = true;
+          },
+          async deleteAccount() {
+            try {
+              await userService.delete();
+              localStorage.removeItem("user");
+              this.$router.push("/signIn");
+            } catch (error) {
+              console.error("Error during sign out:", error);
+            }
+          }
+        }
     };
   </script>
 
@@ -77,4 +125,5 @@
   font-weight: bold;
   color: #003a63;
   }
+
   </style>
