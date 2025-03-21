@@ -33,6 +33,7 @@
     background: #2596be;
     color: white !important;
     border-radius: 30px;
+    max-height: 38px;
     font-weight: bold;
     text-transform: none;
     box-shadow: none;

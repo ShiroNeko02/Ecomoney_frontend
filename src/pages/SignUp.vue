@@ -11,28 +11,26 @@
         <h2 class="text-center font-weight-bold mt-8 title-color">EcoMoney</h2>
       </v-container>
 
-        <v-form @submit.prevent="signUp" style="width: 100%;">
-          <!-- Email -->
-          <Input v-model="user.email" label="Email" placeholder="Email" required/>
+      <v-form @submit.prevent="signUp" style="width: 100%;">
+        <!-- Email -->
+        <Input v-model="user.email" label="Email" placeholder="Email" required/>
 
-          <!-- Password -->
-          <Input v-model="user.password" label="Password" placeholder="Password (6 characters at least)" type="password" class="mb-6" required />
+        <!-- Password -->
+        <Input v-model="user.password" label="Password" placeholder="Password (6 characters at least)" type="password" class="mb-6" required />
 
-          <!-- First Name -->
-          <Input v-model="user.data.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
+        <!-- First Name -->
+        <Input v-model="user.data.first_name" label="First Name" placeholder="First Name" class="mb-6" required/>
 
-          <!-- Last Name -->
-          <Input v-model="user.data.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
+        <!-- Last Name -->
+        <Input v-model="user.data.last_name" label="Last Name" placeholder="Last Name" class="mb-6" required/>
 
-          <!-- Budget -->
-          <Input v-model="user.data.consumption_goal_euros" label="Spending Goal" placeholder="Spending Goal per year (optional)" class="mb-6"/>
 
-          <!-- Button Sign Up -->
-          <Button @click="signUp" class="mt-8" :disabled="loading || !formValid">
-            <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
-            <span v-else style="color:white;">Sign Up</span>
-          </Button>
-        </v-form>
+        <!-- Button Sign Up -->
+        <Button @click="signUp" class="mt-8" :disabled="loading || !formValid">
+          <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
+          <span v-else style="color:white;">Sign Up</span>
+        </Button>
+      </v-form>
 
       <!-- ALERT BOX -->
       <v-dialog v-model="dialog" max-width="500px">
@@ -51,11 +49,12 @@
         </v-card>
       </v-dialog>
 
-        <div class="separator mb-6">
-          <span style="color:#003a6a;">Or</span>
-        </div>
+      <div class="separator mb-6">
+        <span style="color:#003a6a;">Or</span>
+      </div>
 
-        <Button @click="signIn">Sign In</Button>
+      <Button @click="signIn">Sign In</Button>
+      <div></div>
     </v-sheet>
   </v-container>
 </template>

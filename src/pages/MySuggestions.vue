@@ -70,8 +70,11 @@
   font-weight: bold;
   font-size: 1.2rem;
   border-radius: 10px;
-
   margin: 30px 0;
   text-align: center;
 }
+
+  .v-container {
+    padding: 16px 0;
+  }
   </style>

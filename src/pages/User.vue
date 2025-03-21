@@ -1,42 +1,42 @@
 <template>
-    <v-app class="bg-light">
-      <Header title="User's space" />
+  <v-app class="bg-light">
+    <Header title="User's space" />
 
-      <v-main>
-        <v-container class="mt-12 d-flex justify-center align-center">
-            <v-row align="center" justify="center">
-            <v-col cols="auto" class="text-center">
-                <div class="circle-icon"><v-icon size="50" color="white">mdi-account</v-icon></div>
-                <span class="text-h6 d-block mt-2">User</span>
-            </v-col>
-            </v-row>
-        </v-container>
+    <v-main>
+      <v-container class="mt-12 d-flex justify-center align-center">
+        <v-row align="center" justify="center">
+          <v-col cols="auto" class="text-center">
+            <div class="circle-icon"><v-icon size="50" color="white">mdi-account</v-icon></div>
+            <span class="text-h6 d-block mt-2">{{user.first_name}}</span>
+          </v-col>
+        </v-row>
+      </v-container>
 
-        <OptionButton title="Change my password" @click="goToChangePassword" />
+      <OptionButton title="Change my password" @click="goToChangePassword" />
 
-        <OptionButton title="Change my informations"  />
+      <OptionButton title="Change my informations"  />
 
-        <OptionButton title="Delete my account" @click="confirmDeleteAccount" />
+      <OptionButton title="Delete my account" @click="confirmDeleteAccount" />
 
-        <OptionButton title="Log Out" @click="signOut" />
+      <OptionButton title="Log Out" @click="signOut" />
 
-        <!-- Notification delete -->
-        <v-dialog v-model="dialog" max-width="450px">
-          <v-card class="bg-light">
-            <v-card-title style="color:red;">Alert</v-card-title>
-            <v-card-text style="color: black;">Are you sure you want to delete your account? The data will not be recoverable</v-card-text>
-            <v-card-actions class="justify-center">
-              <v-btn color="green">No</v-btn>
-              <v-btn color="red" >Yes</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+      <!-- Notification delete -->
+      <v-dialog v-model="dialog" max-width="450px">
+        <v-card class="bg-light">
+          <v-card-title style="color:red;">Alert</v-card-title>
+          <v-card-text style="color: black;">Are you sure you want to delete your account? The data will not be recoverable</v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn color="green">No</v-btn>
+            <v-btn color="red" >Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-      </v-main>
+    </v-main>
 
-      <Footer />
-    </v-app>
-  </template>
+    <Footer />
+  </v-app>
+</template>
 
 
   <script>
@@ -125,4 +125,5 @@
   font-weight: bold;
   color: #003a63;
   }
+
   </style>

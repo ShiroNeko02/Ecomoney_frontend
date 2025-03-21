@@ -4,11 +4,11 @@
       <v-col v-for="device_user in devices_user" :key="device_user.id_device_user" cols="12" md="4">
         <v-card class="mt-4 pa-4">
           <v-row align="center">
-            <v-col cols="8">
+            <v-col cols="6">
               <span class="text-subtitle-1">{{ device_user.name_device_user }}</span>
               <p class="text-caption"> {{ device_user.room }} </p>
             </v-col>
-            <v-col cols="4" class="text-right">
+            <v-col cols="6" class="text-right">
               <v-switch
                 v-model="device_user.switchValue"
                 :label="device_user.switchValue ? 'Active' : 'Inactive'"

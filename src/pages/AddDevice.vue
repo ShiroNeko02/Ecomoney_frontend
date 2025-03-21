@@ -19,7 +19,7 @@
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form @submit.prevent="submit">
             <div class="cont-1"><Input v-model="device_user.name_device_user" label="Device's name" required></Input></div>
-            <div class="mt-9"><ComboBox v-model="device_user.device_ref" :items="deviceRefNames" label="Device Model (not required)"></ComboBox></div>
+            <div class="cont-2"><ComboBox v-model="device_user.device_ref" :items="deviceRefNames" label="Device Model (not required)"></ComboBox></div>
             <div class="cont-1"><Input v-model="device_user.power_watts_user" label="Power watts (not required if device's reference chosen)" type="number"></Input></div>
             <div class="cont"><Input v-model="device_user.avg_consumption_hours_per_week" label="Average Consumption Duration (hours per week)" type="number" required></Input></div>
             <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button class="pa-2" :disabled="isSubmitting" @click="submit">Submit</Button></div></div>
@@ -179,24 +179,31 @@ export default {
 
 .cont-1{
   padding-top: 15px;
+  margin-bottom: -12px;
 }
 
-.mt-9 {
-  margin-top: 36px !important;
-  margin-bottom: -36px !important;
+.cont-2 {
+  margin-bottom: -20px !important;
+  margin-top: 40px;
 }
 
 .cont{
   margin: 45px 0;
 }
 
-.v-row[data-v-8c47e836]{
-  margin: -20px -25px;
+.v-row[data-v-8c47e836][data-v-8c47e836] {
+  margin: -25px;
+  margin-top: -38px;
+  margin-bottom: 0px;
 }
 
 .v-input--horizontal {
   color : #003a63;
   margin-bottom: 20px;
+}
+
+.v-form{
+  padding: 10px 0;
 }
 
 </style>

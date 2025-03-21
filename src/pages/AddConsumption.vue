@@ -144,7 +144,7 @@ export default {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -200,6 +200,9 @@ export default {
   border-radius: 15px;
 }
 
+.v-form{
+  padding: 16px 0;
+}
 
 .form-card {
   background-color: #f9f9f9 !important;
@@ -233,6 +236,10 @@ export default {
 
 .cont{
   padding-bottom : 20px;
+}
+
+.v-row {
+  margin : -20px;
 }
 
 </style>

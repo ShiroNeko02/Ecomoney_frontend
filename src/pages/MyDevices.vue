@@ -73,4 +73,9 @@ export default {
   margin: 30px 0;
   text-align: center;
 }
+
+
+.v-container {
+  padding: 16px 0;
+}
 </style>

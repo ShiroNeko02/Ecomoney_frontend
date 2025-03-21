@@ -4,9 +4,6 @@
 
     <v-main>
       <v-container>
-        <v-card class="mt-2 pa-4 form elevation-4">
-          <div class="text-center text-white">Welcome</div>
-        </v-card>
 
         <!-- Bar Chart -->
         <v-card class="mt-4 pa-4 bg-light elevation-20">
@@ -56,11 +53,12 @@ export default {
 }
 
 .form {
-  background-color: #2596be!important;
+  background-color: transparent!important;
   font-weight: bold;
   font-size: 1.2rem;
   border-radius: 10px;
   margin-bottom: 22px;
   text-align: center;
+  color: #2596be;
 }
 </style>
