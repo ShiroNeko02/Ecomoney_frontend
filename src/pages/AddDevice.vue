@@ -74,7 +74,7 @@ export default {
         power_watts_user: "",
         device_ref_id: "",
         avg_consumption_hours_per_week_ref: 2, // Default consumption duration
-        id_user: ""
+        user_id: ""
       },
       list_devices_user :[],
       list_devices_ref :[],
@@ -110,15 +110,14 @@ export default {
       if (this.isSubmitting) return;
       this.isSubmitting = true;
 
-      const current_user = await userService.getCurrentUser();
-      const current_id_user = current_user.id_user;
+      const current_id_user = await userService.getCurrentUserId();
 
       const deviceData = {
         name_device_user: this.device_user.name_device_user,
         power_watts_user: parseInt(this.device_user.power_watts_user),
         device_ref_id: this.getDeviceRefId(this.device_user.device_ref),
         avg_consumption_hours_per_week: parseInt(this.device_user.avg_consumption_hours_per_week),
-        id_user: current_id_user,
+        user_id: current_id_user,
       };
 
       try {
@@ -133,7 +132,7 @@ export default {
           power_watts_user: null,
           device_ref_id: "",
           avg_consumption_hours_per_week: 2,
-          id_user: "",
+          user_id: "",
         };
 
       } catch (error) {

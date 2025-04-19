@@ -46,6 +46,9 @@ export const userService = {
   // Get current user data
   getCurrentUser: () => handleRequest(() => api.get("/users")),
 
+  // Get current user id
+  getCurrentUserId: () => handleRequest(() => api.get("/user-id")),
+
   // Sign in (login) a user
   signIn: (userData) => handleRequest(() => api.post(`/users/login`, userData)),
 

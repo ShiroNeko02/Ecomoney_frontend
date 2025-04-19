@@ -101,7 +101,7 @@ export default {
       duration: "",
       suggestionData:{
         content : "",
-        id_user:""
+        user_id:""
       },
     };
   },
@@ -163,11 +163,10 @@ export default {
       }
     },
     async stock(){
-      const current_user = await userService.getCurrentUser();
-      const current_id_user = current_user.id_user;
+      const current_id_user = await userService.getCurrentUserId();
       const suggestionData = {
         content : this.responseMessage,
-        id_user : current_id_user,
+        user_id : current_id_user,
       }
       try {
         console.log(suggestionData);
@@ -176,7 +175,7 @@ export default {
         this.responseMessage = "";
         this.suggestionData ={
           content : "",
-          id_user:""
+          user_id:""
         }
       } catch (error) {
         console.error("Error adding device:", error);
@@ -211,7 +210,7 @@ export default {
   padding: 20px;
 }
 
- .v-select .v-label {
+.v-select .v-label {
   color: #000 !important; /* Label noir */
   font-weight: bold;
 }
