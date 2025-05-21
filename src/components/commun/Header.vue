@@ -1,14 +1,14 @@
 <template>
   <v-app-bar color="white" elevation="2">
     <!-- Logo -->
-    <v-img src="@/assets/logo.png" max-height="36" max-width="36" contain class="ml-4"></v-img>
+    <v-img src="@/assets/logo.png" max-height="40" max-width="40" contain class="ml-4"></v-img>
 
     <!-- Titre -->
     <v-spacer></v-spacer>
     <v-app-bar-title class="text-center">{{ title }}</v-app-bar-title>
     <v-spacer></v-spacer>
 
-    <v-icon class="mr-4 text-primary">mdi-bell</v-icon>
+    <v-icon class="mr-4 text-primary" size="33">mdi-information-outline</v-icon>
 
   </v-app-bar>
 </template>
@@ -40,9 +40,13 @@ export default {
   flex-grow: 1;
 }
 
-v-spacer {
-  flex-grow: 0;
+.v-spacer {
+  flex-grow: 0 !important;
   flex-shrink: 0;
-  flex-basis: 8px;
+  flex-basis: 2px;
+}
+
+.v-toolbar__content > .v-toolbar-title {
+  margin-inline-start: 0px;
 }
 </style>
