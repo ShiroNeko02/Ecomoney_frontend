@@ -2,14 +2,12 @@
   <v-app class="bg-light">
     <Header title="Home" />
 
-    <v-main >
+    <v-main>
       <v-container>
-        <!-- Bar Chart -->
+        <!-- Pie Chart (maintenant en premier) -->
         <v-card class="mt-4 pa-4 bg-light elevation-20">
-          <div v-if="loading" class="d-flex justify-center">
-            <v-progress-circular indeterminate color="primary"></v-progress-circular>
-          </div>
-          <BarChart v-else />
+          <h3 class="text-h6 mb-4 text-black">Consumption by Device</h3>
+          <PieChart :labels="['Device A', 'Device B', 'Device C','Others']" :data="[40, 30, 30, 20]" />
         </v-card>
 
         <!-- Budget -->
@@ -50,7 +48,13 @@
           </v-row>
         </v-card>
 
-        <BudgetHistoryChart />
+        <!-- Budget History Chart avec taille augmentée -->
+        <v-card class="mt-6 pa-4 bg-light elevation-20">
+          <h3 class="text-h6 mb-4 text-black">Budget History</h3>
+          <div style="height: 400px;">
+            <BudgetHistoryChart />
+          </div>
+        </v-card>
 
         <!-- Quick Actions -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
@@ -73,19 +77,12 @@
             </v-col>
           </v-row>
         </v-card>
-
-        <!-- Pie Chart -->
-        <v-card class="mt-6 pa-4 bg-light elevation-20">
-          <PieChart :labels="['Device A', 'Device B', 'Device C','Others']" :data="[40, 30, 30, 20]" />
-        </v-card>
-
       </v-container>
     </v-main>
 
     <Footer/>
   </v-app>
 </template>
-
 <script>
 import BarChart from "@/components/chart/BarChart.vue";
 import { userService } from "@/services/api.js";
