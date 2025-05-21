@@ -2,7 +2,7 @@
   <v-app class="bg-light">
     <Header title="Home" />
 
-    <v-main>
+    <v-main >
       <v-container>
         <!-- Bar Chart -->
         <v-card class="mt-4 pa-4 bg-light elevation-20">
@@ -73,6 +73,12 @@
             </v-col>
           </v-row>
         </v-card>
+
+        <!-- Pie Chart -->
+        <v-card class="mt-6 pa-4 bg-light elevation-20">
+          <PieChart :labels="['Device A', 'Device B', 'Device C','Others']" :data="[40, 30, 30, 20]" />
+        </v-card>
+
       </v-container>
     </v-main>
 
@@ -152,6 +158,7 @@ export default {
 
 <style scoped>
 .bg-light {
+  height: 100%;
   background-color: #fff !important;
   border-radius: 15px;
 }

@@ -30,7 +30,7 @@
             <ComboBox
               label="Objective"
               v-model="objective"
-              :items="['reheat', 'defrost', 'entertainment', 'laundry', 'drying']"
+              :items="filteredObjectives"
             />
 
             <!-- Champ Input -->
@@ -99,16 +99,47 @@ export default {
       deviceDetails: "",
       objective: "",
       duration: "",
+      typeDevice :"",
       suggestionData:{
         content : "",
         user_id:""
       },
+      objectiveOptions: {
+        "Work" : ["work", "printing", "browsing", "coding", "design", "document editing", "photo editing", "email", "research", "video conferencing"] ,
+        "Security": ["surveillance", "recording", "motion detection", "alarm triggering", "remote access"],
+        "Household maintenance": ["clean dishes", "sanitize", "vacuum", "deep clean", "carpet cleaning", "mow lawn", "edge trimming", "mulching"],
+        "Entertainment": ["communication", "browsing", "streaming", "entertainment", "gaming", "music", "video playback", "social media", "online learning"],
+        "Cooking": ["cook rice", "blend smoothies", "boil water", "reheat food", "preserve food", "toast bread", "brew coffee", "freeze items", "bake dishes", "heat on plates", "deep fry", "slow cook", "defrost"],
+        "Comfort" : ["cooling", "heating", "water heating", "illumination"],
+        "Clothes" : ["laundry", "drying", "ironing", "steaming"],
+        "default": ["cooking", "cleaning", "entertainment", "laundry", "drying"]
+      },
     };
+  },
+  watch: {
+    async device(newDeviceName) {
+      const deviceUser = this.devices_user.find(d => d.name_device_user === newDeviceName);
+      if (deviceUser) {
+        try {
+          const deviceDetailsResponse = await deviceService.getDeviceById(deviceUser.device_ref_id);
+          this.deviceDetails = deviceDetailsResponse.data || deviceDetailsResponse;
+        } catch (error) {
+          console.error("Error loading device details", error);
+          this.deviceDetails = {}; // fallback
+        }
+      } else {
+        this.deviceDetails = {}; // reset if device not found
+      }
+    }
   },
   computed: {
     deviceNames() {
       return this.devices_user.map(device => device.name_device_user);
     },
+    filteredObjectives() {
+      const category = this.deviceDetails?.type_device || 'default';
+      return this.objectiveOptions[category] || this.objectiveOptions["default"];
+    }
   },
   async created() {
     try {
@@ -134,22 +165,28 @@ export default {
       this.deviceDetails = deviceDetailsResponse.data || deviceDetailsResponse;
 
       // Générer dynamiquement la requête
-      const prompt = `Give me only one short advice (but still enough detailed, efficient, feasible, and realistic) to save energy consumption if I use a ${this.deviceDetails.type_device} in order to ${this.objective} for ${this.duration} minutes. My device's model is ${this.deviceDetails.name_device_ref}.You can also propose other way to do but it must remain my objective and my pleasure. Do not ban or stop my activity`;
+      const prompt = `Act as an expert in energy efficiency.
+Give me only one specific, clever, and practical tip to reduce the energy consumption of a ${this.deviceDetails.name_device_ref} while I use it to ${this.objective} for ${this.duration} minutes.
+Your answer should NOT be generic or obvious or too long (no more than 80 words). Instead, give me a less-known but effective trick I can really use, ideally tailored to this kind of device or use-case.
+You may suggest a smart workaround or setting adjustment, as long as it achieves the same goal and keeps the activity enjoyable.
+Do NOT ban or limit the activity — just help me do it in a smarter, more efficient way.`;
 
-      this.dialog = true;  // Afficher immédiatement la boîte de dialogue
-      this.loading = true; // Activer le chargement
-      this.responseMessage = "Loading..."; //  Afficher un message d'attente
+      this.dialog = true;
+      this.loading = true;
+      this.responseMessage = "Loading...";
 
       try {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
             "model": "mistralai/mistral-small-24b-instruct-2501:free",
-            "messages": [{ "role": "user", "content": prompt }]
+            "messages": [{ "role": "user", "content": prompt }],
+            "temperature": 0.5,
+            "max_tokens": 100
           })
         });
 

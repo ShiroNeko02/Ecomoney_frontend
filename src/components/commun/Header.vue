@@ -1,13 +1,15 @@
 <template>
   <v-app-bar color="white" elevation="2">
-    <!-- Icône du menu -->
-    <v-app-bar-nav-icon size="40" color="#2596be" @click="goToInfo"></v-app-bar-nav-icon>
+    <!-- Logo -->
+    <v-img src="@/assets/logo.png" max-height="35" max-width="35" contain class="ml-4"></v-img>
 
     <!-- Titre -->
+    <v-spacer></v-spacer>
     <v-app-bar-title class="text-center">{{ title }}</v-app-bar-title>
+    <v-spacer></v-spacer>
 
-    <!-- Logo -->
-    <v-img src="@/assets/logo.png" max-height="40" max-width="40" contain class="mr-4"></v-img>
+    <v-icon class="mr-4 text-primary" size="33">mdi-information-outline</v-icon>
+
   </v-app-bar>
 </template>
 
@@ -17,16 +19,6 @@ export default {
     title: {
       type: String,
       required: true,
-    },
-  },
-  methods: {
-    goToInfo() {
-      // Si l'utilisateur est déjà sur la page Info, on revient à la page précédente
-      if (this.$route.path === '/info') {
-        this.$router.back(); // Retour à la page précédente
-      } else {
-        this.$router.push("/info"); // Si on n'est pas sur la page Info, on y va
-      }
     },
   },
 };
@@ -49,8 +41,12 @@ export default {
 }
 
 .v-spacer {
-  flex-grow: 0;
+  flex-grow: 0 !important;
   flex-shrink: 0;
-  flex-basis: 8px;
+  flex-basis: 2px;
+}
+
+.v-toolbar__content > .v-toolbar-title {
+  margin-inline-start: 0px;
 }
 </style>
