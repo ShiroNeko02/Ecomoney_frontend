@@ -6,7 +6,6 @@
       <v-container>
         <!-- Pie Chart (maintenant en premier) -->
         <v-card class="mt-4 pa-4 bg-light elevation-20">
-          <h3 class="text-h6 mb-4 text-black">Consumption by Device</h3>
           <PieChart :labels="['Device A', 'Device B', 'Device C','Others']" :data="[40, 30, 30, 20]" />
         </v-card>
 
@@ -49,12 +48,11 @@
         </v-card>
 
         <!-- Budget History Chart avec taille augmentée -->
-        <v-card class="mt-6 pa-4 bg-light elevation-20">
-          <h3 class="text-h6 mb-4 text-black">Budget History</h3>
+
           <div style="height: 400px;">
             <BudgetHistoryChart />
           </div>
-        </v-card>
+
 
         <!-- Quick Actions -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
@@ -92,6 +90,7 @@ export default {
   name: "Home",
   components: {
     BudgetHistoryChart,
+    // eslint-disable-next-line vue/no-unused-components
     BarChart,
   },
   data() {
