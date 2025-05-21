@@ -4,27 +4,70 @@
 
     <v-main>
       <v-container>
-
         <!-- Bar Chart -->
         <v-card class="mt-4 pa-4 bg-light elevation-20">
-          <BarChart />
+          <div v-if="loading" class="d-flex justify-center">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          </div>
+          <BarChart v-else />
         </v-card>
 
         <!-- Budget -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
           <v-row align="center">
             <v-col cols="6" class="d-flex align-center">
-              <v-progress-circular :model-value="80" :size="40" width="4" color="cyan"></v-progress-circular>
-              <span class="ml-3 text-subtitle-1 text-black font-weight-medium">Budget</span>
+              <v-progress-circular
+                :model-value="budget.percentage"
+                :color="getBudgetColor"
+                :size="40"
+                width="4"
+              ></v-progress-circular>
+              <span class="ml-3 text-subtitle-1 text-black font-weight-medium">Budget Status</span>
             </v-col>
 
             <v-col cols="6" class="text-right">
-              <div>
-                <span class="text-h5 font-weight-bold text-black text-center">200.00€</span>
+              <div v-if="loading">
+                <v-skeleton-loader type="text" width="100"></v-skeleton-loader>
               </div>
-              <div>
-                <span class="text-h7 text-black text-center">remaining</span>
-              </div>
+              <template v-else>
+                <div>
+                  <span class="text-h5 font-weight-bold text-black">
+                    {{ formatAmount(budget.remaining) }}€
+                  </span>
+                </div>
+                <div>
+                  <span class="text-subtitle-2 text-grey">
+                    of {{ formatAmount(budget.goal) }}€
+                  </span>
+                </div>
+                <div>
+                  <span class="text-caption" :class="getBudgetTextColor">
+                    {{ getBudgetStatus }}
+                  </span>
+                </div>
+              </template>
+            </v-col>
+          </v-row>
+        </v-card>
+
+        <!-- Quick Actions -->
+        <v-card class="mt-6 pa-4 bg-light elevation-20">
+          <v-row>
+            <v-col cols="12">
+              <h3 class="text-h6 mb-4">Quick Actions</h3>
+              <v-btn
+                color="primary"
+                class="mr-2"
+                @click="$router.push('/consumptionGoal')"
+              >
+                Update Budget Goal
+              </v-btn>
+              <v-btn
+                color="secondary"
+                @click="loadBudgetData"
+              >
+                Refresh Data
+              </v-btn>
             </v-col>
           </v-row>
         </v-card>
@@ -37,12 +80,68 @@
 
 <script>
 import BarChart from "@/components/chart/BarChart.vue";
+import { userService } from "@/services/api.js";
 
 export default {
   name: "Home",
   components: {
     BarChart,
   },
+  data() {
+    return {
+      loading: false,
+      budget: {
+        goal: 0,
+        remaining: 0,
+        percentage: 0
+      }
+    };
+  },
+  mounted() {
+    this.loadBudgetData();
+  },
+  computed: {
+    getBudgetColor() {
+      const percentage = this.budget.percentage;
+      if (percentage > 66) return 'green';
+      if (percentage > 33) return 'orange';
+      return 'red';
+    },
+    getBudgetTextColor() {
+      return `text--${this.getBudgetColor}`;
+    },
+    getBudgetStatus() {
+      const percentage = this.budget.percentage;
+      if (percentage > 66) return 'Good standing';
+      if (percentage > 33) return 'Watch spending';
+      return 'Budget alert';
+    }
+  },
+  methods: {
+    async loadBudgetData() {
+      this.loading = true;
+      try {
+        const userData = await userService.getCurrentUser();
+        if (userData && userData.consumption_goal_euros !== undefined) {
+          this.budget.goal = userData.consumption_goal_euros;
+          // Add calculation for remaining budget and percentage here
+          // This is a placeholder - implement actual calculation based on your data
+          this.budget.remaining = userData.consumption_goal_euros * 0.8; // Example
+          this.budget.percentage = (this.budget.remaining / this.budget.goal) * 100;
+        }
+      } catch (error) {
+        console.error("Error loading budget data:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    formatAmount(amount) {
+      return parseFloat(amount).toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+  }
 };
 </script>
 
@@ -52,13 +151,33 @@ export default {
   border-radius: 15px;
 }
 
-.form {
-  background-color: transparent!important;
-  font-weight: bold;
-  font-size: 1.2rem;
-  border-radius: 10px;
-  margin-bottom: 22px;
-  text-align: center;
-  color: #2596be;
+.budget-card {
+  transition: all 0.3s ease;
+}
+
+.budget-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  letter-spacing: 0.0333333333em;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.quick-actions {
+  margin-top: 2rem;
+}
+
+.v-btn {
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.chart-container {
+  min-height: 300px;
+  position: relative;
 }
 </style>

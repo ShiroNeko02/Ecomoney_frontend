@@ -144,7 +144,7 @@ export default {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -163,10 +163,11 @@ export default {
       }
     },
     async stock(){
-      const current_id_user = await userService.getCurrentUserId();
+      const current_user = await userService.getCurrentUser();
+      const current_id_user = current_user.id_user;
       const suggestionData = {
         content : this.responseMessage,
-        user_id : current_id_user,
+        id_user : current_id_user,
       }
       try {
         console.log(suggestionData);
@@ -175,7 +176,7 @@ export default {
         this.responseMessage = "";
         this.suggestionData ={
           content : "",
-          user_id:""
+          id_user:""
         }
       } catch (error) {
         console.error("Error adding device:", error);
@@ -199,9 +200,6 @@ export default {
   border-radius: 15px;
 }
 
-.v-form{
-  padding: 16px 0;
-}
 
 .form-card {
   background-color: #f9f9f9 !important;
@@ -210,7 +208,7 @@ export default {
   padding: 20px;
 }
 
-.v-select .v-label {
+ .v-select .v-label {
   color: #000 !important; /* Label noir */
   font-weight: bold;
 }
@@ -235,10 +233,6 @@ export default {
 
 .cont{
   padding-bottom : 20px;
-}
-
-.v-row {
-  margin : -20px;
 }
 
 </style>

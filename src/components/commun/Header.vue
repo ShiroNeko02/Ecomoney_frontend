@@ -4,12 +4,10 @@
     <v-app-bar-nav-icon size="40" color="#2596be" @click="goToInfo"></v-app-bar-nav-icon>
 
     <!-- Titre -->
-    <v-spacer></v-spacer>
     <v-app-bar-title class="text-center">{{ title }}</v-app-bar-title>
-    <v-spacer></v-spacer>
 
     <!-- Logo -->
-    <v-img src="@/assets/logo.png" max-height="30" max-width="30" contain class="mr-4"></v-img>
+    <v-img src="@/assets/logo.png" max-height="40" max-width="40" contain class="mr-4"></v-img>
   </v-app-bar>
 </template>
 
@@ -30,7 +28,7 @@ export default {
         this.$router.push("/info"); // Si on n'est pas sur la page Info, on y va
       }
     },
-  },  
+  },
 };
 </script>
 
@@ -51,8 +49,8 @@ export default {
 }
 
 .v-spacer {
-  flex-grow: 0; 
-  flex-shrink: 0; 
-  flex-basis: 8px; 
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 8px;
 }
 </style>

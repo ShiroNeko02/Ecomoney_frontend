@@ -3,7 +3,7 @@ import axios from "axios";
 // Backend API base URL from .env
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
   headers: {
@@ -11,15 +11,43 @@ export const api = axios.create({
   },
 });
 
-// Function to handle errors
+// Ajouter l'intercepteur pour les requêtes
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Pour gérer la déconnexion automatique
 const handleRequest = async (request) => {
   try {
     const response = await request();
     return response.data;
   } catch (error) {
-    console.error("API Error:", error.response?.data || error.message);
-    throw error;
-  }
+    console.error('API Error Details:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+
+    if (error.response?.status === 401) {
+      // Si le token est invalide ou expiré, déconnecter l'utilisateur
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/signIn';
+    }
+    throw {
+      ...error,
+      message: error.response?.data?.message || error.message,
+      details: error.response?.data
+    };  }
 };
 
 export const deviceService = {
@@ -44,29 +72,64 @@ export const deviceUserService = {
 
 export const userService = {
   // Get current user data
-  getCurrentUser: () => handleRequest(() => api.get("/users")),
+  getCurrentUser: () => handleRequest(() => api.get("/user")),
 
   // Get current user id
-  getCurrentUserId: () => handleRequest(() => api.get("/user-id")),
+  getCurrentUserId: () => handleRequest(() => api.get("/user/id")),
 
   // Sign in (login) a user
-  signIn: (userData) => handleRequest(() => api.post(`/users/login`, userData)),
+  signIn: async (userData) => {
+    try {
+      const response = await api.post("/user/login", userData);
+      const { access_token, ...user } = response.data;
+      if (access_token) {
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('user', JSON.stringify(user));
+      }
+      return response.data;
+    } catch (error) {
+      console.error("SignIn Error:", error);
+      throw error;
+    }
+  },
 
   // Sign up a new user
-  signUp: (userData) => handleRequest(() => api.post(`/users/signup`, userData)),
+  signUp: (userData) => handleRequest(() => api.post("/user/signup", userData)),
 
   // Sign out (logout) a user
-  signOut: () => handleRequest(() => api.post(`/users/logout`)),
+  signOut: async () => {
+    const token = localStorage.getItem('token');
+    try {
+      await api.post("/user/logout", null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    } catch (error) {
+      console.error("SignOut Error:", error);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
+  },
 
   // Update user data (other than consumption goal)
-  updateUser: (id, updateData) => handleRequest(() => api.put(`/users/${id}`, updateData)),
+  updateUser: (updateData) => handleRequest(() => api.put("/user/profile", updateData)),
 
   // Update user's consumption goal (after sign-up)
-  updateConsumptionGoal: (id, goal) =>
-    handleRequest(() => api.put(`/users/${id}/consumption_goal`, { consumption_goal_euros: goal })),
+  updateConsumptionGoal: (goal) =>
+    handleRequest(() => api.put("/user/goal", { consumption_goal_euros: goal })),
+
+  // Update password
+  changePassword: (currentPassword, newPassword) =>
+    handleRequest(() => api.put("/user/password", { current_password: currentPassword, new_password: newPassword })),
+
+ // Send password reset email
+  requestPasswordReset: (email) =>
+    handleRequest(() => api.post("/user/password/reset", { email })),
 
   // Delete user account
-  deleteUser: (id) => handleRequest(() => api.delete(`/users/${id}`)),
+  deleteUser: () => handleRequest(() => api.delete("/user")),
 };
 
 export const suggestionService = {
