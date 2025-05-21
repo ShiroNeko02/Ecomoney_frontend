@@ -102,9 +102,15 @@ export const roomService = {
 export const consumptionsDevicesUsersService = {
   getConsumptions: () => handleRequest(() => api.get("/consumption_device_users")),
   getConsumptionById: (id) => handleRequest(() => api.get(`/consumption_device_users/${id}`)),
+  getConsumptionByIdDeviceUser: (id) => handleRequest(() => api.get(`/consumption_device_users/device_user_id/${id}`)),
   createConsumption: (consumptionData) =>
     handleRequest(() => api.post(`/consumption_device_users/${consumptionData}`, consumptionData)),
   updateConsumption: (id) =>
     handleRequest(() => api.post(`/consumption_device_users/${id}`)),
   deleteConsumption: (id) => handleRequest(() => api.delete(`/consumption_device_users/${id}`)),
+}
+
+export const operationsService = {
+  filtre:(device_user_id,startDate,endDate,period) => handleRequest(() => api.post(`/consumption/summary${device_user_id}&${startDate}${endDate}&${period}`)),
+  remain: () => handleRequest(() => api.get(`/consumption/budget/remaining`)),
 }
