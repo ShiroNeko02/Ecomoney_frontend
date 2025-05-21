@@ -11,13 +11,10 @@
           </v-col>
         </v-row>
       </v-container>
-
+      <OptionButton title="Set Budget Goal" @click="goToConsumptionGoal" />
       <OptionButton title="Change my password" @click="goToChangePassword" />
-
-      <OptionButton title="Change my informations"  />
-
+      <OptionButton title="Change my informations" @click="goToChangeInformation" />
       <OptionButton title="Delete my account" @click="confirmDeleteAccount" />
-
       <OptionButton title="Log Out" @click="signOut" />
 
       <!-- Notification delete -->
@@ -26,8 +23,8 @@
           <v-card-title style="color:red;">Alert</v-card-title>
           <v-card-text style="color: black;">Are you sure you want to delete your account? The data will not be recoverable</v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn color="green">No</v-btn>
-            <v-btn color="red" >Yes</v-btn>
+            <v-btn color="green" @click="dialog = false">No</v-btn>
+            <v-btn color="red" @click="deleteAccount">Yes</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -39,65 +36,96 @@
 </template>
 
 
-  <script>
+<script>
     import Header from "@/components/commun/Header.vue";
     import Footer from "@/components/commun/Footer.vue";
     import OptionButton from "@/components/button/OptionButton.vue";
     import '@mdi/font/css/materialdesignicons.css';
     import {userService} from "@/services/api.js";
+    import { eventBus } from '@/utils/EventBusManager.js';
+
 
     // Creer le lien avec autres pages
     export default {
-        name: 'User',
-        components: {
-          // eslint-disable-next-line vue/no-reserved-component-names
-          Header, Footer, OptionButton
-        },
-        data() {
-          return {
-            dialog: false,
-            user: {
-              email: "",
-              password: ""
-            }
-          };
-        },
-        mounted() {
-          const savedUser = localStorage.getItem("user");
-          if (savedUser) {
-            this.user = JSON.parse(savedUser);
+      name: 'User',
+      components: {
+        Header,
+        Footer,
+        OptionButton
+      },
+      data() {
+        return {
+          dialog: false,
+          user: {
+            first_name: "",
+            last_name: "",
+            email: ""
+          }
+        };
+      },
+      mounted() {
+        eventBus.on('user-updated', this.updateUserData);
+        this.loadUserData();
+      },
+      beforeUnmount() {
+        eventBus.off('user-updated', this.updateUserData);
+      },
+      methods: {
+        async loadUserData() {
+          try {
+            const userData = await userService.getCurrentUser();
+            console.log('Données utilisateur chargées:', userData);
+            this.user = userData;
+            localStorage.setItem('user', JSON.stringify(userData));
+          } catch (error) {
+            console.error('Erreur chargement données utilisateur:', error);
           }
         },
-        methods: {
-          async signOut() {
-            try {
-              await userService.signOut();
+        async updateUserData(data) {
+          console.log('Mise à jour des données utilisateur:', data);
+          await this.loadUserData();
+        },
+
+        async signOut() {
+          try {
+            await userService.signOut();
+          } finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            this.$router.push("/signIn");
+          }
+        },
+        goToChangePassword() {
+          this.$router.push("/changePassword");
+        },
+        confirmDeleteAccount() {
+          this.dialog = true;
+        },
+        goToChangeInformation() {
+          this.$router.push("/changeInformation");
+        },
+        goToConsumptionGoal() {
+          this.$router.push("/consumptionGoal");
+        },
+        async deleteAccount() {
+          try {
+            await userService.deleteUser();
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            this.$router.push("/signIn");
+          } catch (error) {
+            console.error("Error during account deletion:", error);
+            if (error.response?.status === 401) {
+              localStorage.removeItem("token");
               localStorage.removeItem("user");
               this.$router.push("/signIn");
-            } catch (error) {
-              console.error("Error during sign out:", error);
-            }
-          },
-          goToChangePassword() {
-            this.$router.push("/changePassword");
-          },
-          confirmDeleteAccount() {
-            this.dialog = true;
-          },
-          async deleteAccount() {
-            try {
-              await userService.delete();
-              localStorage.removeItem("user");
-              this.$router.push("/signIn");
-            } catch (error) {
-              console.error("Error during sign out:", error);
             }
           }
-        }
+          this.dialog = false;
+          }
+      }
     };
-  </script>
-
-
+</script>
 
   <style scoped>
   .fill-height {

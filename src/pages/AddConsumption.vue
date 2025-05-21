@@ -200,10 +200,11 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
       }
     },
     async stock(){
-      const current_id_user = await userService.getCurrentUserId();
+      const current_user = await userService.getCurrentUser();
+      const current_id_user = current_user.id_user;
       const suggestionData = {
         content : this.responseMessage,
-        user_id : current_id_user,
+        id_user : current_id_user,
       }
       try {
         console.log(suggestionData);
@@ -212,7 +213,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         this.responseMessage = "";
         this.suggestionData ={
           content : "",
-          user_id:""
+          id_user:""
         }
       } catch (error) {
         console.error("Error adding device:", error);
@@ -236,9 +237,6 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
   border-radius: 15px;
 }
 
-.v-form{
-  padding: 16px 0;
-}
 
 .form-card {
   background-color: #f9f9f9 !important;
@@ -247,7 +245,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
   padding: 20px;
 }
 
-.v-select .v-label {
+ .v-select .v-label {
   color: #000 !important; /* Label noir */
   font-weight: bold;
 }
@@ -272,10 +270,6 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
 .cont{
   padding-bottom : 20px;
-}
-
-.v-row {
-  margin : -20px;
 }
 
 </style>

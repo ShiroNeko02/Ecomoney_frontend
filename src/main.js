@@ -10,6 +10,7 @@ import { registerPlugins } from '@/plugins'
 // Components
 import App from './App.vue'
 import router from './router';
+import { createPinia } from 'pinia'
 
 // Composables
 import { createApp } from 'vue'
@@ -20,3 +21,4 @@ registerPlugins(app)
 
 app.mount('#app')
 app.use(router);
+app.use(createPinia())

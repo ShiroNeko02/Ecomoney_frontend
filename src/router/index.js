@@ -13,6 +13,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes :[
     { path: '/', redirect: '/signIn' },
+    {
+      path: '/reset-password',
+      name: 'ResetPassword',
+      component: () => import('@/pages/ResetPassword.vue')
+    },
+    {
+      path: '/changeInformation',
+      name: 'ChangeInformation',
+      component: () => import('@/pages/ChangeUserInformation.vue')
+    },
     ...routes,
   ],
 })
