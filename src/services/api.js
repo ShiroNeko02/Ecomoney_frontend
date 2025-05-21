@@ -116,6 +116,9 @@ export const userService = {
   // Update user data (other than consumption goal)
   updateUser: (updateData) => handleRequest(() => api.put("/user/profile", updateData)),
 
+  // Get current goal
+  getCurrentGoal: () => handleRequest(() => api.get("/user/goal")),
+
   // Update user's consumption goal (after sign-up)
   updateConsumptionGoal: (goal) =>
     handleRequest(() => api.put("/user/goal", { consumption_goal_euros: goal })),
@@ -135,10 +138,13 @@ export const userService = {
 export const suggestionService = {
   getSuggestions: () => handleRequest(() => api.get("/suggestions")),
   getSuggestionsById: (id) => handleRequest(() => api.get(`/suggestions/${id}`)),
+
   createSuggestion: (suggestionData) =>
     handleRequest(() => api.post("/suggestions", suggestionData)),
+
   updateSuggestion: (id, updateData) =>
     handleRequest(() => api.put(`/suggestions/${id}`, updateData)),
+
   deleteSuggestion: (id) => handleRequest(() => api.delete(`/suggestions/${id}`)),
 };
 

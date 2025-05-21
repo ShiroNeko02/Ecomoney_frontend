@@ -25,7 +25,7 @@
               <span class="ml-3 text-subtitle-1 text-black font-weight-medium">Budget Status</span>
             </v-col>
 
-            <v-col cols="6" class="text-right">
+            <v-col cols="6" class="text-right text-black">
               <div v-if="loading">
                 <v-skeleton-loader type="text" width="100"></v-skeleton-loader>
               </div>
@@ -50,11 +50,13 @@
           </v-row>
         </v-card>
 
+        <BudgetHistoryChart />
+
         <!-- Quick Actions -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
-          <v-row>
+          <v-row class="align-content-center">
             <v-col cols="12">
-              <h3 class="text-h6 mb-4">Quick Actions</h3>
+              <h3 class="text-h6 mb-4 text-black">Quick Actions</h3>
               <v-btn
                 color="primary"
                 class="mr-2"
@@ -81,10 +83,12 @@
 <script>
 import BarChart from "@/components/chart/BarChart.vue";
 import { userService } from "@/services/api.js";
+import BudgetHistoryChart from "@/pages/BudgetHistoryChart.vue";
 
 export default {
   name: "Home",
   components: {
+    BudgetHistoryChart,
     BarChart,
   },
   data() {
@@ -121,12 +125,12 @@ export default {
     async loadBudgetData() {
       this.loading = true;
       try {
-        const userData = await userService.getCurrentUser();
-        if (userData && userData.consumption_goal_euros !== undefined) {
-          this.budget.goal = userData.consumption_goal_euros;
+        const goalData = await userService.getCurrentGoal();
+        if (goalData && goalData.consumption_goal_euros !== undefined) {
+          this.budget.goal = goalData.consumption_goal_euros;
           // Add calculation for remaining budget and percentage here
           // This is a placeholder - implement actual calculation based on your data
-          this.budget.remaining = userData.consumption_goal_euros * 0.8; // Example
+          this.budget.remaining = goalData.consumption_goal_euros * 0.8;
           this.budget.percentage = (this.budget.remaining / this.budget.goal) * 100;
         }
       } catch (error) {
@@ -135,6 +139,7 @@ export default {
         this.loading = false;
       }
     },
+
     formatAmount(amount) {
       return parseFloat(amount).toLocaleString('fr-FR', {
         minimumFractionDigits: 2,
