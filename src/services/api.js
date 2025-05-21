@@ -128,6 +128,10 @@ export const userService = {
   requestPasswordReset: (email) =>
     handleRequest(() => api.post("/user/password/reset", { email })),
 
+  // Choose the new password after reset
+  chooseNewPassword: (newPassword, access_token) =>
+    handleRequest(() => api.put("/user/password/choose-new", { new_password: newPassword, access_token: access_token })),
+
   // Delete user account
   deleteUser: () => handleRequest(() => api.delete("/user")),
 };
