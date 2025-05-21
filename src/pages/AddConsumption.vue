@@ -179,7 +179,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -200,11 +200,10 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
       }
     },
     async stock(){
-      const current_user = await userService.getCurrentUser();
-      const current_id_user = current_user.id_user;
+      const current_id_user = await userService.getCurrentUserId();
       const suggestionData = {
         content : this.responseMessage,
-        id_user : current_id_user,
+        user_id : current_id_user,
       }
       try {
         console.log(suggestionData);
@@ -213,7 +212,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         this.responseMessage = "";
         this.suggestionData ={
           content : "",
-          id_user:""
+          user_id:""
         }
       } catch (error) {
         console.error("Error adding device:", error);
