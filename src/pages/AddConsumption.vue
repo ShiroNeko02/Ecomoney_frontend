@@ -44,7 +44,7 @@
         <!-- ALERT BOX -->
         <v-dialog v-model="dialog" max-width="500px">
           <v-card class="bg-light">
-            <v-card-title class="headline text-red">
+            <v-card-title class="headline">
               {{ errorDialogMode ? 'Error' : 'Success' }}
             </v-card-title>
 
