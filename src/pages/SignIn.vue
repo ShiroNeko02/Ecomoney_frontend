@@ -18,10 +18,22 @@
         <!-- Password -->
         <Input v-model="user.password" label="Password" placeholder="Password" type="password" class="mb-6" required />
 
+        <!-- Forgot Password Link -->
+        <div class="text-right mb-4">
+          <v-btn
+            variant="text"
+            color="#003a6a"
+            class="text-none"
+            @click="forgotPassword"
+          >
+            Forgot Password?
+          </v-btn>
+        </div>
+
         <!-- Button Sign In -->
-        <Button @click="signIn" class="mt-8" :disabled="loading || !formValid">
+        <Button type="submit" class="mt-8" :disabled="loading || !formValid">
           <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
-          <span v-else style="color:white;">Sign In</span>
+          <span v-else style="color:white">Sign In</span>
         </Button>
       </v-form>
 
@@ -82,6 +94,8 @@
     },
     methods: {
       async signIn() {
+        console.log("SignIn method called");
+
         if (!this.formValid) {
           this.dialogTitle = "Error";
           this.responseMessage = "All fields are required";
@@ -91,13 +105,17 @@
 
         this.loading = true;
         try {
+          console.log("Sending sign-in request", this.user);
           await userService.signIn(this.user);
 
+
+          console.log("Sign-in successful");
           setTimeout(() => {
             this.$router.push("/home");
           }, 1000);
 
         } catch (error) {
+          console.error("Error during sign-in:", error);
           setTimeout(() => {
             console.error("Error:", error);
             this.dialogTitle = "Error";
@@ -110,6 +128,9 @@
       },
       signUp() {
         this.$router.push("/signUp");
+      },
+      forgotPassword() {
+        this.$router.push('/reset-password');
       },
     },
     name: "SignIn",

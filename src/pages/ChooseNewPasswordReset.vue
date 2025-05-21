@@ -1,21 +1,12 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Change Password" />
+    <Header title="Choose New Password" />
 
     <v-main>
       <v-container>
         <!-- Form -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form ref="form" v-model="isFormValid">
-            <div class="cont-1">
-              <Input
-                v-model="current_password"
-                label="Current Password"
-                class="custom-field"
-                type="password"
-                :rules="[v => !!v || 'Current password is required']"
-              />
-            </div>
             <div class="cont-1">
               <Input
                 v-model="new_password"
@@ -84,7 +75,7 @@ import Button from "@/components/button/Button.vue";
 import { userService } from "@/services/api.js";
 
 export default {
-  name: "ChangePassword",
+  name: "ChooseNewPassword",
   components: {
     Button,
     Footer,
@@ -94,7 +85,7 @@ export default {
   data() {
     return {
       current_user: null,
-      current_password: "",
+      access_token: "",
       new_password: "",
       confirm_new_password: "",
       dialog: false,
@@ -116,6 +107,7 @@ export default {
     if (userData) {
       this.current_user = JSON.parse(userData);
     }
+    this.access_token = new URLSearchParams(window.location.hash.slice(1)).get('access_token');
   },
   methods: {
     async submit() {
@@ -123,7 +115,7 @@ export default {
         return;
       }
 
-      if (!this.current_password || !this.new_password || !this.confirm_new_password) {
+      if (!this.new_password || !this.confirm_new_password) {
         this.showNotification("Error", "All fields are required.");
         return;
       }
@@ -135,18 +127,17 @@ export default {
 
       this.loading = true;
       try {
-        const response = await userService.changePassword(
-          this.current_password,
-          this.new_password
+        const response = await userService.chooseNewPassword(
+          this.new_password,
+          this.access_token
         );
 
         this.showNotification("Success", response.message || "Password successfully changed.");
         this.resetForm();
+        this.$router.push("/signIn");
       } catch (error) {
         let errorMessage = "An error occurred.";
-        if (error.response?.status === 401) {
-          errorMessage = "Current password is incorrect.";
-        } else if (error.response?.data?.error) {
+        if (error.response?.data?.error) {
           errorMessage = error.response.data.error;
         }
         this.showNotification("Error", errorMessage);
@@ -162,7 +153,6 @@ export default {
     },
 
     resetForm() {
-      this.current_password = "";
       this.new_password = "";
       this.confirm_new_password = "";
       this.$refs.form.resetValidation();
