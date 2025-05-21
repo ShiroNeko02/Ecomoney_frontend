@@ -18,16 +18,16 @@
 
         <v-form>
           <!-- Select Device -->
-          <div style="margin-top:20px;"><ComboBox
-            label="Device"
-            v-model="device"
-            :items="deviceNames"
-          /></div>
-
-          <!-- Bouton de soumission -->
-          <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button @click="submit" class="mt-6">Submit</Button></div></div>
+          <div style="margin-top:20px;">
+            <ComboBox
+              label="Device"
+              v-model="selectedDeviceName"
+              :items="deviceNames"
+            />
+          </div>
         </v-form>
 
+        <DetailDeviceList2  />
       </v-container>
     </v-main>
 
@@ -37,35 +37,34 @@
 
 <script>
 import Header from "@/components/commun/Header.vue";
-  import Footer from "@/components/commun/Footer.vue";
-  import Input from "@/components/input or select/Input.vue";
-  import Button from "@/components/button/Button.vue";
-  import RectangleButton from "@/components/button/RectangleButton.vue";
-  import ComboBox from "@/components/input or select/ComboBox.vue";
-import {deviceUserService} from "@/services/api.js";
+import Footer from "@/components/commun/Footer.vue";
+import Input from "@/components/input or select/Input.vue";
+import Button from "@/components/button/Button.vue";
+import RectangleButton from "@/components/button/RectangleButton.vue";
+import ComboBox from "@/components/input or select/ComboBox.vue";
+import DetailDeviceList2 from "@/components/item/DetailDeviceList.vue";
+import { deviceUserService } from "@/services/api.js";
 
 export default {
-  name:"DetailDevice",
+  name: "DetailDevice",
   components: {
-    ComboBox,
-    RectangleButton,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Header,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Footer,
     // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
-    Input,
-    // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
-    Button
+    ComboBox, RectangleButton, Header, Footer, Input, Button, DetailDeviceList2,
   },
   data() {
     return {
       devices_user: [],
-    }
+      selectedDeviceName: "",
+    };
   },
   computed: {
     deviceNames() {
-      return this.devices_user.map(device => device.name_device_user);
+      return this.devices_user.map((device) => device.name_device_user);
+    },
+    selectedDevice() {
+      return this.devices_user.find(
+        (device) => device.name_device_user === this.selectedDeviceName
+      ) || null;
     },
   },
   async created() {
@@ -79,10 +78,17 @@ export default {
   methods: {
     searchPeriod() {
       this.$router.push("/detailPeriod");
+    },
+  },
+  watch: {
+    selectedDeviceName(newValue) {
+      // Trigger consumptions data fetch whenever the device is selected
+      console.log('Selected device changed:', newValue);
     }
   }
 };
 </script>
+
 
 <style scoped>
 .bg-light {

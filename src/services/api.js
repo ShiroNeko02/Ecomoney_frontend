@@ -98,3 +98,13 @@ export const roomService = {
     handleRequest(() => api.post(`/rooms/${id}`)),
   deleteRoom: (id) => handleRequest(() => api.delete(`/rooms/${id}`)),
 }
+
+export const consumptionsDevicesUsersService = {
+  getConsumptions: () => handleRequest(() => api.get("/consumption_device_users")),
+  getConsumptionById: (id) => handleRequest(() => api.get(`/consumption_device_users/${id}`)),
+  createConsumption: (consumptionData) =>
+    handleRequest(() => api.post(`/consumption_device_users/${consumptionData}`, consumptionData)),
+  updateConsumption: (id) =>
+    handleRequest(() => api.post(`/consumption_device_users/${id}`)),
+  deleteConsumption: (id) => handleRequest(() => api.delete(`/consumption_device_users/${id}`)),
+}
