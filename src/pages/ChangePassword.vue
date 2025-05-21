@@ -62,7 +62,7 @@
             <v-progress-circular indeterminate color="blue"></v-progress-circular>
             Loading...
           </v-card-text>
-          <v-card-text v-else>
+          <v-card-text class="text-black" v-else>
             {{ responseMessage }}
           </v-card-text>
           <v-card-actions class="justify-center">
@@ -86,10 +86,8 @@ import { userService } from "@/services/api.js";
 export default {
   name: "ChangePassword",
   components: {
-    Button,
-    Footer,
-    Header,
-    Input
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Button, Footer, Header, Input
   },
   data() {
     return {

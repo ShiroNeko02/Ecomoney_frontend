@@ -30,8 +30,10 @@
       <!-- Notification -->
       <v-dialog v-model="dialog" max-width="450px">
         <v-card class="bg-light">
-          <v-card-title>Result</v-card-title>
-          <v-card-text>{{ responseMessage }}</v-card-text>
+          <v-card-title :class="{ 'error-title': isError, 'success-title': !isError }">
+            {{ isError ? 'Error' : 'Success' }}
+          </v-card-title>
+          <v-card-text class="text-black">{{ responseMessage }}</v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="dialog = false">OK</v-btn>
           </v-card-actions>
@@ -79,6 +81,7 @@ export default {
       list_devices_user :[],
       list_devices_ref :[],
       dialog: false,
+      isError: false,
       isSubmitting: false,
       responseMessage: "",
     };
@@ -107,6 +110,17 @@ export default {
     },
 
     async submit() {
+      if (
+        !this.device_user.name_device_user ||
+        !this.device_user.avg_consumption_hours_per_week
+      ) {
+        this.responseMessage = "Please fill all fields";
+        this.dialog = true;
+        this.isError = true;
+        this.isSubmitting = false;
+        return;
+      }
+
       if (this.isSubmitting) return;
       this.isSubmitting = true;
 
@@ -126,6 +140,7 @@ export default {
         // Success
         this.responseMessage = "Device successfully added!";
         this.dialog = true;
+        this.isError = false;
 
         this.device_user = {
           name_device_user: "",
@@ -140,6 +155,7 @@ export default {
         // Failed
         this.responseMessage = error.response?.data?.error || "Failed to add device.";
         this.dialog = true;
+        this.isError = true;
       } finally {
         this.isSubmitting = false;
       }
@@ -205,4 +221,11 @@ export default {
   padding: 10px 0;
 }
 
+.error-title {
+  color: red;
+}
+
+.success-title {
+  color: forestgreen;
+}
 </style>

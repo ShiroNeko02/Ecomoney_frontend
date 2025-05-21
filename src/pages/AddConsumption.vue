@@ -44,20 +44,31 @@
         <!-- ALERT BOX -->
         <v-dialog v-model="dialog" max-width="500px">
           <v-card class="bg-light">
-            <v-card-title class="headline" >Suggestion</v-card-title>
+            <v-card-title class="headline">
+              {{ errorDialogMode ? 'Error' : 'Success' }}
+            </v-card-title>
+
             <v-card-text v-if="loading">
               <v-progress-circular indeterminate color="blue"></v-progress-circular>
               Loading...
             </v-card-text>
+
             <v-card-text v-else>
               {{ responseMessage }}
             </v-card-text>
+
             <v-card-actions class="justify-center">
-              <v-btn color="green" @click="stock">Stock</v-btn>
-              <v-btn color="red" @click="dialog = false">Don't Stock</v-btn>
+              <template v-if="errorDialogMode">
+                <v-btn color="primary" @click="dialog = false">OK</v-btn>
+              </template>
+              <template v-else>
+                <v-btn color="green" @click="stock">Stock</v-btn>
+                <v-btn color="red" @click="dialog = false">Don't Stock</v-btn>
+              </template>
             </v-card-actions>
           </v-card>
         </v-dialog>
+
 
       </v-container>
 
@@ -93,6 +104,7 @@ export default {
     return {
       devices_user: [],
       dialog: false,
+      errorDialogMode: false,
       responseMessage: "",
       loading: false,
       device: "",
@@ -153,9 +165,9 @@ export default {
     async submit(event) {
       event.preventDefault();
 
-      // Vérifier que tous les champs sont remplis
       if (!this.device || !this.objective || !this.duration) {
         this.responseMessage = "Please fill all fields!";
+        this.errorDialogMode = true;
         this.dialog = true;
         return;
       }
@@ -192,11 +204,12 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
         const data = await response.json();
         this.responseMessage = data.choices?.[0]?.message?.content || "No response received";
-
+        this.errorDialogMode = false;
       } catch (error) {
-        this.responseMessage = ` Error: ${error}`;
+        this.responseMessage = `Erreur : ${error.message || error}`;
+        this.errorDialogMode = true;
       } finally {
-        this.loading = false; //  Désactiver le chargement une fois la réponse reçue
+        this.loading = false;
       }
     },
     async stock(){
@@ -206,21 +219,23 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         user_id : current_id_user,
       }
       try {
-        console.log(suggestionData);
         await suggestionService.createSuggestion(suggestionData);
         this.dialog = false;
         this.responseMessage = "";
+        this.errorDialogMode = false;
+        this.suggestionData = {
+          content: "",
+          id_user: ""
+        };
         this.suggestionData ={
           content : "",
           user_id:""
         }
       } catch (error) {
-        console.error("Error adding device:", error);
-
-        // Failed
-        this.responseMessage = error.response?.data?.error || "Failed to add device.";
+        this.responseMessage = error.response?.data?.error ;
         this.dialog = true;
-      }
+        this.errorDialogMode = true;
+        }
     },
     goToDevice() {
       this.$router.push("/addDevice");
@@ -256,7 +271,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
 .custom-field .v-select__selections,
 .custom-field input {
-  color: #000 !important; /* Texte noir */
+  color: #000 !important;
 }
 
 .v-card--variant-elevated {
