@@ -20,6 +20,7 @@
               :rules="formRules.name"
             />
 
+            <!--
             <Input
               v-model="userData.email"
               label="Email"
@@ -27,6 +28,7 @@
               type="email"
               :rules="formRules.email"
             />
+            -->
 
             <div class="d-flex justify-center width-100 mt-6">
               <Button @click="submit" :disabled="!isFormValid || loading">
@@ -71,10 +73,8 @@ import { eventBus } from '@/utils/EventBusManager.js';
 export default {
   name: "ChangeInformation",
   components: {
-    Header,
-    Footer,
-    Input,
-    Button
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Header, Footer, Input, Button
   },
   data() {
     return {
@@ -109,8 +109,7 @@ export default {
         const user = await userService.getCurrentUser();
         this.userData = {
           first_name: user.first_name || '',
-          last_name: user.last_name || '',
-          email: user.email || ''
+          last_name: user.last_name || ''
         };
       } catch (error) {
         console.error("Error loading user data:", error);
