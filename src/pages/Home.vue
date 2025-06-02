@@ -19,16 +19,16 @@
                 :size="40"
                 width="4"
               ></v-progress-circular>
-              <span class="ml-3 text-subtitle-1 text-black font-weight-medium">Budget Status</span>
+              <span class="ml-3 text-subtitle-1 font-weight-medium">Budget Status</span>
             </v-col>
 
-            <v-col cols="6" class="text-right text-black">
+            <v-col cols="6" class="text-right">
               <div v-if="loading">
                 <v-skeleton-loader type="text" width="100"></v-skeleton-loader>
               </div>
               <template v-else>
                 <div>
-                  <span class="text-h5 font-weight-bold text-black">
+                  <span class="text-h5 font-weight-bold">
                     {{ formatAmount(budget.remaining) }}€
                   </span>
                 </div>
@@ -58,7 +58,7 @@
         <v-card class="mt-6 pa-4 bg-light elevation-20">
           <v-row class="align-content-center">
             <v-col cols="12">
-              <h3 class="text-h6 mb-4 text-black">Quick Actions</h3>
+              <h3 class="text-h6 mb-4">Quick Actions</h3>
               <v-btn
                 color="primary"
                 class="mr-2"
@@ -84,7 +84,7 @@
 <script>
 import BarChart from "@/components/chart/BarChart.vue";
 import { userService } from "@/services/api.js";
-import BudgetHistoryChart from "@/pages/BudgetHistoryChart.vue";
+import BudgetHistoryChart from "@/components/chart/BudgetHistoryChart.vue";
 
 export default {
   name: "Home",
@@ -153,6 +153,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color : #003a6a;
+}
+
 .bg-light {
   height: 100%;
   background-color: #fff !important;

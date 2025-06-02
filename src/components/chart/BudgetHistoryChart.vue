@@ -1,9 +1,9 @@
    <!-- Nouveau composant BudgetHistory.vue -->
    <template>
      <v-card class="mt-6 pa-4 bg-light elevation-4">
-       <h3 class="text-h6 mb-4 text-black">Budget History</h3>
+       <h3 class="text-h6 mb-4">Budget History</h3>
        <v-chart v-if="!loading" class="chart" :option="option" />
-       <v-skeleton-loader v-else type="chart" class="mx-auto text-black"></v-skeleton-loader>
+       <v-skeleton-loader v-else type="chart" class="mx-auto"></v-skeleton-loader>
      </v-card>
    </template>
 

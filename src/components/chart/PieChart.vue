@@ -43,7 +43,7 @@ export default {
             font: {
               size: 16
             },
-            color: 'black'
+            color: '#003a6a'
           },
           legend: {
             position: 'bottom',

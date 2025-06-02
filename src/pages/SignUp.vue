@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height d-flex justify-center align-center">
-    <v-sheet class="login-card pa-6" elevation="10">
+    <v-sheet class="login-card pa-2" elevation="10">
       <v-container class="d-flex flex-column align-center" style="height: 100%; margin-top:30px;">
         <v-row justify="center">
           <v-avatar size="90">
@@ -8,7 +8,7 @@
           </v-avatar>
         </v-row>
 
-        <h2 class="text-center font-weight-bold mt-8 title-color">Sign Up</h2>
+        <h2 class="text-center font-weight-bold mt-4 mb-4 title-color">Sign Up</h2>
 
         <v-form ref="form" v-model="isFormValid" @submit.prevent="signUp" style="width: 100%;">
           <div class="cont-1">
@@ -54,7 +54,7 @@
               :rules="passwordRules"
               required
             />
-            <div class="password-requirements text-caption mt-1">
+            <div class="password-requirements text-caption mt-1 ml-4">
               Password must:
               <ul>
                 <li>Be at least 6 characters long</li>
@@ -92,7 +92,7 @@
           <span style="color:#003a6a;">Or</span>
         </div>
 
-        <Button @click="goToSignIn" style="margin-bottom:50px;">Sign In</Button>
+        <Button @click="goToSignIn" style="margin-bottom:30px;">Sign In</Button>
 
         <!-- Message d'erreur -->
         <v-dialog v-model="dialog" max-width="500px">
@@ -121,10 +121,8 @@ import { userService } from "@/services/api.js";
 export default {
   name: "SignUp",
   components: {
-    Header,
-    Footer,
-    Input,
-    Button
+    // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
+    Header, Footer, Input, Button
   },
   data() {
     return {
@@ -187,7 +185,7 @@ export default {
           consumption_goal_euros: 0
         };
 
-        const response = await userService.signUp(signUpData);
+        await userService.signUp(signUpData);
         this.success = true;
         this.showNotification(
           "Success",
@@ -297,5 +295,13 @@ export default {
 
 span {
   color: #003a6a;
+}
+
+button:disabled,
+button[disabled] {
+  background-color: grey !important;
+  color: white !important;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 </style>

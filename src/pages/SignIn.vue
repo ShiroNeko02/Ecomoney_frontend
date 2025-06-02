@@ -204,4 +204,12 @@
     color: #003a6a;
   }
 
+  button:disabled,
+  button[disabled] {
+    background-color: grey !important;
+    color: white !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
   </style>

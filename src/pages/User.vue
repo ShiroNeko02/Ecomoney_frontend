@@ -1,157 +1,288 @@
 <template>
-  <v-app class="bg-light">
+  <v-app class="bg-app">
     <Header title="User's space" />
 
     <v-main>
-      <v-container class="mt-12 d-flex justify-center align-center">
-        <v-row align="center" justify="center">
-          <v-col cols="auto" class="text-center">
-            <div class="circle-icon"><v-icon size="50" color="white">mdi-account</v-icon></div>
-            <span class="text-h6 d-block mt-2">{{user.first_name}}</span>
+      <v-container class="mt-5 d-flex justify-center">
+        <v-card class="user-card" elevation="6">
+          <v-card-text class="text-center">
+            <div class="profile-icon">
+              <v-icon size="48" color="white">mdi-account-circle</v-icon>
+            </div>
+            <h3 class="user-name">{{ user.first_name }} {{ user.last_name }}</h3>
+            <p class="user-email">{{ user.email }}</p>
+            <v-chip class="mt-2" color="primary" text-color="white" size="small">Active Account</v-chip>
+          </v-card-text>
+        </v-card>
+      </v-container>
+
+      <v-container class="card">
+        <h3 class="user-name mt-4 mb-4">Accounts settings</h3>
+        <v-row dense>
+          <v-col cols="11" v-for="(item, index) in settings" :key="index">
+            <v-card elevation="3" :class="['setting-button']" :color="item.bg" @click="item.action">
+              <v-card-text class="d-flex align-center ml-3 mt-1">
+                <div
+                  class="icon-box d-flex align-center justify-center"
+                >
+                  <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
+                </div>
+                <span class="ml-3 font-weight-medium">{{ item.label }}</span>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
-      <OptionButton title="Set Budget Goal" @click="goToConsumptionGoal" />
-      <OptionButton title="Change my password" @click="goToChangePassword" />
-      <OptionButton title="Change my informations" @click="goToChangeInformation" />
-      <OptionButton title="Delete my account" @click="confirmDeleteAccount" />
-      <OptionButton title="Log Out" @click="signOut" />
 
-      <!-- Notification delete -->
-      <v-dialog v-model="dialog" max-width="450px">
+      <v-dialog v-model="dialog" max-width="450px" class="bg-light">
         <v-card class="bg-light">
-          <v-card-title style="color:red;">Alert</v-card-title>
-          <v-card-text style="color: black;">Are you sure you want to delete your account? The data will not be recoverable</v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn color="green" @click="dialog = false">No</v-btn>
-            <v-btn color="red" @click="deleteAccount">Yes</v-btn>
+          <v-card-title class="text-red font-weight-bold">⚠️ Alert</v-card-title>
+          <v-card-text>
+            Are you sure you want to delete your account? <br />
+            <strong>This action is irreversible.</strong>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn text color="grey" @click="dialog = false">Cancel</v-btn>
+            <v-btn color="red" @click="deleteAccount">Yes, Delete</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-
     </v-main>
 
     <Footer />
   </v-app>
 </template>
 
-
 <script>
-    import Header from "@/components/commun/Header.vue";
-    import Footer from "@/components/commun/Footer.vue";
-    import OptionButton from "@/components/button/OptionButton.vue";
-    import '@mdi/font/css/materialdesignicons.css';
-    import {userService} from "@/services/api.js";
-    import { eventBus } from '@/utils/EventBusManager.js';
+import Header from "@/components/commun/Header.vue";
+import Footer from "@/components/commun/Footer.vue";
+import { userService } from "@/services/api.js";
+import { eventBus } from "@/utils/EventBusManager.js";
 
-
-    // Creer le lien avec autres pages
-    export default {
-      name: 'User',
-      components: {
-        Header,
-        Footer,
-        OptionButton
+export default {
+  name: "User",
+  components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Header, Footer,
+  },
+  data() {
+    return {
+      dialog: false,
+      user: {
+        first_name: "",
+        last_name: "",
+        email: "",
       },
-      data() {
-        return {
-          dialog: false,
-          user: {
-            first_name: "",
-            last_name: "",
-            email: ""
-          }
-        };
-      },
-      mounted() {
-        eventBus.on('user-updated', this.updateUserData);
-        this.loadUserData();
-      },
-      beforeUnmount() {
-        eventBus.off('user-updated', this.updateUserData);
-      },
-      methods: {
-        async loadUserData() {
-          try {
-            const userData = await userService.getCurrentUser();
-            console.log('Données utilisateur chargées:', userData);
-            this.user = userData;
-            localStorage.setItem('user', JSON.stringify(userData));
-          } catch (error) {
-            console.error('Erreur chargement données utilisateur:', error);
-          }
+      settings: [
+        {
+          label: "Set Budget Goal",
+          icon: "mdi-cash",
+          iconColor: "green",
+          bg: "#dcfce7", // vert clair mais plus marqué
+          action: () => this.goToConsumptionGoal(),
         },
-        async updateUserData(data) {
-          console.log('Mise à jour des données utilisateur:', data);
-          await this.loadUserData();
+        {
+          label: "Change My Password",
+          icon: "mdi-lock",
+          iconColor: "blue",
+          bg: "#e0f2fe", // bleu clair modéré
+          action: () => this.goToChangePassword(),
         },
-
-        async signOut() {
-          try {
-            await userService.signOut();
-          } finally {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            this.$router.push("/signIn");
-          }
+        {
+          label: "Edit My Information",
+          icon: "mdi-account-edit",
+          iconColor: "indigo",
+          bg: "#e5e9ff", // indigo pastel
+          action: () => this.goToChangeInformation(),
         },
-        goToChangePassword() {
-          this.$router.push("/changePassword");
+        {
+          label: "Delete My Account",
+          icon: "mdi-delete",
+          iconColor: "red",
+          bg: "#feecec", // rouge léger mais visible
+          action: () => this.confirmDeleteAccount(),
         },
-        confirmDeleteAccount() {
-          this.dialog = true;
+        {
+          label: "Log Out",
+          icon: "mdi-logout",
+          iconColor: "grey",
+          bg: "#f3f4f6", // gris bleuté doux
+          action: () => this.signOut(),
         },
-        goToChangeInformation() {
-          this.$router.push("/changeInformation");
-        },
-        goToConsumptionGoal() {
-          this.$router.push("/consumptionGoal");
-        },
-        async deleteAccount() {
-          try {
-            await userService.deleteUser();
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            this.$router.push("/signIn");
-          } catch (error) {
-            console.error("Error during account deletion:", error);
-            if (error.response?.status === 401) {
-              localStorage.removeItem("token");
-              localStorage.removeItem("user");
-              this.$router.push("/signIn");
-            }
-          }
-          this.dialog = false;
-          }
-      }
+      ]
     };
+  },
+  mounted() {
+    eventBus.on("user-updated", this.updateUserData);
+    this.loadUserData();
+  },
+  beforeUnmount() {
+    eventBus.off("user-updated", this.updateUserData);
+  },
+  methods: {
+    async loadUserData() {
+      try {
+        const userData = await userService.getCurrentUser();
+        this.user = userData;
+        localStorage.setItem("user", JSON.stringify(userData));
+      } catch (error) {
+        console.error("Failed to load user data:", error);
+      }
+    },
+    async updateUserData(data) {
+      await this.loadUserData();
+    },
+    async signOut() {
+      try {
+        await userService.signOut();
+      } finally {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        this.$router.push("/signIn");
+      }
+    },
+    goToChangePassword() {
+      this.$router.push("/changePassword");
+    },
+    confirmDeleteAccount() {
+      this.dialog = true;
+    },
+    goToChangeInformation() {
+      this.$router.push("/changeInformation");
+    },
+    goToConsumptionGoal() {
+      this.$router.push("/consumptionGoal");
+    },
+    async deleteAccount() {
+      try {
+        await userService.deleteUser();
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        this.$router.push("/signIn");
+      } catch (error) {
+        console.error("Error during account deletion:", error);
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          this.$router.push("/signIn");
+        }
+      }
+      this.dialog = false;
+    },
+  },
+};
 </script>
 
-  <style scoped>
-  .fill-height {
-    min-height: calc(100vh - 80px);
-  }
+<style scoped>
+*{
+  color: #003a6a;
+}
 
-  .bg-light {
-    background-color: #fff !important;
-    border-radius: 15px;
-  }
+.bg-app {
+  background-color: #f5f8ff;
+  width: 100%;
+  height: 100%;
+}
 
-  .circle-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 80px;
+
+.user-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  padding: 5px;
+  background: ghostwhite;
+  margin-bottom: 32px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+.profile-icon {
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
   border-radius: 50%;
-  background-color: #003a63;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 auto;
-    }
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  margin-top: -50px;
+}
 
-  span {
-  font-size: 16px;
-  font-weight: bold;
-  color: #003a63;
-  }
+.user-name {
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 20px;
+}
 
-  </style>
+.user-email {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.settings-container {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.settings-title {
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e293b;
+  text-align: center;
+  font-size: 18px;
+}
+
+.setting-button {
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  min-height: 75px;
+  align-items: center;
+  text-align: center;
+}
+
+.setting-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.profile-icon[data-v-8976b1c1] {
+  margin-top : 0;
+}
+
+.v-container{
+  padding : 0;
+  margin-bottom: -22px;
+}
+
+.v-card-text {
+  font-size : 1.1rem;
+}
+
+.card{
+  margin: 10px 15px;
+}
+
+v-col{
+  width : 80%;
+}
+
+.v-row--dense > .v-col, .v-row--dense > [class*=v-col-] {
+  padding: 4px;
+  margin-bottom: 5px;
+}
+
+.icon-box {
+  background-color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>

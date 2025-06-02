@@ -27,14 +27,14 @@
 
             <!-- Current Goal Display -->
             <div class="text-center mt-6">
-              <p class="text-subtitle-1 text-black">Current Monthly Budget:</p>
+              <p class="text-subtitle-1">Current Monthly Budget:</p>
               <v-skeleton-loader
                 v-if="loading"
                 type="text"
                 class="mx-auto"
                 width="100px"
               ></v-skeleton-loader>
-              <p v-else class="text-h5 font-weight-bold text-black">{{ formatAmount(currentGoal) }}€</p>
+              <p v-else class="text-h5 font-weight-bold">{{ formatAmount(currentGoal) }}€</p>
               <v-btn
                 icon
                 small
@@ -63,14 +63,14 @@
         </v-card>
       </v-container>
 
-      <div class="mt-4 suggestions">
-        <p class="text-subtitle-2 text-black">Suggestions basées sur vos habitudes:</p>
+      <div class="mt-4 mr-4 ml-4 suggestions">
+        <p class="text-subtitle-2 ">Suggestions based on your habits:</p>
         <v-chip-group>
           <v-chip
             v-for="suggestion in budgetSuggestions"
             :key="suggestion.value"
             @click="goalAmount = suggestion.value"
-            color="primary text-black"
+            color="primary"
             outlined
           >
             {{ suggestion.label }}
@@ -81,12 +81,12 @@
       <!-- ALERT BOX -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card class="bg-light">
-          <v-card-title class="headline text-black">{{dialogTitle}}</v-card-title>
+          <v-card-title class="headline text-center" style=" color : #003a63;">{{dialogTitle}}</v-card-title>
           <v-card-text v-if="loading">
             <v-progress-circular indeterminate color="blue"></v-progress-circular>
             Loading...
           </v-card-text>
-          <v-card-text v-else class="text-black">
+          <v-card-text v-else>
             {{ responseMessage }}
           </v-card-text>
           <v-card-actions class="justify-center">
@@ -110,10 +110,8 @@ import { userService } from "@/services/api.js";
 export default {
   name: "ConsumptionGoal",
   components: {
-    Header,
-    Footer,
-    Input,
-    Button
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Header, Footer, Input, Button
   },
   data() {
     return {
@@ -220,6 +218,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color : #003a6a;
+}
+
 .bg-light {
   background-color: #fff !important;
   border-radius: 15px;

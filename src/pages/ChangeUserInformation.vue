@@ -43,14 +43,12 @@
       <!-- Notification -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card class="bg-light">
-          <v-card-title class="headline text-h5 text-center pa-4 text-black">
+          <v-card-title class="headline text-h5 text-center pa-4">
             {{ dialogTitle }}
           </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="text-center pa-4 text-black" style="min-height: 50px;">
+          <v-card-text class=" pa-6 pr-2" style="min-height: 50px;">
             {{ responseMessage }}
           </v-card-text>
-          <v-divider></v-divider>
           <v-card-actions class="justify-center pa-4">
             <v-btn color="primary" @click="handleDialogClose">OK</v-btn>
           </v-card-actions>
@@ -167,6 +165,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color : #003a6a;
+}
+
 .bg-light {
   background-color: #fff !important;
   border-radius: 15px;
@@ -186,5 +188,9 @@ export default {
 
 .width-100 {
   width: 100%;
+}
+
+v-dialog{
+  color : #003a63;
 }
 </style>

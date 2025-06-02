@@ -6,15 +6,27 @@
       <v-container>
         <!-- Change Form -->
         <v-container>
-          <v-row>
-            <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" >Add a consumption</RectangleButton></div>
-            </v-col>
-            <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToDevice" >Add a device</RectangleButton></div>
-            </v-col>
-          </v-row>
+          <div class="custom-toggle mt-4">
+            <v-btn
+              :class="{ active: selectedAction === 'consumption' }"
+              class="toggle-btn"
+              @click="selectAction('consumption')"
+              color="#2596be"
+            >
+              Add a consumption
+            </v-btn>
+            <v-btn
+              :class="{ active: selectedAction === 'device' }"
+              class="toggle-btn"
+              @click="selectAction('device')"
+              color="grey"
+            >
+              Add a device
+            </v-btn>
+          </div>
         </v-container>
+
+
 
         <!-- Formulaire -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
@@ -44,7 +56,7 @@
         <!-- ALERT BOX -->
         <v-dialog v-model="dialog" max-width="500px">
           <v-card class="bg-light">
-            <v-card-title class="headline">
+            <v-card-title class="headline text-center" :class="{ 'error-title': errorDialogMode }">
               {{ errorDialogMode ? 'Error' : 'Success' }}
             </v-card-title>
 
@@ -116,6 +128,7 @@ export default {
         content : "",
         user_id:""
       },
+      selectedAction: null,
       objectiveOptions: {
         "Work" : ["work", "printing", "browsing", "coding", "design", "document editing", "photo editing", "email", "research", "video conferencing"] ,
         "Security": ["surveillance", "recording", "motion detection", "alarm triggering", "remote access"],
@@ -240,6 +253,10 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
     goToDevice() {
       this.$router.push("/addDevice");
     },
+    selectAction(action) {
+      this.selectedAction = action;
+      if (action != 'consumption') this.goToDevice();
+    },
   },
   name: "AddConsumption",
 };
@@ -248,7 +265,6 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 <style scoped>
 .bg-light {
   background-color: #fff !important;
-  border-radius: 15px;
 }
 
 
@@ -284,6 +300,21 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
 .cont{
   padding-bottom : 20px;
+}
+
+.custom-toggle {
+  display: flex;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 5px;
+  color: #1f2937;
+  transition: all 0.2s ease;
+}
+
+.error-title {
+  color: red !important;
 }
 
 </style>

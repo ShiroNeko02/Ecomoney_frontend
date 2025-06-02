@@ -57,7 +57,7 @@
       <!-- ALERT BOX -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card class="bg-light">
-          <v-card-title class="headline">{{dialogTitle}}</v-card-title>
+          <v-card-title class="headline text-center">{{dialogTitle}}</v-card-title>
           <v-card-text v-if="loading">
             <v-progress-circular indeterminate color="blue"></v-progress-circular>
             Loading...
