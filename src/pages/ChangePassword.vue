@@ -162,6 +162,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color : black;
+}
+
 .bg-light {
   background-color: #fff !important;
   border-radius: 15px;

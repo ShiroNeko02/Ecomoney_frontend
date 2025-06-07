@@ -84,18 +84,33 @@
             "euro": "euro"
           }
   },
-  "pageDetailDevice": {
-          "title": "Détails",
+  "pageDetailConsumption": {
+          "title": "Détails Consommations",
           "deviceLabel": "Appareil",
           "startDate": "Date de début",
           "endDate": "Date de fin",
-          "period": {
-            "week": "Par semaine",
-            "month": "Par mois",
-            "year": "Par année"
-          },
-          "hours": "heure(s)",
-          "noInfo": "Aucune information"
+          "perUseLabel": "Par utilisation",
+          "perWeekLabel": "Par semaine",
+          "perMonthLabel": "Par mois",
+          "perYearLabel": "Par année",
+          "weekLabel": "Semaine",
+          "yearLabel": "Année",
+          "hours": "heures",
+          "noInfo": "Aucune information disponible"
+  },
+  "months": {
+          "january": "Janvier",
+          "february": "Février",
+          "march": "Mars",
+          "april": "Avril",
+          "may": "Mai",
+          "june": "Juin",
+          "july": "Juillet",
+          "august": "Août",
+          "september": "Septembre",
+          "october": "Octobre",
+          "november": "Novembre",
+          "december": "Décembre"
   },
   "pageAddConsumption": {
 
@@ -126,8 +141,8 @@
   },
   "pageMyDevices" : {
           "title": "Mes appareils",
-          "suggestionsButton": "Suggestions reçues",
-          "myDevicesButton": "Mes appareils",
+          "mySuggestions": "Suggestions reçues",
+          "myDevices": "Mes appareils",
           "noDevices": "Aucun appareil trouvé.",
           "deviceListTitle": "Vos appareils",
           "addDevice": "Ajouter un nouvel appareil",

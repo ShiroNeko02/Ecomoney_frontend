@@ -25,8 +25,8 @@ export default {
   data() {
     return {
       languages: [
-        { code: "en", label: "EN English" },
-        { code: "fr", label: "FR Français" },
+        { code: "en", label: "EN" },
+        { code: "fr", label: "FR" },
       ],
     };
   },
@@ -44,8 +44,9 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 95px;
+  width: 83px;
   font-size: 13px;
   z-index: 20;
+  color : #003a6a;
 }
 </style>

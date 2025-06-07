@@ -152,6 +152,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color : black;
+}
+
 .fill-height {
   min-height: 100vh;
   background: #003a63;
@@ -180,7 +184,7 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 95px;
+  width: 83px;
   font-size: 13px;
   z-index: 20;
   color : #003a63;

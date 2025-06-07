@@ -123,6 +123,10 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color : black;
+}
+
 .fill-height {
   min-height: 100vh;
   background: #003a63;

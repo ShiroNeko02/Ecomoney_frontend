@@ -4,7 +4,7 @@
     <v-icon size="30" color="#2596be">mdi-home</v-icon>
   </v-btn>
 
-  <v-btn value="consommation" to="/detailDevice">
+  <v-btn value="consommation" to="/detailConsumption">
     <v-icon size="30" color="#2596be">mdi-chart-bar</v-icon>
   </v-btn>
 

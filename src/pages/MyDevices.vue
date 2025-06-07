@@ -1,6 +1,6 @@
 <template>
   <v-app class="bg-light">
-    <Header title="My Devices" />
+    <Header :title="$t('pageMyDevices.title')" />
 
     <v-main>
       <v-container class="pa-4">
@@ -8,10 +8,10 @@
         <v-container>
           <v-row>
             <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToMySuggestions">Suggestions Received</RectangleButton></div>
+              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToMySuggestions">{{ $t('pageMyDevices.mySuggestions') }}</RectangleButton></div>
             </v-col>
             <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4">My Devices</RectangleButton></div>
+              <div class="cont-2"><RectangleButton class="mt-4">{{ $t('pageMyDevices.myDevices') }}</RectangleButton></div>
             </v-col>
           </v-row>
         </v-container>

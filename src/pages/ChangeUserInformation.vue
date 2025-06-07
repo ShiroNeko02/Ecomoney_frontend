@@ -206,7 +206,7 @@ export default {
 
 <style scoped>
 *{
-  color : #003a6a;
+  color : black;
 }
 
 .bg-light {

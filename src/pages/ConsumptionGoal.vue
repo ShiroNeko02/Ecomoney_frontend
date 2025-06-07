@@ -38,7 +38,6 @@
               <Button
                 @click="updateGoal"
                 :disabled="!isFormValid || loading || !hasChanges"
-                :color="!hasChanges ? 'grey' : 'primary'"
               >
                 <v-progress-circular v-if="loading" indeterminate color="white" size="20" />
                 <span v-else style="color:white;">
@@ -188,7 +187,7 @@ export default {
 
 <style scoped>
 *{
-  color : #003a6a;
+  color : black;
 }
 
 .bg-light {

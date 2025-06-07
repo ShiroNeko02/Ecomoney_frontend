@@ -62,8 +62,8 @@ import { eventBus } from "@/utils/EventBusManager.js";
 export default {
   name: "User",
   components: {
-    Header,
-    Footer,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Header, Footer,
   },
   data() {
     return {
@@ -179,11 +179,11 @@ export default {
 
 <style scoped>
 *{
-  color: #003a6a;
+  color: black;
 }
 
 .bg-app {
-  background-color: #f5f8ff;
+  background-color: white;
   width: 100%;
   height: 100%;
 }
@@ -200,7 +200,7 @@ export default {
 }
 
 .profile-icon {
-  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  background: linear-gradient(125deg, #003a6a,#2596be);
   border-radius: 50%;
   width: 90px;
   height: 90px;

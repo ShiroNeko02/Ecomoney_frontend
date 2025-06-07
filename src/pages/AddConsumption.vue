@@ -320,6 +320,10 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 </script>
 
 <style scoped>
+*{
+  color : black;
+}
+
 .bg-light {
   background-color: #fff !important;
 }
