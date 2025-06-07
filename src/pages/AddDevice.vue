@@ -1,46 +1,89 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Add new Device" />
+    <Header :title="$t('pageAddDevice.headerTitle')" />
     <v-main>
       <v-container>
-        <!-- Change Form -->
+        <!-- Top buttons -->
         <v-container>
           <v-row>
             <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToActivity">Add a consumption</RectangleButton></div>
+              <div class="cont-2">
+                <RectangleButton class="mt-4" color="grey" @click="goToActivity">
+                  {{ $t('pageAddDevice.addConsumption') }}
+                </RectangleButton>
+              </div>
             </v-col>
             <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" >Add a device</RectangleButton></div>
+              <div class="cont-2">
+                <RectangleButton class="mt-4">
+                  {{ $t('pageAddDevice.addDevice') }}
+                </RectangleButton>
+              </div>
             </v-col>
           </v-row>
         </v-container>
 
-        <!-- Form -->
+        <!-- Device form -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form @submit.prevent="submit">
-            <div class="cont-1"><Input v-model="device_user.name_device_user" label="Device's name" required></Input></div>
-            <div class="cont-2"><ComboBox v-model="device_user.device_ref" :items="deviceRefNames" label="Device Model (not required)"></ComboBox></div>
-            <div class="cont-1"><Input v-model="device_user.power_watts_user" label="Power watts (not required if device's reference chosen)" type="number"></Input></div>
-            <div class="cont"><Input v-model="device_user.avg_consumption_hours_per_week" label="Average Consumption Duration (hours per week)" type="number" required></Input></div>
-            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button class="pa-2" :disabled="isSubmitting" @click="submit">Submit</Button></div></div>
+            <div class="cont-1">
+              <Input
+                v-model="device_user.name_device_user"
+                :label="$t('pageAddDevice.deviceName')"
+                required
+              />
+            </div>
+            <div class="cont-2">
+              <ComboBox
+                v-model="device_user.device_ref"
+                :items="deviceRefNames"
+                :label="$t('pageAddDevice.deviceModel')"
+              />
+              <div class="text-caption caption1">* {{$t('pageAddDevice.deviceModelCaption')}}</div>
+            </div>
+            <div class="cont-1">
+              <Input
+                v-model="device_user.power_watts_user"
+                :label="$t('pageAddDevice.powerWatts')"
+                type="number"
+              />
+              <div class="text-caption caption2">* {{$t('pageAddDevice.powerWattsCaption')}}</div>
+            </div>
+            <div class="cont">
+              <Input
+                v-model="device_user.avg_consumption_hours_per_week"
+                :label="$t('pageAddDevice.avgConsumptionDuration')"
+                type="number"
+                required
+              />
+              <div class="text-caption caption2">* {{$t('pageAddDevice.durationCaption')}}</div>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;">
+              <div style="width:90%; display: flex; justify-content: center;">
+                <Button class="pa-2" :disabled="isSubmitting" @click="submit">
+                  {{ $t('pageAddDevice.submit') }}
+                </Button>
+              </div>
+            </div>
           </v-form>
         </v-card>
       </v-container>
 
-      <!-- Notification -->
+      <!-- Dialog -->
       <v-dialog v-model="dialog" max-width="450px">
         <v-card class="bg-light">
           <v-card-title :class="{ 'error-title': isError, 'success-title': !isError }">
-            {{ isError ? 'Error' : 'Success' }}
+            {{ isError ? $t('pageAddDevice.errorTitle') : $t('pageAddDevice.successTitle') }}
           </v-card-title>
           <v-card-text class="text-black">{{ responseMessage }}</v-card-text>
           <v-card-actions>
-            <v-btn color="primary" @click="dialog = false">OK</v-btn>
+            <v-btn color="primary" @click="dialog = false">
+              {{ $t('pageAddDevice.ok') }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-main>
-
     <Footer />
   </v-app>
 </template>
@@ -114,7 +157,7 @@ export default {
         !this.device_user.name_device_user ||
         !this.device_user.avg_consumption_hours_per_week
       ) {
-        this.responseMessage = "Please fill all fields";
+        this.responseMessage = this.$t('pageAddDevice.fillAllFields');
         this.dialog = true;
         this.isError = true;
         this.isSubmitting = false;
@@ -136,9 +179,7 @@ export default {
 
       try {
         await deviceUserService.createDeviceUser(deviceData);
-
-        // Success
-        this.responseMessage = "Device successfully added!";
+        this.responseMessage = this.$t('pageAddDevice.deviceAddedSuccess');
         this.dialog = true;
         this.isError = false;
 
@@ -149,11 +190,10 @@ export default {
           avg_consumption_hours_per_week: 2,
           user_id: "",
         };
-
       } catch (error) {
         console.error("Error adding device:", error);
-        // Failed
-        this.responseMessage = error.response?.data?.error || "Failed to add device.";
+        this.responseMessage =
+          error.response?.data?.error || this.$t('pageAddDevice.failedAddDevice');
         this.dialog = true;
         this.isError = true;
       } finally {
@@ -227,5 +267,20 @@ export default {
 
 .success-title {
   color: forestgreen;
+}
+
+.text-caption {
+  color: rgba(0, 0, 0, 0.6);
+  margin-left: 16px;
+}
+
+.caption1{
+  margin-top: -40px;
+  margin-bottom: 20px;
+}
+
+.caption2{
+  margin-top: -20px;
+  margin-bottom: -25px;
 }
 </style>

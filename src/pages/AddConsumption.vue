@@ -1,56 +1,74 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Add New Consumption" />
+    <Header :title="locale === 'fr' ? 'Ajouter une consommation' : 'Add New Consumption'" />
 
     <v-main>
       <v-container>
         <!-- Change Form -->
         <v-container>
-          <v-row>
-            <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" >Add a consumption</RectangleButton></div>
-            </v-col>
-            <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToDevice" >Add a device</RectangleButton></div>
-            </v-col>
-          </v-row>
+          <div class="custom-toggle mt-4">
+            <v-btn
+              :class="{ active: selectedAction === 'consumption' }"
+              class="toggle-btn"
+              @click="selectAction('consumption')"
+              color="#4BA3C3"
+            >
+              {{ locale === 'fr' ? 'Ajout consommation' : 'Add a consumption' }}
+            </v-btn>
+            <v-btn
+              :class="{ active: selectedAction === 'device' }"
+              class="toggle-btn"
+              @click="selectAction('device')"
+              color="grey"
+            >
+              {{ locale === 'fr' ? 'Ajout appareil' : 'Add a device' }}
+            </v-btn>
+          </div>
         </v-container>
 
         <!-- Formulaire -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
           <v-form>
             <!-- Select Device -->
-            <div style="margin-top:20px; margin-bottom:17px;"><ComboBox
-              label="Device"
-              v-model="device"
-              :items="deviceNames"
-            /></div>
+            <div style="margin-top:20px; margin-bottom:17px;">
+              <ComboBox
+                :label="locale === 'fr' ? 'Appareil' : 'Device'"
+                v-model="device"
+                :items="deviceNames"
+              />
+            </div>
 
             <!-- Select Objective -->
             <ComboBox
-              label="Objective"
+              :label="locale === 'fr' ? 'Objectif' : 'Objective'"
               v-model="objective"
               :items="filteredObjectives"
             />
 
             <!-- Champ Input -->
-            <div class="cont-1"><Input label="Duration (minutes)" v-model="duration" class="custom-field" /></div>
+            <div class="cont-1">
+              <Input :label="locale === 'fr' ? 'Durée (minutes)' : 'Duration (minutes)'" v-model="duration" class="custom-field" />
+            </div>
 
             <!-- Bouton de soumission -->
-            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;"><div style="width:90%; display: flex; justify-content: center;"><Button @click="submit" class="mt-6">Submit</Button></div></div>
+            <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;">
+              <div style="width:90%; display: flex; justify-content: center;">
+                <Button @click="submit" class="mt-6">{{ locale === 'fr' ? 'Soumettre' : 'Submit' }}</Button>
+              </div>
+            </div>
           </v-form>
         </v-card>
 
         <!-- ALERT BOX -->
         <v-dialog v-model="dialog" max-width="500px">
           <v-card class="bg-light">
-            <v-card-title class="headline">
-              {{ errorDialogMode ? 'Error' : 'Success' }}
+            <v-card-title class="headline text-center" :class="{ 'error-title': errorDialogMode }">
+              {{ errorDialogMode ? (locale === 'fr' ? 'Erreur' : 'Error') : (locale === 'fr' ? 'Suggestion' : 'Suggestion') }}
             </v-card-title>
 
             <v-card-text v-if="loading">
               <v-progress-circular indeterminate color="blue"></v-progress-circular>
-              Loading...
+              {{ locale === 'fr' ? 'Chargement...' : 'Loading...' }}
             </v-card-text>
 
             <v-card-text v-else>
@@ -62,16 +80,14 @@
                 <v-btn color="primary" @click="dialog = false">OK</v-btn>
               </template>
               <template v-else>
-                <v-btn color="green" @click="stock">Stock</v-btn>
-                <v-btn color="red" @click="dialog = false">Don't Stock</v-btn>
+                <v-btn color="green" @click="stock">{{ locale === 'fr' ? 'Stocker' : 'Stock' }}</v-btn>
+                <v-btn color="red" @click="dialog = false">{{ locale === 'fr' ? "Ne pas stocker" : "Don't Stock" }}</v-btn>
               </template>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
-
       </v-container>
-
     </v-main>
 
     <Footer />
@@ -89,19 +105,12 @@ import {deviceService, deviceUserService, suggestionService, userService} from "
 
 export default {
   components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Button,
-    RectangleButton,
-    ComboBox,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Footer,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Header,
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Input
+    // eslint-disable-next-line vue/no-reserved-component-names,vue/no-unused-components
+    Button, RectangleButton, ComboBox, Footer, Header, Input
   },
   data() {
     return {
+      locale: this.$i18n.locale,
       devices_user: [],
       dialog: false,
       errorDialogMode: false,
@@ -116,16 +125,41 @@ export default {
         content : "",
         user_id:""
       },
+      selectedAction: null,
       objectiveOptions: {
-        "Work" : ["work", "printing", "browsing", "coding", "design", "document editing", "photo editing", "email", "research", "video conferencing"] ,
-        "Security": ["surveillance", "recording", "motion detection", "alarm triggering", "remote access"],
-        "Household maintenance": ["clean dishes", "sanitize", "vacuum", "deep clean", "carpet cleaning", "mow lawn", "edge trimming", "mulching"],
-        "Entertainment": ["communication", "browsing", "streaming", "entertainment", "gaming", "music", "video playback", "social media", "online learning"],
-        "Cooking": ["cook rice", "blend smoothies", "boil water", "reheat food", "preserve food", "toast bread", "brew coffee", "freeze items", "bake dishes", "heat on plates", "deep fry", "slow cook", "defrost"],
-        "Comfort" : ["cooling", "heating", "water heating", "illumination"],
-        "Clothes" : ["laundry", "drying", "ironing", "steaming"],
-        "default": ["cooking", "cleaning", "entertainment", "laundry", "drying"]
-      },
+        Work: {
+          en: ["work", "printing", "browsing", "coding", "design", "document editing", "photo editing", "email", "research", "video conferencing"],
+          fr: ["travailler", "imprimer", "naviguer", "coder", "concevoir", "édition de documents", "retouche photo", "email", "recherche", "visioconférence"]
+        },
+        Security: {
+          en: ["surveillance", "recording", "motion detection", "alarm triggering", "remote access"],
+          fr: ["surveillance", "enregistrement", "détection de mouvement", "déclenchement d'alarme", "accès à distance"]
+        },
+        "Household maintenance": {
+          en: ["clean dishes", "sanitize", "vacuum", "deep clean", "carpet cleaning", "mow lawn", "edge trimming", "mulching"],
+          fr: ["laver la vaisselle", "désinfecter", "passer l’aspirateur", "nettoyage en profondeur", "nettoyage des tapis", "tondre la pelouse", "tailler les bords", "paillage"]
+        },
+        Entertainment: {
+          en: ["communication", "browsing", "streaming", "entertainment", "gaming", "music", "video playback", "social media", "online learning"],
+          fr: ["communication", "navigation", "streaming", "divertissement", "jeu", "musique", "lecture vidéo", "réseaux sociaux", "apprentissage en ligne"]
+        },
+        Cooking: {
+          en: ["cook rice", "blend smoothies", "boil water", "reheat food", "preserve food", "toast bread", "brew coffee", "freeze items", "bake dishes", "heat on plates", "deep fry", "slow cook", "defrost"],
+          fr: ["cuire du riz", "mixer des smoothies", "faire bouillir de l'eau", "réchauffer des aliments", "conserver les aliments", "griller du pain", "préparer du café", "congeler", "cuire au four", "chauffer dans des assiettes", "frire", "cuisson lente", "décongeler"]
+        },
+        Comfort: {
+          en: ["cooling", "heating", "water heating", "illumination"],
+          fr: ["refroidissement", "chauffage", "chauffe-eau", "éclairage"]
+        },
+        Clothes: {
+          en: ["laundry", "drying", "ironing", "steaming"],
+          fr: ["lessive", "séchage", "repassage", "vapeur"]
+        },
+        default: {
+          en: ["cooking", "cleaning", "entertainment", "laundry", "drying"],
+          fr: ["cuisiner", "nettoyer", "divertissement", "lessive", "séchage"]
+        }
+      }
     };
   },
   watch: {
@@ -150,7 +184,8 @@ export default {
     },
     filteredObjectives() {
       const category = this.deviceDetails?.type_device || 'default';
-      return this.objectiveOptions[category] || this.objectiveOptions["default"];
+      const options = this.objectiveOptions[category] || this.objectiveOptions.default;
+      return options[this.locale] || options.en;
     }
   },
   async created() {
@@ -162,11 +197,20 @@ export default {
     }
   },
   methods: {
+    getEnglishObjective(frenchObjective) {
+      for (const category in this.objectiveOptions) {
+        const index = this.objectiveOptions[category].fr.indexOf(frenchObjective);
+        if (index !== -1) {
+          return this.objectiveOptions[category].en[index];
+        }
+      }
+      return frenchObjective;
+    },
     async submit(event) {
       event.preventDefault();
 
       if (!this.device || !this.objective || !this.duration) {
-        this.responseMessage = "Please fill all fields!";
+        this.responseMessage = this.locale === 'fr' ? "Veuillez remplir tous les champs !" : "Please fill all fields!";
         this.errorDialogMode = true;
         this.dialog = true;
         return;
@@ -176,7 +220,6 @@ export default {
       const deviceDetailsResponse = await deviceService.getDeviceById(deviceUser.device_ref_id);
       this.deviceDetails = deviceDetailsResponse.data || deviceDetailsResponse;
 
-      // Générer dynamiquement la requête
       const prompt = `Act as an expert in energy efficiency.
 Give me only one specific, clever, and practical tip to reduce the energy consumption of a ${this.deviceDetails.name_device_ref} while I use it to ${this.objective} for ${this.duration} minutes.
 Your answer should NOT be generic or obvious or too long (no more than 80 words). Instead, give me a less-known but effective trick I can really use, ideally tailored to this kind of device or use-case.
@@ -185,13 +228,14 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
       this.dialog = true;
       this.loading = true;
-      this.responseMessage = "Loading...";
+      this.responseMessage = this.locale === 'fr' ? "Chargement..." : "Loading...";
 
       try {
+        // 1. Appel pour générer la réponse en anglais
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -203,10 +247,36 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         });
 
         const data = await response.json();
-        this.responseMessage = data.choices?.[0]?.message?.content || "No response received";
+        const answerEn = data.choices?.[0]?.message?.content || "No response received";
+
+        // 2. Si la locale est fr, retraduire en français
+        if (this.locale === 'fr') {
+          // Préparer prompt traduction
+          const translatePrompt = `Translate direct this text into French (A pragraph, not each phase):\n\n${answerEn}`;
+
+          const translateResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer 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",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              "model": "mistralai/mistral-small-24b-instruct-2501:free",
+              "messages": [{ "role": "user", "content": translatePrompt }],
+              "temperature": 0.3,
+              "max_tokens": 150
+            })
+          });
+
+          const translateData = await translateResponse.json();
+          this.responseMessage = translateData.choices?.[0]?.message?.content || answerEn;
+        } else {
+          this.responseMessage = answerEn;
+        }
+
         this.errorDialogMode = false;
       } catch (error) {
-        this.responseMessage = `Erreur : ${error.message || error}`;
+        this.responseMessage = this.locale === 'fr' ? `Erreur : ${error.message || error}` : `Error: ${error.message || error}`;
         this.errorDialogMode = true;
       } finally {
         this.loading = false;
@@ -240,6 +310,10 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
     goToDevice() {
       this.$router.push("/addDevice");
     },
+    selectAction(action) {
+      this.selectedAction = action;
+      if (action != 'consumption') this.goToDevice();
+    },
   },
   name: "AddConsumption",
 };
@@ -248,7 +322,6 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 <style scoped>
 .bg-light {
   background-color: #fff !important;
-  border-radius: 15px;
 }
 
 
@@ -284,6 +357,24 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
 .cont{
   padding-bottom : 20px;
+}
+
+.custom-toggle {
+  display: flex;
+  margin: 0px -16px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 5px;
+  transition: all 0.2s ease;
+  border-radius: 0px;
+  height: 2.8rem;
+  text-transform : none !important;
+}
+
+.error-title {
+  color: red !important;
 }
 
 </style>

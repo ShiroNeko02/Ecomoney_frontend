@@ -1,0 +1,231 @@
+{
+  "pageSignIn": {
+          "title": "EcoMoney",
+          "email": "Email",
+          "password": "Password",
+          "forgotPassword": "Forgot Password?",
+          "signIn": "Sign In",
+          "signUp": "Sign Up",
+          "or": "Or",
+          "loading": "Loading...",
+          "ok": "OK",
+          "errorTitle": "Error",
+          "errorFieldsRequired": "All fields are required",
+          "errorAuth": "Email or password incorrect"
+  },
+  "pageSignUp": {
+          "title": "Sign Up",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "email": "Email",
+          "password": "Password",
+          "confirmPassword": "Confirm Password",
+          "signUp": "Sign Up",
+          "signIn": "Sign In",
+          "or": "Or",
+          "loading": "Loading...",
+          "ok": "OK",
+          "passwordRequirements": "Password must:",
+          "requirementLength": "Be at least 6 characters long",
+          "requirementUppercase": "Contain at least one uppercase letter",
+          "requirementNumber": "Contain at least one number",
+          "errorTitle": "Error",
+          "successTitle": "Success",
+          "errorFieldsRequired": "All fields are required",
+          "errorInvalidEmail": "Email must be valid",
+          "errorPasswordsNotMatching": "Passwords do not match",
+          "errorWeakPassword": "Password must be at least 6 characters long, contain at least one uppercase letter and one number",
+          "errorSignUp": "Failed to create account",
+          "successMessage": "Account created successfully! Please sign in."
+  },
+  "pageHome": {
+          "title": "Home",
+          "deviceA": "Device A",
+          "deviceB": "Device B",
+          "deviceC": "Device C",
+          "others": "Others",
+          "budgetStatus": "Budget Status",
+          "of": "of",
+          "goodStanding": "Good standing",
+          "watchSpending": "Watch spending",
+          "budgetAlert": "Budget alert",
+          "quickActions": "Quick Actions",
+          "updateBudgetGoal": "Update Budget Goal",
+          "refreshData": "Refresh Data",
+          "deviceConsumptionDistribution": "Device Consumption Distribution",
+          "budgetHistory": {
+            "title": "Budget History",
+            "budget": "Budget",
+            "actualSpending": "Actual Spending",
+            "max": "Max",
+            "avg": "Avg",
+            "months": {
+              "jan": "Jan",
+              "feb": "Feb",
+              "mar": "Mar",
+              "apr": "Apr",
+              "may": "May",
+              "jun": "Jun"
+            }
+          }
+  },
+  "pageDetails" : {
+          "selectDevice": "Device",
+          "selectDates": {
+            "startDate": "Start Date",
+            "endDate": "End Date"
+          },
+          "selectPeriod": {
+            "week": "Per Week",
+            "month": "Per Month",
+            "year": "Per Year"
+          },
+          "consumption": {
+            "euro": "euro"
+          }
+  },
+  "pageDetailDevice": {
+          "title": "Details",
+          "deviceLabel": "Device",
+          "startDate": "Start Date",
+          "endDate": "End Date",
+          "period": {
+            "week": "Per Week",
+            "month": "Per Month",
+            "year": "Per Year"
+          },
+          "hours": "hour(s)",
+          "noInfo": "No information"
+  },
+  "pageAddConsumption": {
+
+  },
+  "pageAddDevice" : {
+          "headerTitle": "Add new Device",
+          "addConsumption": "Add a consumption",
+          "addDevice": "Add a device",
+          "deviceName": "Device's name",
+          "deviceModel": "Device Model",
+          "deviceModelCaption" : "not required",
+          "powerWatts": "Power watts",
+          "powerWattsCaption" : "not required if device's reference chosen",
+          "avgConsumptionDuration": "Average Consumption Duration",
+          "durationCaption" : "hours per week",
+          "submit": "Submit",
+          "errorTitle": "Error",
+          "successTitle": "Success",
+          "fillAllFields": "Please fill all required fields",
+          "deviceAddedSuccess": "Device successfully added!",
+          "failedAddDevice": "Failed to add device.",
+          "ok": "OK"
+  },
+  "pageMySuggestions" : {
+          "title": "My suggestions",
+          "received": "Suggestions received",
+          "myDevices": "My devices"
+  },
+  "pageMyDevices" : {
+          "title": "My Devices",
+          "suggestionsButton": "Suggestions Received",
+          "myDevicesButton": "My Devices",
+          "noDevices": "No devices found.",
+          "deviceListTitle": "Your Devices",
+          "addDevice": "Add New Device",
+          "removeDevice": "Remove Device",
+          "editDevice": "Edit Device"
+  },
+  "pageUser": {
+          "header": "User's space",
+          "activeAccount": "Active Account",
+          "settingsTitle": "Accounts settings",
+          "setBudgetGoal": "Set Budget Goal",
+          "changePassword": "Change My Password",
+          "editInfo": "Edit My Information",
+          "deleteAccount": "Delete My Account",
+          "logout": "Log Out",
+          "alertTitle": "Alert",
+          "alertBody": "Are you sure you want to delete your account?",
+          "alertIrreversible": "This action is irreversible.",
+          "cancel": "Cancel",
+          "confirmDelete": "Yes, Delete"
+  },
+  "pageChangeBudget": {
+          "title": "Consumption Goal",
+          "subtitle": "Set Monthly Budget Goal",
+          "inputLabel": "Monthly Budget (€)",
+          "currentLabel": "Current Monthly Budget:",
+          "update": "Update Budget Goal",
+          "noChanges": "No changes",
+          "suggestionsTitle": "Suggestions based on your habits:",
+          "loading": "Loading...",
+          "successTitle": "Success",
+          "successMessage": "Your goal has been updated successfully.",
+          "errorTitle": "Error",
+          "loadError": "Failed to load current goal.",
+          "updateError": "Failed to update goal.",
+          "errors": {
+            "required": "Budget amount is required",
+            "positive": "Budget must be positive",
+            "number": "Budget must be a valid number",
+            "invalid": "Please enter a valid amount"
+          },
+          "suggestions": {
+            "frugal": "Frugal: €150",
+            "standard": "Standard: €200",
+            "comfort": "Comfort: €250"
+          }
+  },
+  "pageChangePassword" : {
+          "title": "Change Password",
+          "currentPassword": "Current Password",
+          "newPassword": "New Password",
+          "confirmPassword": "Confirm New Password",
+          "submit": "Submit",
+          "hint": "At least 6 characters, 1 uppercase letter, 1 number",
+          "loading": "Loading...",
+          "successTitle": "Success",
+          "successMessage": "Password successfully changed.",
+          "errorTitle": "Error",
+          "errors": {
+            "required": "Password is required",
+            "currentRequired": "Current password is required",
+            "confirmRequired": "Password confirmation is required",
+            "minLength": "At least 6 characters",
+            "uppercase": "At least one uppercase letter required",
+            "number": "At least one number required",
+            "noMatch": "Passwords do not match",
+            "incorrectCurrent": "Current password is incorrect",
+            "allRequired": "All fields are required",
+            "generic": "An error occurred"
+          }
+  },
+  "pageChangeInformation" : {
+          "title": "Change Information",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "email": "Email",
+          "updateButton": "Update Information",
+          "successTitle": "Success",
+          "successMessage": "Your information has been updated successfully.",
+          "errorTitle": "Error",
+          "loadError": "Unable to load your information.",
+          "errors": {
+            "nameRequired": "Name is required",
+            "invalidName": "Invalid name format",
+            "emailRequired": "Email is required",
+            "invalidEmail": "Invalid email format",
+            "generic": "An error occurred"
+          }
+  },
+  "about": {
+          "tooltip": "About Us",
+          "title": "About Us",
+          "missionTitle": "Our Mission",
+          "missionText": "We help our users manage and optimize their energy consumption for a more sustainable and economical future.",
+          "versionTitle": "Version",
+          "version": "v2.0.0",
+          "contactTitle": "Contact",
+          "close": "Close"
+  }
+
+}

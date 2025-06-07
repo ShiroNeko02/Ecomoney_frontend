@@ -1,6 +1,6 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Details" />
+    <Header :title="$t('pageDetailDevice.title')" />
 
     <v-main>
       <v-container>
@@ -9,7 +9,7 @@
         <v-form>
           <div style="margin-top: 20px;">
             <ComboBox
-              label="Device"
+              :label="$t('pageDetailDevice.deviceLabel')"
               v-model="selectedDeviceName"
               :items="deviceNames"
             />
@@ -17,23 +17,16 @@
         </v-form>
 
         <!-- Select Dates -->
-        <v-row>
+        <v-row dense>
           <v-col cols="6">
-            <DateInput v-model="startDate" label="Start Date"/>
+            <DateInput v-model="startDate" :label="$t('pageDetailDevice.startDate')" />
           </v-col>
           <v-col cols="6">
-            <DateInput v-model="endDate" label="End Date"/>
+            <DateInput v-model="endDate" :label="$t('pageDetailDevice.endDate')" />
           </v-col>
         </v-row>
 
-        <!-- Select Period -->
-        <v-container>
-          <v-radio-group v-model="period" inline>
-            <v-radio class="mr-3" label="Per Week" value="week" />
-            <v-radio class="mr-3" label="Per Month" value="month" />
-            <v-radio class="mr-3" label="Per Year" value="year" />
-          </v-radio-group>
-        </v-container>
+        <v-divider :style="{ height: '20px' }" class="my-3"></v-divider>
 
         <!-- Consumption Cards -->
         <v-container>
@@ -65,7 +58,7 @@
                       </span>
                     </div>
                     <div>
-                      <span class="text-h7 text-center mr-2">hour(s)</span>
+                      <span class="text-h7 text-center mr-2">{{ $t('pageDetailDevice.hours') }}</span>
                     </div>
                   </v-col>
                 </v-row>
@@ -75,7 +68,7 @@
 
           <v-row v-else>
             <v-col cols="12">
-              <p class="text-center text-grey">No information</p>
+              <p class="text-center text-grey">{{ $t('pageDetailDevice.noInfo') }}</p>
             </v-col>
           </v-row>
 
@@ -96,6 +89,7 @@
     <Footer />
   </v-app>
 </template>
+
 
 <script>
 import Header from "@/components/commun/Header.vue";
@@ -231,4 +225,5 @@ export default {
 .box span {
   color: #003a6a;
 }
+
 </style>

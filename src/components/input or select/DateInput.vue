@@ -36,5 +36,6 @@ export default {
   color: #003a63;
   height: 6vh;
   box-shadow: none;
+  width : 100%;
 }
 </style>

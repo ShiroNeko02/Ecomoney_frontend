@@ -39,11 +39,11 @@ export default {
         plugins: {
           title: {
             display: true,
-            text: 'Device Consumption Distribution',
+            text: this.$t('pageHome.deviceConsumptionDistribution'),
             font: {
               size: 16
             },
-            color: 'black'
+            color: '#003a6a'
           },
           legend: {
             position: 'bottom',

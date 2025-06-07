@@ -37,7 +37,7 @@
 
 
         <!-- Consumption Cards -->
-        <v-container>
+        <v-container class="cont">
           <v-row>
             <v-col
               v-for="consumption in consumptions_devices_users"
@@ -45,7 +45,7 @@
               cols="12"
               md="4"
             >
-              <v-card class="mt-6 pa-4 bg-light elevation-20">
+              <v-card class="mt-2 pa-4 bg-light elevation-20">
                 <v-row align="center">
                   <v-col cols="6" class="d-flex align-center">
                     <span
@@ -176,4 +176,7 @@ export default {
   color: #003a63;
 }
 
+.v-container{
+  padding : 0 16px !important;
+}
 </style>

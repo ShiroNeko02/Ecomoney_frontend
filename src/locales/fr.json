@@ -1,0 +1,231 @@
+{
+  "pageSignIn": {
+          "title": "EcoMoney",
+          "email": "E-mail",
+          "password": "Mot de passe",
+          "forgotPassword": "Mot de passe oublié ?",
+          "signIn": "Se connecter",
+          "signUp": "Créer un compte",
+          "or": "Ou",
+          "loading": "Chargement...",
+          "ok": "OK",
+          "errorTitle": "Erreur",
+          "errorFieldsRequired": "Tous les champs sont requis",
+          "errorAuth": "E-mail ou mot de passe incorrect"
+  },
+  "pageSignUp" : {
+          "title": "Créer un compte",
+          "firstName": "Prénom",
+          "lastName": "Nom",
+          "email": "E-mail",
+          "password": "Mot de passe",
+          "confirmPassword": "Confirmer le mot de passe",
+          "signUp": "Créer un compte",
+          "signIn": "Se connecter",
+          "or": "Ou",
+          "loading": "Chargement...",
+          "ok": "OK",
+          "passwordRequirements": "Le mot de passe doit :",
+          "requirementLength": "Avoir au moins 6 caractères",
+          "requirementUppercase": "Contenir au moins une lettre majuscule",
+          "requirementNumber": "Contenir au moins un chiffre",
+          "errorTitle": "Erreur",
+          "successTitle": "Succès",
+          "errorFieldsRequired": "Tous les champs sont requis",
+          "errorInvalidEmail": "L’e-mail doit être valide",
+          "errorPasswordsNotMatching": "Les mots de passe ne correspondent pas",
+          "errorWeakPassword": "Le mot de passe doit comporter au moins 6 caractères, une majuscule et un chiffre",
+          "errorSignUp": "Échec de la création du compte",
+          "successMessage": "Compte créé avec succès ! Veuillez vous connecter."
+  },
+  "pageHome" : {
+          "title": "Accueil",
+          "deviceA": "Appareil A",
+          "deviceB": "Appareil B",
+          "deviceC": "Appareil C",
+          "others": "Autres",
+          "budgetStatus": "État du budget",
+          "of": "sur",
+          "goodStanding": "Bonne situation",
+          "watchSpending": "Surveillez les dépenses",
+          "budgetAlert": "Alerte budget",
+          "quickActions": "Actions rapides",
+          "updateBudgetGoal": "Mettre à jour l'objectif de budget",
+          "refreshData": "Rafraîchir les données",
+          "deviceConsumptionDistribution": "Répartition de la consommation par appareil",
+          "budgetHistory": {
+            "title": "Historique du budget",
+            "budget": "Budget",
+            "actualSpending": "Dépenses réelles",
+            "max": "Max",
+            "avg": "Moyenne",
+            "months": {
+              "jan": "Jan",
+              "feb": "Fév",
+              "mar": "Mar",
+              "apr": "Avr",
+              "may": "Mai",
+              "jun": "Juin"
+            }
+          }
+  },
+  "pageDetails" : {
+          "selectDevice": "Appareil",
+          "selectDates": {
+            "startDate": "Date de début",
+            "endDate": "Date de fin"
+          },
+          "selectPeriod": {
+            "week": "Par semaine",
+            "month": "Par mois",
+            "year": "Par année"
+          },
+          "consumption": {
+            "euro": "euro"
+          }
+  },
+  "pageDetailDevice": {
+          "title": "Détails",
+          "deviceLabel": "Appareil",
+          "startDate": "Date de début",
+          "endDate": "Date de fin",
+          "period": {
+            "week": "Par semaine",
+            "month": "Par mois",
+            "year": "Par année"
+          },
+          "hours": "heure(s)",
+          "noInfo": "Aucune information"
+  },
+  "pageAddConsumption": {
+
+  },
+  "pageAddDevice" : {
+          "headerTitle": "Ajouter un nouvel appareil",
+          "addConsumption": "Ajout consommation",
+          "addDevice": "Ajout appareil",
+          "deviceName": "Nom de l'appareil",
+          "deviceModel": "Modèle de l'appareil",
+          "deviceModelCaption": "facultatif",
+          "powerWatts": "Puissance en watts",
+          "powerWattsCaption": "facultatif si modèle choisi",
+          "avgConsumptionDuration": "Durée moyenne de consommation",
+          "durationCaption" : "heures par semaine",
+          "submit": "Valider",
+          "errorTitle": "Erreur",
+          "successTitle": "Succès",
+          "fillAllFields": "Veuillez remplir tous les champs requis",
+          "deviceAddedSuccess": "Appareil ajouté avec succès !",
+          "failedAddDevice": "Échec de l'ajout de l'appareil.",
+          "ok": "OK"
+  },
+  "pageMySuggestions" : {
+          "title": "Mes suggestions",
+          "received": "Suggestions reçues",
+          "myDevices": "Mes appareils"
+  },
+  "pageMyDevices" : {
+          "title": "Mes appareils",
+          "suggestionsButton": "Suggestions reçues",
+          "myDevicesButton": "Mes appareils",
+          "noDevices": "Aucun appareil trouvé.",
+          "deviceListTitle": "Vos appareils",
+          "addDevice": "Ajouter un nouvel appareil",
+          "removeDevice": "Supprimer l'appareil",
+          "editDevice": "Modifier l'appareil"
+  },
+  "pageUser" : {
+          "header": "Espace utilisateur",
+          "activeAccount": "Compte actif",
+          "settingsTitle": "Paramètres du compte",
+          "setBudgetGoal": "Définir le budget",
+          "changePassword": "Changer mon mot de passe",
+          "editInfo": "Modifier mes informations",
+          "deleteAccount": "Supprimer mon compte",
+          "logout": "Se déconnecter",
+          "alertTitle": "Alerte",
+          "alertBody": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+          "alertIrreversible": "Cette action est irréversible.",
+          "cancel": "Annuler",
+          "confirmDelete": "Oui, Supprimer"
+  },
+  "pageChangeBudget": {
+          "title": "Objectif de Consommation",
+          "subtitle": "Définir un Objectif Mensuel",
+          "inputLabel": "Budget mensuel (€)",
+          "currentLabel": "Budget mensuel actuel :",
+          "update": "Mettre à jour l'objectif",
+          "noChanges": "Aucune modification",
+          "suggestionsTitle": "Suggestions basées sur vos habitudes :",
+          "loading": "Chargement...",
+          "successTitle": "Succès",
+          "successMessage": "Votre objectif a été mis à jour avec succès.",
+          "errorTitle": "Erreur",
+          "loadError": "Impossible de charger l'objectif actuel.",
+          "updateError": "Échec de la mise à jour de l'objectif.",
+          "errors": {
+            "required": "Le montant est requis",
+            "positive": "Le montant doit être positif",
+            "number": "Le montant doit être un nombre valide",
+            "invalid": "Veuillez entrer un montant valide"
+          },
+          "suggestions": {
+            "frugal": "Économe : 150€",
+            "standard": "Standard : 200€",
+            "comfort": "Confort : 250€"
+          }
+  },
+  "pageChangePassword" : {
+            "title": "Changer le mot de passe",
+            "currentPassword": "Mot de passe actuel",
+            "newPassword": "Nouveau mot de passe",
+            "confirmPassword": "Confirmer le nouveau mot de passe",
+            "submit": "Valider",
+            "hint": "Au moins 6 caractères, 1 majuscule, 1 chiffre",
+            "loading": "Chargement...",
+            "successTitle": "Succès",
+            "successMessage": "Mot de passe changé avec succès.",
+            "errorTitle": "Erreur",
+            "errors": {
+              "required": "Le mot de passe est requis",
+              "currentRequired": "Le mot de passe actuel est requis",
+              "confirmRequired": "La confirmation est requise",
+              "minLength": "Au moins 6 caractères",
+              "uppercase": "Une majuscule requise",
+              "number": "Un chiffre requis",
+              "noMatch": "Les mots de passe ne correspondent pas",
+              "incorrectCurrent": "Mot de passe actuel incorrect",
+              "allRequired": "Tous les champs sont requis",
+              "generic": "Une erreur est survenue"
+            }
+  },
+  "pageChangeInformation" : {
+            "title": "Modifier les informations",
+            "firstName": "Prénom",
+            "lastName": "Nom",
+            "email": "Email",
+            "updateButton": "Mettre à jour",
+            "successTitle": "Succès",
+            "successMessage": "Vos informations ont été mises à jour avec succès.",
+            "errorTitle": "Erreur",
+            "loadError": "Impossible de charger vos informations.",
+            "errors": {
+              "nameRequired": "Le nom est requis",
+              "invalidName": "Format du nom invalide",
+              "emailRequired": "L'email est requis",
+              "invalidEmail": "Format d'email invalide",
+              "generic": "Une erreur est survenue"
+            }
+  },
+  "about": {
+    "tooltip": "À propos",
+    "title": "À propos de nous",
+    "missionTitle": "Notre mission",
+    "missionText": "Nous aidons nos utilisateurs à gérer et optimiser leur consommation d'énergie pour un avenir plus durable et économique.",
+    "versionTitle": "Version",
+    "version": "v2.0.0",
+    "contactTitle": "Contact",
+    "close": "Fermer"
+  }
+
+}

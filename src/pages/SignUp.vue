@@ -1,6 +1,13 @@
 <template>
   <v-container class="fill-height d-flex justify-center align-center">
-    <v-sheet class="login-card pa-6" elevation="10">
+    <v-sheet class="login-card pa-2" elevation="10">
+
+      <!-- Language -->
+      <LocaleSelect
+        v-model="locale"
+        @change="changeLanguage"
+      />
+
       <v-container class="d-flex flex-column align-center" style="height: 100%; margin-top:30px;">
         <v-row justify="center">
           <v-avatar size="90">
@@ -8,15 +15,15 @@
           </v-avatar>
         </v-row>
 
-        <h2 class="text-center font-weight-bold mt-8 title-color">Sign Up</h2>
+        <h2 class="text-center font-weight-bold mt-4 mb-4 title-color">{{ $t('pageSignUp.title') }}</h2>
 
         <v-form ref="form" v-model="isFormValid" @submit.prevent="signUp" style="width: 100%;">
           <div class="cont-1">
             <Input
               v-model="userData.first_name"
-              label="First Name"
-              placeholder="First Name"
-              :rules="[v => !!v || 'First name is required']"
+              :label="$t('pageSignUp.firstName')"
+              :placeholder="$t('pageSignUp.firstName')"
+              :rules="[v => !!v || $t('pageSignUp.errorFieldsRequired')]"
               required
             />
           </div>
@@ -24,9 +31,9 @@
           <div class="cont-1">
             <Input
               v-model="userData.last_name"
-              label="Last Name"
-              placeholder="Last Name"
-              :rules="[v => !!v || 'Last name is required']"
+              :label="$t('pageSignUp.lastName')"
+              :placeholder="$t('pageSignUp.lastName')"
+              :rules="[v => !!v || $t('pageSignUp.errorFieldsRequired')]"
               required
             />
           </div>
@@ -34,12 +41,12 @@
           <div class="cont-1">
             <Input
               v-model="userData.email"
-              label="Email"
-              placeholder="Email"
+              :label="$t('pageSignUp.email')"
+              :placeholder="$t('pageSignUp.email')"
               type="email"
               :rules="[
-                v => !!v || 'Email is required',
-                v => /.+@.+\..+/.test(v) || 'Email must be valid'
+                v => !!v || $t('pageSignUp.errorFieldsRequired'),
+                v => /.+@.+\..+/.test(v) || $t('pageSignUp.errorInvalidEmail')
               ]"
               required
             />
@@ -48,18 +55,18 @@
           <div class="cont-1">
             <Input
               v-model="userData.password"
-              label="Password"
-              placeholder="Password"
+              :label="$t('pageSignUp.password')"
+              :placeholder="$t('pageSignUp.password')"
               type="password"
               :rules="passwordRules"
               required
             />
-            <div class="password-requirements text-caption mt-1">
-              Password must:
+            <div class="password-requirements text-caption mt-1 ml-4">
+              {{ $t('pageSignUp.passwordRequirements') }}
               <ul>
-                <li>Be at least 6 characters long</li>
-                <li>Contain at least one uppercase letter</li>
-                <li>Contain at least one number</li>
+                <li>{{ $t('pageSignUp.requirementLength') }}</li>
+                <li>{{ $t('pageSignUp.requirementUppercase') }}</li>
+                <li>{{ $t('pageSignUp.requirementNumber') }}</li>
               </ul>
             </div>
           </div>
@@ -67,12 +74,12 @@
           <div class="cont-1">
             <Input
               v-model="userData.confirm_password"
-              label="Confirm Password"
-              placeholder="Confirm Password"
+              :label="$t('pageSignUp.confirmPassword')"
+              :placeholder="$t('pageSignUp.confirmPassword')"
               type="password"
               :rules="[
-                v => !!v || 'Please confirm your password',
-                v => v === userData.password || 'Passwords do not match'
+                v => !!v || $t('pageSignUp.errorFieldsRequired'),
+                v => v === userData.password || $t('pageSignUp.errorPasswordsNotMatching')
               ]"
               required
             />
@@ -84,25 +91,26 @@
             :disabled="!isFormValid || loading"
           >
             <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
-            <span v-else style="color:white;">Sign Up</span>
+            <span v-else style="color:white;">{{ $t('pageSignUp.signUp') }}</span>
           </Button>
         </v-form>
 
         <div class="separator mb-6">
-          <span style="color:#003a6a;">Or</span>
+          <span style="color:#003a6a;">{{ $t('pageSignUp.or') }}</span>
         </div>
 
-        <Button @click="goToSignIn" style="margin-bottom:50px;">Sign In</Button>
+        <Button @click="goToSignIn" style="margin-bottom:30px;">
+          {{ $t('pageSignUp.signIn') }}
+        </Button>
 
-        <!-- Message d'erreur -->
         <v-dialog v-model="dialog" max-width="500px">
           <v-card class="bg-light">
             <v-card-title :class="{ 'red--text': !success, 'green--text': success }">
-              {{dialogTitle}}
+              {{ $t(success ? 'pageSignUp.successTitle' : 'pageSignUp.errorTitle') }}
             </v-card-title>
             <v-card-text>{{ responseMessage }}</v-card-text>
             <v-card-actions class="justify-center">
-              <v-btn color="primary" @click="handleDialogClose">OK</v-btn>
+              <v-btn color="primary" @click="handleDialogClose">{{ $t('pageSignUp.ok') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -112,20 +120,15 @@
 </template>
 
 <script>
-import Header from "@/components/commun/Header.vue";
-import Footer from "@/components/commun/Footer.vue";
 import Input from "@/components/input or select/Input.vue";
 import Button from "@/components/button/Button.vue";
 import { userService } from "@/services/api.js";
+import LocaleSelect from "@/components/input or select/LocaleSelect.vue";
 
 export default {
   name: "SignUp",
-  components: {
-    Header,
-    Footer,
-    Input,
-    Button
-  },
+  // eslint-disable-next-line vue/no-reserved-component-names
+  components: {LocaleSelect, Input, Button },
   data() {
     return {
       userData: {
@@ -134,51 +137,43 @@ export default {
         email: "",
         password: "",
         confirm_password: "",
-        consumption_goal_euros: 0 //valeur par defaut
+        consumption_goal_euros: 0
       },
       isFormValid: false,
       loading: false,
       dialog: false,
-      dialogTitle: "",
       responseMessage: "",
-      success: false
+      success: false,
+      locale: this.$i18n.locale
     };
   },
   computed: {
     passwordRules() {
       return [
-        v => !!v || 'Password is required',
-        v => v.length >= 6 || 'Password must be at least 6 characters',
-        v => /[A-Z]/.test(v) || 'Password must contain at least one uppercase letter',
-        v => /\d/.test(v) || 'Password must contain at least one number'
+        v => !!v || this.$t('pageSignUp.errorFieldsRequired'),
+        v => v.length >= 6 || this.$t('pageSignUp.requirementLength'),
+        v => /[A-Z]/.test(v) || this.$t('pageSignUp.requirementUppercase'),
+        v => /\d/.test(v) || this.$t('pageSignUp.requirementNumber')
       ];
     }
   },
   methods: {
-    validatePassword(password) {
-      return (
-        password.length >= 6 &&
-        /[A-Z]/.test(password) &&
-        /\d/.test(password)
-      );
+    changeLanguage(newLocale) {
+      this.$i18n.locale = newLocale;
     },
-
+    validatePassword(password) {
+      return password.length >= 6 && /[A-Z]/.test(password) && /\d/.test(password);
+    },
     async signUp() {
-      if (!this.$refs.form.validate()) {
-        return;
-      }
+      if (!this.$refs.form.validate()) return;
 
       if (!this.validatePassword(this.userData.password)) {
-        this.showNotification(
-          "Error",
-          "Password must be at least 6 characters long, contain at least one uppercase letter and one number"
-        );
+        this.showNotification(this.$t('pageSignUp.errorTitle'), this.$t('pageSignUp.errorWeakPassword'));
         return;
       }
 
       this.loading = true;
       try {
-        // Préparer les données à envoyer
         const signUpData = {
           first_name: this.userData.first_name,
           last_name: this.userData.last_name,
@@ -187,43 +182,31 @@ export default {
           consumption_goal_euros: 0
         };
 
-        const response = await userService.signUp(signUpData);
+        await userService.signUp(signUpData);
         this.success = true;
-        this.showNotification(
-          "Success",
-          "Account created successfully! Please sign in."
-        );
+        this.showNotification(this.$t('pageSignUp.successTitle'), this.$t('pageSignUp.successMessage'));
       } catch (error) {
         this.success = false;
-        this.showNotification(
-          "Error",
-          error.response?.data?.message || error.response?.data?.error || "Failed to create account"
-        );
-        console.error("SignUp Error:", error);
+        this.showNotification(this.$t('pageSignUp.errorTitle'), error.response?.data?.message || error.response?.data?.error || this.$t('pageSignUp.errorSignUp'));
       } finally {
         this.loading = false;
       }
     },
-
     showNotification(title, message) {
-      this.dialogTitle = title;
       this.responseMessage = message;
       this.dialog = true;
     },
-
     handleDialogClose() {
       this.dialog = false;
-      if (this.success) {
-        this.goToSignIn();
-      }
+      if (this.success) this.goToSignIn();
     },
-
     goToSignIn() {
       this.$router.push("/signIn");
     }
   }
 };
 </script>
+
 
 <style scoped>
 .fill-height {
@@ -297,5 +280,13 @@ export default {
 
 span {
   color: #003a6a;
+}
+
+button:disabled,
+button[disabled] {
+  background-color: grey !important;
+  color: white !important;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 </style>

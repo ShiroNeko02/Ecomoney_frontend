@@ -1,17 +1,25 @@
 <template>
   <v-app class="bg-light">
-    <Header title="My Suggestions" />
+    <!-- Titre dynamique traduit -->
+    <Header :title="$t('pageMySuggestions.title')" />
 
     <v-main>
       <v-container class="pa-4">
-        <!-- Change Form -->
         <v-container>
           <v-row>
             <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" >Suggestions Received</RectangleButton></div>
+              <div class="cont-2">
+                <RectangleButton class="mt-4">
+                  {{ $t('pageMySuggestions.received') }}
+                </RectangleButton>
+              </div>
             </v-col>
             <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToMyDevice">My Devices</RectangleButton></div>
+              <div class="cont-2">
+                <RectangleButton class="mt-4" color="grey" @click="goToMyDevice">
+                  {{ $t('pageMySuggestions.myDevices') }}
+                </RectangleButton>
+              </div>
             </v-col>
           </v-row>
         </v-container>
