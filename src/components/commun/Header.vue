@@ -20,14 +20,14 @@
           <v-icon class="text-primary" size="33">mdi-information-outline</v-icon>
         </v-btn>
       </template>
-      <span>About Us</span>
+      <span>{{ $t('about.tooltip') }}</span>
     </v-tooltip>
 
     <!-- About Us Dialog -->
     <v-dialog v-model="showAboutDialog" max-width="600">
       <v-card color="white">
         <v-card-title class="text-h5 text-black">
-          About Us
+          {{ $t('about.title') }}
         </v-card-title>
 
         <v-card-text class="pa-4 mt-4 text-black">
@@ -41,15 +41,14 @@
               ></v-img>
             </v-col>
             <v-col cols="12" sm="8">
-              <h3 class="text-h6 mb-3 text-black">Our Mission</h3>
+              <h3 class="text-h6 mb-3 text-black">{{ $t('about.missionTitle') }}</h3>
               <p class="text-body-1 text-black">
-                We help our users manage and optimize their energy consumption
-                for a more sustainable and economical future.
+                {{ $t('about.missionText') }}
               </p>
 
-              <h3 class="text-h6 mb-3 mt-4 text-black">Version</h3>
+              <h3 class="text-h6 mb-3 mt-4 text-black">{{ $t('about.versionTitle') }}</h3>
               <p class="text-body-1 text-black">
-                v2.0.0
+                {{ $t('about.version') }}
               </p>
             </v-col>
           </v-row>
@@ -57,7 +56,7 @@
           <v-divider class="my-4"></v-divider>
 
           <div class="text-body-2 text-black">
-            <h3 class="text-subtitle-1 mb-2 text-black">Contact</h3>
+            <h3 class="text-subtitle-1 mb-2 text-black">{{ $t('about.contactTitle') }}</h3>
             <p class="text-black">
               <v-icon size="small" class="mr-2" color="black">mdi-email-outline</v-icon> ecomoney2425@gmail.com
             </p>
@@ -71,7 +70,7 @@
             @click="showAboutDialog = false"
             class="custom-blue-btn"
           >
-            Close
+            {{ $t('about.close') }}
           </v-btn>
         </v-card-actions>
       </v-card>

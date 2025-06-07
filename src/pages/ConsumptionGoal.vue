@@ -1,61 +1,48 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Consumption Goal" />
+    <Header :title="$t('pageChangeBudget.title')" />
 
     <v-main>
       <v-container>
         <v-card class="mt-8 pa-4 form-card elevation-4">
-          <h2 class="text-center mb-6 title-color">Set Monthly Budget Goal</h2>
+          <h2 class="text-center mb-6 title-color">{{ $t('pageChangeBudget.subtitle') }}</h2>
 
           <v-form ref="form" v-model="isFormValid">
             <div class="cont-1">
               <Input
                 v-model="goalAmount"
-                label="Monthly Budget (€)"
+                :label="$t('pageChangeBudget.inputLabel')"
                 type="number"
                 min="0"
                 step="0.01"
                 class="custom-field"
                 :rules="[
-                  v => !!v || 'Budget amount is required',
-                  v => v >= 0 || 'Budget must be positive',
-                  v => !isNaN(v) || 'Budget must be a valid number',
-                  v => Number.isFinite(parseFloat(v)) || 'Budget must be a valid number'
+                  v => !!v || $t('pageChangeBudget.errors.required'),
+                  v => v >= 0 || $t('pageChangeBudget.errors.positive'),
+                  v => !isNaN(v) || $t('pageChangeBudget.errors.number'),
+                  v => Number.isFinite(parseFloat(v)) || $t('pageChangeBudget.errors.number')
                 ]"
               />
             </div>
 
-            <!-- Current Goal Display -->
             <div class="text-center mt-6">
-              <p class="text-subtitle-1">Current Monthly Budget:</p>
-              <v-skeleton-loader
-                v-if="loading"
-                type="text"
-                class="mx-auto"
-                width="100px"
-              ></v-skeleton-loader>
+              <p class="text-subtitle-1">{{ $t('pageChangeBudget.currentLabel') }}</p>
+              <v-skeleton-loader v-if="loading" type="text" class="mx-auto" width="100px" />
               <p v-else class="text-h5 font-weight-bold">{{ formatAmount(currentGoal) }}€</p>
-              <v-btn
-                icon
-                small
-                @click="loadCurrentGoal"
-                :loading="loading"
-                class="ml-2"
-              >
+              <v-btn icon small @click="loadCurrentGoal" :loading="loading" class="ml-2">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </div>
 
-            <!-- Button Submit -->
             <div class="d-flex justify-center width-100 mt-6">
               <Button
                 @click="updateGoal"
                 :disabled="!isFormValid || loading || !hasChanges"
                 :color="!hasChanges ? 'grey' : 'primary'"
               >
-                <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
+                <v-progress-circular v-if="loading" indeterminate color="white" size="20" />
                 <span v-else style="color:white;">
-                  {{ !hasChanges  ? 'No changes' : 'Update Budget Goal' }}
+                  {{ !hasChanges ? $t('pageChangeBudget.noChanges') : $t('pageChangeBudget.update') }}
                 </span>
               </Button>
             </div>
@@ -64,7 +51,7 @@
       </v-container>
 
       <div class="mt-4 mr-4 ml-4 suggestions">
-        <p class="text-subtitle-2 ">Suggestions based on your habits:</p>
+        <p class="text-subtitle-2">{{ $t('pageChangeBudget.suggestionsTitle') }}</p>
         <v-chip-group>
           <v-chip
             v-for="suggestion in budgetSuggestions"
@@ -73,18 +60,17 @@
             color="primary"
             outlined
           >
-            {{ suggestion.label }}
+            {{ $t(suggestion.label) }}
           </v-chip>
         </v-chip-group>
       </div>
 
-      <!-- ALERT BOX -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card class="bg-light">
-          <v-card-title class="headline text-center" style=" color : #003a63;">{{dialogTitle}}</v-card-title>
+          <v-card-title class="headline text-center" style="color: #003a63;">{{ dialogTitle }}</v-card-title>
           <v-card-text v-if="loading">
-            <v-progress-circular indeterminate color="blue"></v-progress-circular>
-            Loading...
+            <v-progress-circular indeterminate color="blue" />
+            {{ $t('pageChangeBudget.loading') }}
           </v-card-text>
           <v-card-text v-else>
             {{ responseMessage }}
@@ -108,15 +94,13 @@ import Button from "@/components/button/Button.vue";
 import { userService } from "@/services/api.js";
 
 export default {
-  name: "ConsumptionGoal",
-  components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Header, Footer, Input, Button
-  },
+  name: "pageChangeBudget",
+  // eslint-disable-next-line vue/no-reserved-component-names
+  components: { Header, Footer, Input, Button },
   data() {
     return {
-      goalAmount: 0.00,
-      currentGoal: 0.00,
+      goalAmount: 0.0,
+      currentGoal: 0.0,
       isFormValid: false,
       loading: false,
       dialog: false,
@@ -124,9 +108,9 @@ export default {
       responseMessage: "",
       success: false,
       budgetSuggestions: [
-        { value: 150, label: "Économe: 150€" },
-        { value: 200, label: "Standard: 200€" },
-        { value: 250, label: "Confort: 250€" }
+        { value: 150, label: "pageChangeBudget.suggestions.frugal" },
+        { value: 200, label: "pageChangeBudget.suggestions.standard" },
+        { value: 250, label: "pageChangeBudget.suggestions.comfort" }
       ]
     };
   },
@@ -139,77 +123,62 @@ export default {
     }
   },
   methods: {
-      async loadCurrentGoal() {
-        this.loading = true;
-        try {
-          const userData = await userService.getCurrentGoal();
-          if (userData && userData.consumption_goal_euros !== undefined) {
-            this.currentGoal = userData.consumption_goal_euros;
-            // Pre-fill the input with current goal for better UX
-            this.goalAmount = this.currentGoal;
-          } else {
-            this.currentGoal = 0.00;
-            this.goalAmount = "";
-          }
-        } catch (error) {
-          console.error("Error loading current goal:", error);
-          this.showNotification(
-            "Error",
-            "Failed to load current goal. Please try again later."
-          );
-          this.currentGoal = 0.00;
-        } finally {
-          this.loading = false;
+    async loadCurrentGoal() {
+      this.loading = true;
+      try {
+        const userData = await userService.getCurrentGoal();
+        if (userData?.consumption_goal_euros !== undefined) {
+          this.currentGoal = userData.consumption_goal_euros;
+          this.goalAmount = this.currentGoal;
+        } else {
+          this.currentGoal = 0.0;
+          this.goalAmount = "";
         }
-      },
-
+      } catch (error) {
+        console.error("Error loading current goal:", error);
+        this.showNotification(this.$t("pageChangeBudget.errorTitle"), this.$t("pageChangeBudget.loadError"));
+        this.currentGoal = 0.0;
+      } finally {
+        this.loading = false;
+      }
+    },
     formatAmount(amount) {
       return parseFloat(amount).toLocaleString('fr-FR', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
     },
-
     async updateGoal() {
-      if (!this.$refs.form.validate()) {
-        return;
-      }
+      if (!this.$refs.form.validate()) return;
 
       this.loading = true;
       try {
         const parsedGoal = parseFloat(this.goalAmount);
-        if (isNaN(parsedGoal)) {
-          throw new Error('Invalid amount');
-        }
-
-        console.log("Sending budget update:", parsedGoal); // Debug
+        if (isNaN(parsedGoal)) throw new Error("Invalid amount");
 
         await userService.updateConsumptionGoal(parsedGoal);
         this.success = true;
         await this.loadCurrentGoal();
-        this.showNotification("Success", "Your monthly budget goal has been updated successfully");
-        this.goalAmount = this.currentGoal; // Set input to new value
+        this.showNotification(this.$t("pageChangeBudget.successTitle"), this.$t("pageChangeBudget.successMessage"));
       } catch (error) {
         this.showNotification(
-          "Error",
-          error.message === 'Invalid amount' ? "Please enter a valid amount" : "Failed to update budget goal"
+          this.$t("pageChangeBudget.errorTitle"),
+          error.message === "Invalid amount" ? this.$t("pageChangeBudget.errors.invalid") : this.$t("pageChangeBudget.updateError")
         );
       } finally {
         this.loading = false;
       }
     },
-
     showNotification(title, message) {
       this.dialogTitle = title;
       this.responseMessage = message;
       this.dialog = true;
     },
-
     handleDialogClose() {
       this.dialog = false;
       if (this.success) {
         setTimeout(() => {
-          this.$router.push('/user');
+          this.$router.push("/user");
         }, 500);
       }
     }

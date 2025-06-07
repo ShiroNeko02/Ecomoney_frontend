@@ -39,7 +39,7 @@ export default {
         plugins: {
           title: {
             display: true,
-            text: 'Device Consumption Distribution',
+            text: this.$t('pageHome.deviceConsumptionDistribution'),
             font: {
               size: 16
             },

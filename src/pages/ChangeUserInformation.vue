@@ -1,6 +1,6 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Change Information" />
+    <Header :title="$t('pageChangeInformation.title')" />
 
     <v-main>
       <v-container>
@@ -8,14 +8,14 @@
           <v-form ref="form" v-model="isFormValid">
             <Input
               v-model="userData.first_name"
-              label="First Name"
+              :label="$t('pageChangeInformation.firstName')"
               class="custom-field"
               :rules="formRules.name"
             />
 
             <Input
               v-model="userData.last_name"
-              label="Last Name"
+              :label="$t('pageChangeInformation.lastName')"
               class="custom-field"
               :rules="formRules.name"
             />
@@ -23,7 +23,7 @@
             <!--
             <Input
               v-model="userData.email"
-              label="Email"
+              :label="$t('pageChangeInformation.email')"
               class="custom-field"
               type="email"
               :rules="formRules.email"
@@ -33,7 +33,7 @@
             <div class="d-flex justify-center width-100 mt-6">
               <Button @click="submit" :disabled="!isFormValid || loading">
                 <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
-                <span v-else style="color:white;">Update Information</span>
+                <span v-else style="color:white;">{{ $t('pageChangeInformation.updateButton') }}</span>
               </Button>
             </div>
           </v-form>
@@ -46,7 +46,7 @@
           <v-card-title class="headline text-h5 text-center pa-4">
             {{ dialogTitle }}
           </v-card-title>
-          <v-card-text class=" pa-6 pr-2" style="min-height: 50px;">
+          <v-card-text class="pa-6 pr-2" style="min-height: 50px;">
             {{ responseMessage }}
           </v-card-text>
           <v-card-actions class="justify-center pa-4">
@@ -69,11 +69,9 @@ import { userService } from "@/services/api.js";
 import { eventBus } from '@/utils/EventBusManager.js';
 
 export default {
-  name: "ChangeInformation",
-  components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Header, Footer, Input, Button
-  },
+  name: "pageChangeInformation",
+  // eslint-disable-next-line vue/no-reserved-component-names
+  components: { Header, Footer, Input, Button },
   data() {
     return {
       userData: {
@@ -88,12 +86,12 @@ export default {
       loading: false,
       formRules: {
         name: [
-          v => !!v || 'Name is required',
-          v => /^[a-zA-ZÀ-ÿ\s'-]{2,30}$/.test(v) || 'Invalid name format'
+          v => !!v || this.$t('pageChangeInformation.errors.nameRequired'),
+          v => /^[a-zA-ZÀ-ÿ\s'-]{2,30}$/.test(v) || this.$t('pageChangeInformation.errors.invalidName')
         ],
         email: [
-          v => !!v || 'Email is required',
-          v => /.+@.+\..+/.test(v) || 'Invalid email format'
+          v => !!v || this.$t('pageChangeInformation.errors.emailRequired'),
+          v => /.+@.+\..+/.test(v) || this.$t('pageChangeInformation.errors.invalidEmail')
         ]
       }
     };
@@ -111,7 +109,7 @@ export default {
         };
       } catch (error) {
         console.error("Error loading user data:", error);
-        this.showNotification("Error", "Unable to load your information");
+        this.showNotification(this.$t('pageChangeInformation.errorTitle'), this.$t('pageChangeInformation.loadError'));
       }
     },
 
@@ -121,28 +119,24 @@ export default {
       this.loading = true;
       try {
         const updated = await userService.updateUser(this.userData);
-
         if (updated) {
-          // Met à jour localStorage
           const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
           const updatedUser = { ...currentUser, ...this.userData };
           localStorage.setItem('user', JSON.stringify(updatedUser));
-
-          // Envoie un signal global
           eventBus.emit('user-updated', this.userData);
 
-          this.showNotification("Success", "Your information has been updated successfully");
+          this.showNotification(this.$t('pageChangeInformation.successTitle'), this.$t('pageChangeInformation.successMessage'));
         }
       } catch (error) {
         console.error("Error updating information:", error);
-        let message = "An error occurred.";
+        let message = this.$t('pageChangeInformation.errors.generic');
         if (error.response?.status === 401) {
           this.$router.push('/signIn');
           return;
         } else if (error.response?.data?.message) {
           message = error.response.data.message;
         }
-        this.showNotification("Error", message);
+        this.showNotification(this.$t('pageChangeInformation.errorTitle'), message);
       } finally {
         this.loading = false;
       }
@@ -156,7 +150,7 @@ export default {
 
     handleDialogClose() {
       this.dialog = false;
-      if (this.dialogTitle === "Success") {
+      if (this.dialogTitle === this.$t('pageChangeInformation.successTitle')) {
         this.$router.push('/user');
       }
     }

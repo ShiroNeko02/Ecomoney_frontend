@@ -1,12 +1,12 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Home" />
+    <Header :title="$t('pageHome.title')" />
 
     <v-main>
       <v-container>
-        <!-- Pie Chart (maintenant en premier) -->
+        <!-- Pie Chart -->
         <v-card class="mt-4 pa-4 bg-light elevation-20">
-          <PieChart :labels="['Device A', 'Device B', 'Device C','Others']" :data="[40, 30, 30, 20]" />
+          <PieChart :labels="[$t('pageHome.deviceA'), $t('pageHome.deviceB'), $t('pageHome.deviceC'), $t('pageHome.others')]" :data="[40, 30, 30, 20]" />
         </v-card>
 
         <!-- Budget -->
@@ -19,7 +19,7 @@
                 :size="40"
                 width="4"
               ></v-progress-circular>
-              <span class="ml-3 text-subtitle-1 font-weight-medium">Budget Status</span>
+              <span class="ml-3 text-subtitle-1 font-weight-medium">{{ $t('pageHome.budgetStatus') }}</span>
             </v-col>
 
             <v-col cols="6" class="text-right">
@@ -34,7 +34,7 @@
                 </div>
                 <div>
                   <span class="text-subtitle-2 text-grey">
-                    of {{ formatAmount(budget.goal) }}€
+                    {{ $t('pageHome.of') }} {{ formatAmount(budget.goal) }}€
                   </span>
                 </div>
                 <div>
@@ -47,30 +47,28 @@
           </v-row>
         </v-card>
 
-        <!-- Budget History Chart avec taille augmentée -->
-
-          <div style="height: 400px;">
-            <BudgetHistoryChart />
-          </div>
-
+        <!-- Budget History Chart -->
+        <div style="height: 400px;">
+          <BudgetHistoryChart />
+        </div>
 
         <!-- Quick Actions -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
           <v-row class="align-content-center">
             <v-col cols="12">
-              <h3 class="text-h6 mb-4">Quick Actions</h3>
+              <h3 class="text-h6 mb-4">{{ $t('pageHome.quickActions') }}</h3>
               <v-btn
                 color="primary"
                 class="mr-2"
                 @click="$router.push('/consumptionGoal')"
               >
-                Update Budget Goal
+                {{ $t('pageHome.updateBudgetGoal') }}
               </v-btn>
               <v-btn
                 color="secondary"
                 @click="loadBudgetData"
               >
-                Refresh Data
+                {{ $t('pageHome.refreshData') }}
               </v-btn>
             </v-col>
           </v-row>
@@ -78,9 +76,10 @@
       </v-container>
     </v-main>
 
-    <Footer/>
+    <Footer />
   </v-app>
 </template>
+
 <script>
 import BarChart from "@/components/chart/BarChart.vue";
 import { userService } from "@/services/api.js";
@@ -89,9 +88,8 @@ import BudgetHistoryChart from "@/components/chart/BudgetHistoryChart.vue";
 export default {
   name: "Home",
   components: {
-    BudgetHistoryChart,
     // eslint-disable-next-line vue/no-unused-components
-    BarChart,
+    BudgetHistoryChart, BarChart,
   },
   data() {
     return {
@@ -99,8 +97,8 @@ export default {
       budget: {
         goal: 0,
         remaining: 0,
-        percentage: 0
-      }
+        percentage: 0,
+      },
     };
   },
   mounted() {
@@ -109,19 +107,19 @@ export default {
   computed: {
     getBudgetColor() {
       const percentage = this.budget.percentage;
-      if (percentage > 66) return 'green';
-      if (percentage > 33) return 'orange';
-      return 'red';
+      if (percentage > 66) return "green";
+      if (percentage > 33) return "orange";
+      return "red";
     },
     getBudgetTextColor() {
       return `text--${this.getBudgetColor}`;
     },
     getBudgetStatus() {
       const percentage = this.budget.percentage;
-      if (percentage > 66) return 'Good standing';
-      if (percentage > 33) return 'Watch spending';
-      return 'Budget alert';
-    }
+      if (percentage > 66) return this.$t("pageHome.goodStanding");
+      if (percentage > 33) return this.$t("pageHome.watchSpending");
+      return this.$t("pageHome.budgetAlert");
+    },
   },
   methods: {
     async loadBudgetData() {
@@ -130,9 +128,7 @@ export default {
         const goalData = await userService.getCurrentGoal();
         if (goalData && goalData.consumption_goal_euros !== undefined) {
           this.budget.goal = goalData.consumption_goal_euros;
-          // Add calculation for remaining budget and percentage here
-          // This is a placeholder - implement actual calculation based on your data
-          this.budget.remaining = goalData.consumption_goal_euros * 0.8;
+          this.budget.remaining = goalData.consumption_goal_euros * 0.8; // placeholder
           this.budget.percentage = (this.budget.remaining / this.budget.goal) * 100;
         }
       } catch (error) {
@@ -143,14 +139,15 @@ export default {
     },
 
     formatAmount(amount) {
-      return parseFloat(amount).toLocaleString('fr-FR', {
+      return parseFloat(amount).toLocaleString(this.$i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       });
-    }
-  }
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 *{

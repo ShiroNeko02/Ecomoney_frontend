@@ -1,6 +1,6 @@
 <template>
   <v-app class="bg-app">
-    <Header title="User's space" />
+    <Header :title="$t('pageUser.header')" />
 
     <v-main>
       <v-container class="mt-5 d-flex justify-center">
@@ -11,20 +11,20 @@
             </div>
             <h3 class="user-name">{{ user.first_name }} {{ user.last_name }}</h3>
             <p class="user-email">{{ user.email }}</p>
-            <v-chip class="mt-2" color="primary" text-color="white" size="small">Active Account</v-chip>
+            <v-chip class="mt-2" color="primary" text-color="white" size="small">
+              {{ $t('pageUser.activeAccount') }}
+            </v-chip>
           </v-card-text>
         </v-card>
       </v-container>
 
       <v-container class="card">
-        <h3 class="user-name mt-4 mb-4">Accounts settings</h3>
+        <h3 class="user-name mt-4 mb-4">{{ $t('pageUser.settingsTitle') }}</h3>
         <v-row dense>
           <v-col cols="11" v-for="(item, index) in settings" :key="index">
             <v-card elevation="3" :class="['setting-button']" :color="item.bg" @click="item.action">
               <v-card-text class="d-flex align-center ml-3 mt-1">
-                <div
-                  class="icon-box d-flex align-center justify-center"
-                >
+                <div class="icon-box d-flex align-center justify-center">
                   <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
                 </div>
                 <span class="ml-3 font-weight-medium">{{ item.label }}</span>
@@ -36,14 +36,14 @@
 
       <v-dialog v-model="dialog" max-width="450px" class="bg-light">
         <v-card class="bg-light">
-          <v-card-title class="text-red font-weight-bold">⚠️ Alert</v-card-title>
+          <v-card-title class="text-red font-weight-bold">⚠️ {{ $t('pageUser.alertTitle') }}</v-card-title>
           <v-card-text>
-            Are you sure you want to delete your account? <br />
-            <strong>This action is irreversible.</strong>
+            {{ $t('pageUser.alertBody') }} <br />
+            <strong>{{ $t('pageUser.alertIrreversible') }}</strong>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text color="grey" @click="dialog = false">Cancel</v-btn>
-            <v-btn color="red" @click="deleteAccount">Yes, Delete</v-btn>
+            <v-btn text color="grey" @click="dialog = false">{{ $t('pageUser.cancel') }}</v-btn>
+            <v-btn color="red" @click="deleteAccount">{{ $t('pageUser.confirmDelete') }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -62,8 +62,8 @@ import { eventBus } from "@/utils/EventBusManager.js";
 export default {
   name: "User",
   components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Header, Footer,
+    Header,
+    Footer,
   },
   data() {
     return {
@@ -73,44 +73,48 @@ export default {
         last_name: "",
         email: "",
       },
-      settings: [
+    };
+  },
+  computed: {
+    settings() {
+      return [
         {
-          label: "Set Budget Goal",
+          label: this.$t("pageUser.setBudgetGoal"),
           icon: "mdi-cash",
           iconColor: "green",
-          bg: "#dcfce7", // vert clair mais plus marqué
+          bg: "#dcfce7",
           action: () => this.goToConsumptionGoal(),
         },
         {
-          label: "Change My Password",
+          label: this.$t("pageUser.changePassword"),
           icon: "mdi-lock",
           iconColor: "blue",
-          bg: "#e0f2fe", // bleu clair modéré
+          bg: "#e0f2fe",
           action: () => this.goToChangePassword(),
         },
         {
-          label: "Edit My Information",
+          label: this.$t("pageUser.editInfo"),
           icon: "mdi-account-edit",
           iconColor: "indigo",
-          bg: "#e5e9ff", // indigo pastel
+          bg: "#e5e9ff",
           action: () => this.goToChangeInformation(),
         },
         {
-          label: "Delete My Account",
+          label: this.$t("pageUser.deleteAccount"),
           icon: "mdi-delete",
           iconColor: "red",
-          bg: "#feecec", // rouge léger mais visible
+          bg: "#feecec",
           action: () => this.confirmDeleteAccount(),
         },
         {
-          label: "Log Out",
+          label: this.$t("pageUser.logout"),
           icon: "mdi-logout",
           iconColor: "grey",
-          bg: "#f3f4f6", // gris bleuté doux
+          bg: "#f3f4f6",
           action: () => this.signOut(),
         },
-      ]
-    };
+      ];
+    },
   },
   mounted() {
     eventBus.on("user-updated", this.updateUserData);
@@ -129,7 +133,7 @@ export default {
         console.error("Failed to load user data:", error);
       }
     },
-    async updateUserData(data) {
+    async updateUserData() {
       await this.loadUserData();
     },
     async signOut() {

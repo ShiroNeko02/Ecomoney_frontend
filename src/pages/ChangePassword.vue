@@ -1,6 +1,6 @@
 <template>
   <v-app class="bg-light">
-    <Header title="Change Password" />
+    <Header :title="$t('pageChangePassword.title')" />
 
     <v-main>
       <v-container>
@@ -10,44 +10,45 @@
             <div class="cont-1">
               <Input
                 v-model="current_password"
-                label="Current Password"
+                :label="$t('pageChangePassword.currentPassword')"
                 class="custom-field"
                 type="password"
-                :rules="[v => !!v || 'Current password is required']"
+                :rules="[v => !!v || $t('pageChangePassword.errors.currentRequired')]"
               />
             </div>
             <div class="cont-1">
               <Input
                 v-model="new_password"
-                label="New Password"
+                :label="$t('pageChangePassword.newPassword')"
                 class="custom-field"
                 type="password"
                 :rules="passwordRules"
-                :hint="passwordHint"
+                :hint="$t('pageChangePassword.hint')"
                 persistent-hint
               />
             </div>
             <div class="cont-1">
               <Input
                 v-model="confirm_new_password"
-                label="Confirm New Password"
+                :label="$t('pageChangePassword.confirmPassword')"
                 class="custom-field"
                 type="password"
                 :rules="[
-                  v => !!v || 'Password confirmation is required',
-                  v => v === new_password || 'Passwords do not match'
+                  v => !!v || $t('pageChangePassword.errors.confirmRequired'),
+                  v => v === new_password || $t('pageChangePassword.errors.noMatch')
                 ]"
               />
             </div>
 
-            <!-- Button Submit -->
             <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 10px;">
               <div style="width:90%; display: flex; justify-content: center;">
                 <Button
                   @click="submit"
                   class="mt-6"
                   :disabled="!isFormValid || loading"
-                >Submit</Button>
+                >
+                  {{ $t('pageChangePassword.submit') }}
+                </Button>
               </div>
             </div>
           </v-form>
@@ -57,10 +58,10 @@
       <!-- ALERT BOX -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card class="bg-light">
-          <v-card-title class="headline text-center">{{dialogTitle}}</v-card-title>
+          <v-card-title class="headline text-center">{{ dialogTitle }}</v-card-title>
           <v-card-text v-if="loading">
-            <v-progress-circular indeterminate color="blue"></v-progress-circular>
-            Loading...
+            <v-progress-circular indeterminate color="blue" />
+            {{ $t('pageChangePassword.loading') }}
           </v-card-text>
           <v-card-text class="text-black" v-else>
             {{ responseMessage }}
@@ -84,11 +85,9 @@ import Button from "@/components/button/Button.vue";
 import { userService } from "@/services/api.js";
 
 export default {
-  name: "ChangePassword",
-  components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Button, Footer, Header, Input
-  },
+  name: "pageChangePassword",
+  // eslint-disable-next-line vue/no-reserved-component-names
+  components: { Button, Footer, Header, Input },
   data() {
     return {
       current_user: null,
@@ -101,12 +100,11 @@ export default {
       responseMessage: "",
       isFormValid: false,
       passwordRules: [
-        v => !!v || 'Password is required',
-        v => v.length >= 6 || 'Password must be at least 6 characters',
-        v => /[A-Z]/.test(v) || 'Password must contain at least one uppercase letter',
-        v => /\d/.test(v) || 'Password must contain at least one number'
-      ],
-      passwordHint: 'Password must be at least 6 characters, contain one uppercase letter and one number'
+        v => !!v || this.$t('pageChangePassword.errors.required'),
+        v => v.length >= 6 || this.$t('pageChangePassword.errors.minLength'),
+        v => /[A-Z]/.test(v) || this.$t('pageChangePassword.errors.uppercase'),
+        v => /\d/.test(v) || this.$t('pageChangePassword.errors.number')
+      ]
     };
   },
   mounted() {
@@ -117,37 +115,31 @@ export default {
   },
   methods: {
     async submit() {
-      if (!this.$refs.form.validate()) {
-        return;
-      }
+      if (!this.$refs.form.validate()) return;
 
       if (!this.current_password || !this.new_password || !this.confirm_new_password) {
-        this.showNotification("Error", "All fields are required.");
+        this.showNotification(this.$t("pageChangePassword.errorTitle"), this.$t("pageChangePassword.errors.allRequired"));
         return;
       }
 
       if (this.new_password !== this.confirm_new_password) {
-        this.showNotification("Error", "New passwords do not match.");
+        this.showNotification(this.$t("pageChangePassword.errorTitle"), this.$t("pageChangePassword.errors.noMatch"));
         return;
       }
 
       this.loading = true;
       try {
-        const response = await userService.changePassword(
-          this.current_password,
-          this.new_password
-        );
-
-        this.showNotification("Success", response.message || "Password successfully changed.");
+        const response = await userService.changePassword(this.current_password, this.new_password);
+        this.showNotification(this.$t("pageChangePassword.successTitle"), response.message || this.$t("pageChangePassword.successMessage"));
         this.resetForm();
       } catch (error) {
-        let errorMessage = "An error occurred.";
+        let errorMessage = this.$t("pageChangePassword.errors.generic");
         if (error.response?.status === 401) {
-          errorMessage = "Current password is incorrect.";
+          errorMessage = this.$t("pageChangePassword.errors.incorrectCurrent");
         } else if (error.response?.data?.error) {
           errorMessage = error.response.data.error;
         }
-        this.showNotification("Error", errorMessage);
+        this.showNotification(this.$t("pageChangePassword.errorTitle"), errorMessage);
       } finally {
         this.loading = false;
       }
