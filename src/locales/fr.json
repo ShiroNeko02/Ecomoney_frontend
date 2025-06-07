@@ -207,6 +207,8 @@
             "updateButton": "Mettre à jour",
             "successTitle": "Succès",
             "successMessage": "Vos informations ont été mises à jour avec succès.",
+            "inProgressTitle": "En cours",
+            "inProgressMessage": "Consultez votre boîte de réception pour confirmer votre nouvelle adresse email.",
             "errorTitle": "Erreur",
             "loadError": "Impossible de charger vos informations.",
             "errors": {

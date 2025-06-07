@@ -22,7 +22,7 @@
             <div class="d-flex justify-center width-100 mt-6">
               <Button type="submit" :disabled="!isFormValid || loading">
                 <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
-                <span v-else style="color:white;">Update Information</span>
+                <span v-else style="color:white;">{{ $t('pageChangeInformation.updateButton') }}</span>
               </Button>
             </div>
           </v-form>
@@ -39,8 +39,8 @@
               :rules="formRules.email"
             />
             <div class="d-flex justify-center width-100 mt-6">
-              <Button @click="submit" :disabled="!isFormValid || loading">
-                <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
+              <Button type="submit" :disabled="!isEmailFormValid || loadingEmail">
+                <v-progress-circular v-if="loadingEmail" indeterminate color="white" size="20"/>
                 <span v-else style="color:white;">{{ $t('pageChangeInformation.updateButton') }}</span>
 
               </Button>
@@ -126,6 +126,7 @@ export default {
       }
     },
 
+    // Name
     async submit() {
       if (!this.$refs.form.validate()) return;
 
@@ -171,18 +172,18 @@ export default {
           // Envoie un signal global
           eventBus.emit('user-updated', this.userData);
 
-          this.showNotification("Success", "An email has been sent to the new address, click on the link inside to confirm update");
+          this.showNotification(this.$t('pageChangeInformation.inProgressTitle'), this.$t('pageChangeInformation.inProgressMessage'));
         }
       } catch (error) {
         console.error("Error updating information:", error);
-        let message = "An error occurred.";
+        let message = this.$t('pageChangeInformation.errors.generic');
         if (error.response?.status === 401) {
           this.$router.push('/signIn');
           return;
         } else if (error.response?.data?.message) {
           message = error.response.data.message;
         }
-        this.showNotification("Error", message);
+        this.showNotification(this.$t('pageChangeInformation.errorTitle'), message);
       } finally {
         this.loadingEmail = false;
       }
