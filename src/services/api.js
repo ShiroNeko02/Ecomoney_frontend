@@ -113,8 +113,11 @@ export const userService = {
     }
   },
 
-  // Update user data (other than consumption goal)
+  // Update user data (names)
   updateUser: (updateData) => handleRequest(() => api.put("/user/profile", updateData)),
+
+  // Update user email
+  updateUserEmail: (updateData) => handleRequest(() => api.put("/user/email", updateData)),
 
   // Get current goal
   getCurrentGoal: () => handleRequest(() => api.get("/user/goal")),

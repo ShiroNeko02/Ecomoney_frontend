@@ -4,23 +4,33 @@
 
     <v-main>
       <v-container>
+        <!--Update name-->
         <v-card class="mt-8 pa-4 form-card elevation-4">
-          <v-form ref="form" v-model="isFormValid">
+          <v-form @submit.prevent="submit" ref="form" v-model="isFormValid">
             <Input
               v-model="userData.first_name"
               :label="$t('pageChangeInformation.firstName')"
               class="custom-field"
               :rules="formRules.name"
             />
-
             <Input
               v-model="userData.last_name"
               :label="$t('pageChangeInformation.lastName')"
               class="custom-field"
               :rules="formRules.name"
             />
+            <div class="d-flex justify-center width-100 mt-6">
+              <Button type="submit" :disabled="!isFormValid || loading">
+                <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
+                <span v-else style="color:white;">Update Information</span>
+              </Button>
+            </div>
+          </v-form>
+        </v-card>
 
-            <!--
+        <!--Update email-->
+        <v-card class="mt-8 pa-4 form-card elevation-4">
+          <v-form @submit.prevent="submitEmail" ref="emailForm" v-model="isEmailFormValid">
             <Input
               v-model="userData.email"
               :label="$t('pageChangeInformation.email')"
@@ -28,16 +38,16 @@
               type="email"
               :rules="formRules.email"
             />
-            -->
-
             <div class="d-flex justify-center width-100 mt-6">
               <Button @click="submit" :disabled="!isFormValid || loading">
                 <v-progress-circular v-if="loading" indeterminate color="white" size="20"/>
                 <span v-else style="color:white;">{{ $t('pageChangeInformation.updateButton') }}</span>
+
               </Button>
             </div>
           </v-form>
         </v-card>
+
       </v-container>
 
       <!-- Notification -->
@@ -80,10 +90,12 @@ export default {
         email: ""
       },
       isFormValid: false,
+      isEmailFormValid: false,
       dialog: false,
       dialogTitle: "",
       responseMessage: "",
       loading: false,
+      loadingEmail: false,
       formRules: {
         name: [
           v => !!v || this.$t('pageChangeInformation.errors.nameRequired'),
@@ -105,7 +117,8 @@ export default {
         const user = await userService.getCurrentUser();
         this.userData = {
           first_name: user.first_name || '',
-          last_name: user.last_name || ''
+          last_name: user.last_name || '',
+          email: user.email || '',
         };
       } catch (error) {
         console.error("Error loading user data:", error);
@@ -139,6 +152,39 @@ export default {
         this.showNotification(this.$t('pageChangeInformation.errorTitle'), message);
       } finally {
         this.loading = false;
+      }
+    },
+
+    async submitEmail() {
+      if (!this.$refs.emailForm.validate()) return;
+
+      this.loadingEmail = true;
+      try {
+        const updated = await userService.updateUserEmail(this.userData);
+
+        if (updated) {
+          // Met à jour localStorage
+          const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+          const updatedUser = { ...currentUser, ...this.userData };
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+
+          // Envoie un signal global
+          eventBus.emit('user-updated', this.userData);
+
+          this.showNotification("Success", "An email has been sent to the new address, click on the link inside to confirm update");
+        }
+      } catch (error) {
+        console.error("Error updating information:", error);
+        let message = "An error occurred.";
+        if (error.response?.status === 401) {
+          this.$router.push('/signIn');
+          return;
+        } else if (error.response?.data?.message) {
+          message = error.response.data.message;
+        }
+        this.showNotification("Error", message);
+      } finally {
+        this.loadingEmail = false;
       }
     },
 
