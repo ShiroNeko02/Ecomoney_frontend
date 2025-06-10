@@ -237,7 +237,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
