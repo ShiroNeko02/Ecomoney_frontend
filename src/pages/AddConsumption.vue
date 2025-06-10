@@ -237,7 +237,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": "Bearer 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",
+            "Authorization": "Bearer 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",
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -259,7 +259,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
           const translateResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-              "Authorization": "Bearer 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",
+              "Authorization": "Bearer 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",
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
