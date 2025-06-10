@@ -89,7 +89,7 @@
           "deviceLabel": "Appareil",
           "startDate": "Date de début",
           "endDate": "Date de fin",
-          "perUseLabel": "Par utilisation",
+          "perUseLabel": "Tout",
           "perWeekLabel": "Par semaine",
           "perMonthLabel": "Par mois",
           "perYearLabel": "Par année",
