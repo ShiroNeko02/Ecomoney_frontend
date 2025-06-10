@@ -222,6 +222,8 @@
           "updateButton": "Update Information",
           "successTitle": "Success",
           "successMessage": "Your information has been updated successfully.",
+          "inProgressTitle": "In progress",
+          "inProgressMessage": "Check your email inbox to confirm your new email address.",
           "errorTitle": "Error",
           "loadError": "Unable to load your information.",
           "errors": {
