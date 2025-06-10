@@ -4,27 +4,24 @@
 
     <v-main>
       <v-container>
-        <!-- Change Form -->
-        <v-container>
-          <div class="custom-toggle mt-4">
-            <v-btn
-              :class="{ active: selectedAction === 'consumption' }"
-              class="toggle-btn"
-              @click="selectAction('consumption')"
-              color="#4BA3C3"
+          <!-- Navigation Tabs -->
+          <v-card class="mb-6" elevation="3" rounded="lg">
+            <v-tabs
+              v-model="activeTab"
+              grow
+              color="primary"
+              slider-color="primary"
             >
-              {{ locale === 'fr' ? 'Ajout consommation' : 'Add a consumption' }}
-            </v-btn>
-            <v-btn
-              :class="{ active: selectedAction === 'device' }"
-              class="toggle-btn"
-              @click="selectAction('device')"
-              color="grey"
-            >
-              {{ locale === 'fr' ? 'Ajout appareil' : 'Add a device' }}
-            </v-btn>
-          </div>
-        </v-container>
+              <v-tab value="suggestions" class="py-4">
+                <v-icon class="mr-2">mdi-lightbulb-on</v-icon>
+                {{ $t('pageAddDevice.addConsumption') }}
+              </v-tab>
+              <v-tab value="devices" class="py-4" @click="goToDevice">
+                <v-icon class="mr-2">mdi-devices</v-icon>
+                {{ $t('pageAddDevice.addDevice') }}
+              </v-tab>
+            </v-tabs>
+          </v-card>
 
         <!-- Formulaire -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
@@ -110,6 +107,7 @@ export default {
   },
   data() {
     return {
+      activeTab: 'suggestions', // ou 'devices' selon l’onglet par défaut souhaité
       locale: this.$i18n.locale,
       devices_user: [],
       dialog: false,
@@ -197,6 +195,10 @@ export default {
     }
   },
   methods: {
+    goToDevice() {
+      this.$router.push("/addDevice");
+    },
+
     getEnglishObjective(frenchObjective) {
       for (const category in this.objectiveOptions) {
         const index = this.objectiveOptions[category].fr.indexOf(frenchObjective);
@@ -379,6 +381,23 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
 
 .error-title {
   color: red !important;
+}
+
+.bg-light {
+  background-color: #fff !important;
+  border-radius: 15px;
+}
+
+.v-tab {
+  transition: background-color 0.3s ease;
+}
+
+.v-tab:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+}
+
+.v-tab--selected {
+  font-weight: bold;
 }
 
 </style>

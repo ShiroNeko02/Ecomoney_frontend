@@ -4,10 +4,10 @@
 
     <v-main>
       <v-container>
-        <!-- Pie Chart -->
-        <v-card class="mt-4 pa-4 bg-light elevation-20">
-          <PieChart :labels="[$t('pageHome.deviceA'), $t('pageHome.deviceB'), $t('pageHome.deviceC'), $t('pageHome.others')]" :data="[40, 30, 30, 20]" />
-        </v-card>
+        <!-- Budget History Chart -->
+        <div style="height: 400px;">
+          <BudgetHistoryChart />
+        </div>
 
         <!-- Budget -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
@@ -47,10 +47,6 @@
           </v-row>
         </v-card>
 
-        <!-- Budget History Chart -->
-        <div style="height: 400px;">
-          <BudgetHistoryChart />
-        </div>
 
         <!-- Quick Actions -->
         <v-card class="mt-6 pa-4 bg-light elevation-20">
@@ -62,12 +58,14 @@
                 class="mr-2"
                 @click="$router.push('/consumptionGoal')"
               >
+                <v-icon class="mr-2">mdi-target</v-icon>
                 {{ $t('pageHome.updateBudgetGoal') }}
               </v-btn>
               <v-btn
                 color="secondary"
                 @click="loadBudgetData"
               >
+                <v-icon class="mr-2">mdi-refresh</v-icon>
                 {{ $t('pageHome.refreshData') }}
               </v-btn>
             </v-col>

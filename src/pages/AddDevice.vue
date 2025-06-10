@@ -3,25 +3,24 @@
     <Header :title="$t('pageAddDevice.headerTitle')" />
     <v-main>
       <v-container>
-        <!-- Top buttons -->
-        <v-container>
-          <v-row>
-            <v-col cols="6">
-              <div class="cont-2">
-                <RectangleButton class="mt-4" color="grey" @click="goToActivity">
-                  {{ $t('pageAddDevice.addConsumption') }}
-                </RectangleButton>
-              </div>
-            </v-col>
-            <v-col cols="6">
-              <div class="cont-2">
-                <RectangleButton class="mt-4">
-                  {{ $t('pageAddDevice.addDevice') }}
-                </RectangleButton>
-              </div>
-            </v-col>
-          </v-row>
-        </v-container>
+          <!-- Navigation Tabs -->
+          <v-card class="mb-6" elevation="3" rounded="lg">
+            <v-tabs
+              v-model="activeTab"
+              grow
+              color="primary"
+              slider-color="primary"
+            >
+              <v-tab value="suggestions" class="py-4" @click="goToActivity">
+                <v-icon class="mr-2">mdi-lightbulb-on</v-icon>
+                {{ $t('pageAddDevice.addConsumption') }}
+              </v-tab>
+              <v-tab value="devices" class="py-4">
+                <v-icon class="mr-2">mdi-devices</v-icon>
+                {{ $t('pageAddDevice.addDevice') }}
+              </v-tab>
+            </v-tabs>
+          </v-card>
 
         <!-- Device form -->
         <v-card class="mt-8 pa-4 form-card elevation-4">
@@ -83,8 +82,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-main>
     <Footer />
+    </v-main>
   </v-app>
 </template>
 
@@ -114,6 +113,7 @@ export default {
   },
   data() {
     return {
+      activeTab: 'devices', // Onglet "My Devices" actif par défaut
       device_user: {
         name_device_user: "",
         power_watts_user: "",
@@ -285,5 +285,22 @@ export default {
 .caption2{
   margin-top: -20px;
   margin-bottom: -25px;
+}
+
+.bg-light {
+  background-color: #fff !important;
+  border-radius: 15px;
+}
+
+.v-tab {
+  transition: background-color 0.3s ease;
+}
+
+.v-tab:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+}
+
+.v-tab--selected {
+  font-weight: bold;
 }
 </style>

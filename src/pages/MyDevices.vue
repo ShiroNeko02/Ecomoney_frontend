@@ -3,27 +3,38 @@
     <Header :title="$t('pageMyDevices.title')" />
 
     <v-main>
-      <v-container class="pa-4">
-        <!-- Change Form -->
-        <v-container>
-          <v-row>
-            <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4" color="grey" @click="goToMySuggestions">{{ $t('pageMyDevices.mySuggestions') }}</RectangleButton></div>
-            </v-col>
-            <v-col cols="6">
-              <div class="cont-2"><RectangleButton class="mt-4">{{ $t('pageMyDevices.myDevices') }}</RectangleButton></div>
-            </v-col>
-          </v-row>
-        </v-container>
+      <v-container class="py-6">
+        <!-- Navigation Tabs -->
+        <v-card class="mb-6" elevation="3" rounded="lg">
+          <v-tabs
+            v-model="activeTab"
+            grow
+            color="primary"
+            slider-color="primary"
+          >
+            <v-tab value="suggestions" class="py-4" @click="goToMySuggestions">
+              <v-icon class="mr-2">mdi-lightbulb-on</v-icon>
+              {{ $t('pageMyDevices.mySuggestions') }}
+            </v-tab>
+            <v-tab value="devices" class="py-4">
+              <v-icon class="mr-2">mdi-devices</v-icon>
+              {{ $t('pageMyDevices.myDevices') }}
+            </v-tab>
+          </v-tabs>
+        </v-card>
 
-        <DeviceList />
-
+        <!-- Device List -->
+          <v-divider></v-divider>
+          <v-card-text class="pa-0">
+            <DeviceList />
+          </v-card-text>
       </v-container>
     </v-main>
 
     <Footer />
   </v-app>
 </template>
+
 
 
 <script>
@@ -44,6 +55,11 @@ export default {
     DeviceList,
   },
   name: 'MyDevices',
+  data() {
+    return {
+      activeTab: 'devices', // Default active tab
+    };
+  },
   methods: {
     goToMySuggestions() {
       this.$router.push("/mySuggestions");
@@ -52,30 +68,22 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
-.fill-height {
-  min-height: calc(100vh - 80px);
-}
-
 .bg-light {
   background-color: #fff !important;
   border-radius: 15px;
 }
 
-.form {
-  background-color: #2596be!important;
-  font-weight: bold;
-  font-size: 1.2rem;
-  border-radius: 10px;
-
-  margin: 30px 0;
-  text-align: center;
+.v-tab {
+  transition: background-color 0.3s ease;
 }
 
+.v-tab:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+}
 
-.v-container {
-  padding: 16px 0;
+.v-tab--selected {
+  font-weight: bold;
 }
 </style>
+
