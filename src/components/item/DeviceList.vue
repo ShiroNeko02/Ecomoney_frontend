@@ -46,7 +46,7 @@ export default {
       for (const device_user of this.devices_user) {
         try {
           const roomResponse = await roomService.getRoomById(device_user.room_id);
-          device_user.room = roomResponse.data.name_room;
+          device_user.room = roomResponse.name_room;
         } catch (error) {
           console.error("Error fetching room for device", device_user.id_device_user, error);
           device_user.room = "Unknown";
