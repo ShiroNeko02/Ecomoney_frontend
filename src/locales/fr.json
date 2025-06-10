@@ -116,7 +116,7 @@
 
   },
   "pageAddDevice" : {
-          "headerTitle": "Ajouter un nouvel appareil",
+          "headerTitle": "Ajout Appareil",
           "addConsumption": "Ajout consommation",
           "addDevice": "Ajout appareil",
           "deviceName": "Nom de l'appareil",

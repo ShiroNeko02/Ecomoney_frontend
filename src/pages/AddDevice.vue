@@ -4,7 +4,7 @@
     <v-main>
       <v-container>
           <!-- Navigation Tabs -->
-          <v-card class="mb-6" elevation="3" rounded="lg">
+          <v-card class="mb-6 mr-4 ml-4" elevation="3" rounded="lg">
             <v-tabs
               v-model="activeTab"
               grow
@@ -12,7 +12,7 @@
               slider-color="primary"
             >
               <v-tab value="suggestions" class="py-4" @click="goToActivity">
-                <v-icon class="mr-2">mdi-lightbulb-on</v-icon>
+                <v-icon class="mr-3">mdi-lightbulb-on</v-icon>
                 {{ $t('pageAddDevice.addConsumption') }}
               </v-tab>
               <v-tab value="devices" class="py-4">
@@ -23,7 +23,7 @@
           </v-card>
 
         <!-- Device form -->
-        <v-card class="mt-8 pa-4 form-card elevation-4">
+        <v-card class="mt-8 pa-4 pl-4 pr-4 form-card elevation-4">
           <v-form @submit.prevent="submit">
             <div class="cont-1">
               <Input

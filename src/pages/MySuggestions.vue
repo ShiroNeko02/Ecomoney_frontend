@@ -3,7 +3,7 @@
     <Header :title="$t('pageMySuggestions.title')" />
 
     <v-main>
-      <v-container class="py-6">
+      <v-container class="py-6 pr-7 pl-7">
         <!-- Navigation Tabs -->
         <v-card class="mb-6" elevation="3" rounded="lg">
           <v-tabs
@@ -24,10 +24,10 @@
         </v-card>
 
         <!-- Main Content -->
-          <v-divider></v-divider>
-          <v-card-text class="pa-0">
-            <SuggestionList />
-          </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text class="pa-0">
+          <SuggestionList />
+        </v-card-text>
       </v-container>
     </v-main>
 

@@ -3,7 +3,7 @@
     <Header :title="$t('pageMyDevices.title')" />
 
     <v-main>
-      <v-container class="py-6">
+      <v-container class="py-6 pl-7 pr-7">
         <!-- Navigation Tabs -->
         <v-card class="mb-6" elevation="3" rounded="lg">
           <v-tabs

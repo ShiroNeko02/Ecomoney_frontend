@@ -1,11 +1,11 @@
 <template>
   <v-app class="bg-light">
-    <Header :title="locale === 'fr' ? 'Ajouter une consommation' : 'Add New Consumption'" />
+    <Header :title="locale === 'fr' ? 'Ajout Consommation' : 'Add New Consumption'" />
 
     <v-main>
       <v-container>
           <!-- Navigation Tabs -->
-          <v-card class="mb-6" elevation="3" rounded="lg">
+          <v-card class="mb-6 mr-4 ml-4" elevation="3" rounded="lg">
             <v-tabs
               v-model="activeTab"
               grow
@@ -24,7 +24,7 @@
           </v-card>
 
         <!-- Formulaire -->
-        <v-card class="mt-8 pa-4 form-card elevation-4">
+        <v-card class="mt-8 pa-4 pr-4 pl-4 form-card elevation-4">
           <v-form>
             <!-- Select Device -->
             <div style="margin-top:20px; margin-bottom:17px;">
@@ -259,7 +259,7 @@ Do NOT ban or limit the activity — just help me do it in a smarter, more effic
           const translateResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-              "Authorization": "Bearer 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",
+              "Authorization": "Bearer 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",
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
